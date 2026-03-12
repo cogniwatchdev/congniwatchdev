@@ -1,0 +1,672 @@
+{
+  "metadata": {
+    "created": "2026-03-06T22:45:00Z",
+    "version": "1.2",
+    "author": "CIPHER subagent",
+    "description": "Detection signatures for 6 AI agent frameworks with tiered classification",
+    "tier_system": "Added 2026-03-07: Tier 1=Agent Gateway, Tier 2=LLM Backend, Tier 3=Inference",
+    "icons_added": "2026-03-08"
+  },
+  "frameworks": [
+    {
+      "name": "CrewAI",
+      "description": "Framework for orchestrating role-playing, autonomous AI agents",
+      "ports": [
+        8000,
+        8080
+      ],
+      "detection": {
+        "http_patterns": {
+          "title_contains": [
+            "CrewAI",
+            "CrewAI Studio",
+            "CrewAI AMP"
+          ],
+          "headers": {
+            "server_contains": [
+              "uvicorn",
+              "fastapi"
+            ],
+            "content_type": [
+              "text/html",
+              "application/json"
+            ]
+          },
+          "body_keywords": [
+            "crewai",
+            "CrewAI",
+            "crew",
+            "agents",
+            "tasks",
+            "CrewAI AMP dashboard",
+            "Build crews of AI agents"
+          ]
+        },
+        "api_endpoints": [
+          {
+            "path": "/inputs",
+            "method": "GET",
+            "description": "Discovery endpoint to understand crew inputs",
+            "expected_response": {
+              "type": "json",
+              "structure": "object with input schema definition"
+            },
+            "confidence_boost": 0.2
+          },
+          {
+            "path": "/kickoff",
+            "method": "POST",
+            "description": "Start a crew execution",
+            "expected_response": {
+              "type": "json",
+              "structure": {
+                "kickoff_id": "string"
+              }
+            },
+            "confidence_boost": 0.25
+          },
+          {
+            "path": "/{kickoff_id}/status",
+            "method": "GET",
+            "description": "Check execution status and retrieve results",
+            "expected_response": {
+              "type": "json",
+              "structure": {
+                "status": "string (running|completed|failed)",
+                "result": "object or null"
+              }
+            },
+            "confidence_boost": 0.2
+          },
+          {
+            "path": "/health",
+            "method": "GET",
+            "description": "Health check endpoint",
+            "expected_response": {
+              "type": "json",
+              "structure": "health status object"
+            },
+            "confidence_boost": 0.15
+          }
+        ],
+        "reference_test": {
+          "target": "192.168.0.245:18789",
+          "notes": "Neo gateway reference - test against actual CrewAI deployment"
+        },
+        "total_confidence_boost": 0.25,
+        "uniqueness_score": "HIGH",
+        "notes": "CrewAI AMP uses Bearer token authentication. API endpoints return standard HTTP status codes (200, 400, 401, 404, 422, 500). Enterprise dashboard at app.crewai.com."
+      },
+      "icon": {
+        "icon": "👥",
+        "color": "#00bcd4",
+        "category": "orchestration"
+      }
+    },
+    {
+      "name": "AutoGen Studio",
+      "description": "No-Code UI for building and debugging multi-agent systems by Microsoft",
+      "ports": [
+        5000,
+        8080
+      ],
+      "detection": {
+        "http_patterns": {
+          "title_contains": [
+            "AutoGen Studio",
+            "AutoGen"
+          ],
+          "headers": {
+            "server_contains": [
+              "uvicorn",
+              "fastapi"
+            ],
+            "content_type": [
+              "text/html",
+              "application/json"
+            ]
+          },
+          "body_keywords": [
+            "autogen",
+            "AutoGen",
+            "AutoGen Studio",
+            "multi-agent",
+            "agent workflow",
+            "Microsoft AutoGen",
+            "WorkflowManager",
+            "agent team"
+          ]
+        },
+        "api_endpoints": [
+          {
+            "path": "/api/v1/agents",
+            "method": "GET",
+            "description": "List configured agents",
+            "expected_response": {
+              "type": "json",
+              "structure": "array of agent objects"
+            },
+            "confidence_boost": 0.25
+          },
+          {
+            "path": "/api/v1/workflows",
+            "method": "GET",
+            "description": "List agent workflows",
+            "expected_response": {
+              "type": "json",
+              "structure": "array of workflow objects"
+            },
+            "confidence_boost": 0.2
+          },
+          {
+            "path": "/api/v1/runs",
+            "method": "POST",
+            "description": "Execute a workflow",
+            "expected_response": {
+              "type": "json",
+              "structure": {
+                "run_id": "string",
+                "status": "string"
+              }
+            },
+            "confidence_boost": 0.2
+          },
+          {
+            "path": "/health",
+            "method": "GET",
+            "description": "FastAPI health check",
+            "expected_response": {
+              "type": "json",
+              "structure": {
+                "status": "healthy"
+              }
+            },
+            "confidence_boost": 0.15
+          },
+          {
+            "path": "/api/docs",
+            "method": "GET",
+            "description": "Swagger/OpenAPI documentation",
+            "expected_response": {
+              "type": "json",
+              "structure": "OpenAPI spec object"
+            },
+            "confidence_boost": 0.2
+          }
+        ],
+        "reference_test": {
+          "target": "192.168.0.245:18789",
+          "notes": "Test against AutoGen Studio deployment"
+        },
+        "total_confidence_boost": 0.25,
+        "uniqueness_score": "HIGH",
+        "notes": "AutoGen Studio uses FastAPI backend. Standardizes on OpenAI model API format. Session-based chat history with publish/gallery features. WebSocket support for streaming responses."
+      },
+      "icon": {
+        "icon": "🔄",
+        "color": "#ff4081",
+        "category": "orchestration"
+      }
+    },
+    {
+      "name": "LangGraph",
+      "description": "Low-level agent orchestration framework for building controllable agents",
+      "ports": [
+        8000,
+        8080
+      ],
+      "detection": {
+        "http_patterns": {
+          "title_contains": [
+            "LangGraph",
+            "LangGraph Studio",
+            "LangChain"
+          ],
+          "headers": {
+            "server_contains": [
+              "uvicorn",
+              "fastapi"
+            ],
+            "content_type": [
+              "text/html",
+              "application/json"
+            ]
+          },
+          "body_keywords": [
+            "langgraph",
+            "LangGraph",
+            "LangChain",
+            "graph",
+            "nodes",
+            "edges",
+            "state",
+            "assistants",
+            "threads",
+            "runs",
+            "LangSmith"
+          ]
+        },
+        "api_endpoints": [
+          {
+            "path": "/api/assistants",
+            "method": "GET",
+            "description": "List assistant configurations",
+            "expected_response": {
+              "type": "json",
+              "structure": "array of assistant objects"
+            },
+            "confidence_boost": 0.25
+          },
+          {
+            "path": "/api/assistants",
+            "method": "POST",
+            "description": "Create new assistant configuration",
+            "expected_response": {
+              "type": "json",
+              "structure": {
+                "assistant_id": "string",
+                "config": "object"
+              }
+            },
+            "confidence_boost": 0.2
+          },
+          {
+            "path": "/api/threads",
+            "method": "GET",
+            "description": "List conversation threads",
+            "expected_response": {
+              "type": "json",
+              "structure": "array of thread objects"
+            },
+            "confidence_boost": 0.2
+          },
+          {
+            "path": "/api/runs",
+            "method": "POST",
+            "description": "Execute a run against an assistant",
+            "expected_response": {
+              "type": "json",
+              "structure": {
+                "run_id": "string",
+                "thread_id": "string",
+                "status": "string"
+              }
+            },
+            "confidence_boost": 0.2
+          },
+          {
+            "path": "/api/health",
+            "method": "GET",
+            "description": "Server health check",
+            "expected_response": {
+              "type": "json",
+              "structure": {
+                "status": "string"
+              }
+            },
+            "confidence_boost": 0.15
+          }
+        ],
+        "reference_test": {
+          "target": "192.168.0.245:18789",
+          "notes": "Test against LangGraph Platform deployment"
+        },
+        "total_confidence_boost": 0.25,
+        "uniqueness_score": "HIGH",
+        "notes": "LangGraph Platform exposes REST API for Assistants, Threads, and Runs. Built-in persistence infrastructure. StateGraph with TypedDict/Pydantic state schemas. Assistant Editor in LangGraph Studio for GUI configuration."
+      },
+      "icon": {
+        "icon": "⛓️",
+        "color": "#22c55e",
+        "category": "orchestration"
+      }
+    },
+    {
+      "name": "Agent-Zero",
+      "description": "Open-source AI agent framework with web-based UI and computer assistant capabilities",
+      "ports": [
+        50080
+      ],
+      "detection": {
+        "http_patterns": {
+          "title_contains": [
+            "Agent Zero",
+            "AgentZero",
+            "A0"
+          ],
+          "headers": {
+            "server_contains": [
+              "nginx",
+              "python",
+              "uvicorn"
+            ],
+            "content_type": [
+              "text/html",
+              "application/json"
+            ]
+          },
+          "body_keywords": [
+            "agent-zero",
+            "agentzero",
+            "Agent Zero",
+            "agent0ai",
+            "Alpine.js",
+            "A0_SET",
+            "computer assistant",
+            "command line agent"
+          ]
+        },
+        "api_endpoints": [
+          {
+            "path": "/api/status",
+            "method": "GET",
+            "description": "Agent runtime status",
+            "expected_response": {
+              "type": "json",
+              "structure": {
+                "status": "string",
+                "agent_state": "object"
+              }
+            },
+            "confidence_boost": 0.2
+          },
+          {
+            "path": "/api/chat",
+            "method": "POST",
+            "description": "Send message to agent",
+            "expected_response": {
+              "type": "json",
+              "structure": {
+                "message_id": "string",
+                "response": "string"
+              }
+            },
+            "confidence_boost": 0.25
+          },
+          {
+            "path": "/api/tools",
+            "method": "GET",
+            "description": "List available tools",
+            "expected_response": {
+              "type": "json",
+              "structure": "array of tool objects"
+            },
+            "confidence_boost": 0.15
+          },
+          {
+            "path": "/api/executions",
+            "method": "GET",
+            "description": "List command executions",
+            "expected_response": {
+              "type": "json",
+              "structure": "array of execution records"
+            },
+            "confidence_boost": 0.2
+          }
+        ],
+        "reference_test": {
+          "target": "192.168.0.245:18789",
+          "notes": "Test against Agent Zero deployment"
+        },
+        "total_confidence_boost": 0.25,
+        "uniqueness_score": "HIGH",
+        "notes": "Agent Zero uses Alpine.js for reactive frontend. Docker-based deployment common. Config via environment variables (A0_SET_* pattern). Web UI at root of port 50080. Self-correcting agent with tool creation and execution tracking."
+      },
+      "icon": {
+        "icon": "🎯",
+        "color": "#64ffda",
+        "category": "agent_runtime"
+      }
+    },
+    {
+      "name": "PicoClaw",
+      "description": "Ultra-lightweight Go-based AI assistant (<10MB RAM, single binary)",
+      "ports": [
+        5000,
+        8080,
+        18790,
+        18791
+      ],
+      "detection": {
+        "http_patterns": {
+          "title_contains": [
+            "PicoClaw",
+            "PicoClaw Gateway"
+          ],
+          "headers": {
+            "server_contains": [
+              "Go-http-client",
+              "Go"
+            ],
+            "content_type": [
+              "text/html",
+              "application/json"
+            ]
+          },
+          "body_keywords": [
+            "picoclaw",
+            "PicoClaw",
+            "sipeed",
+            "ultra-lightweight",
+            "<10MB",
+            "Go-powered",
+            "Tiny, Fast",
+            "AI-Bootstrapped",
+            "RISC-V",
+            "MIPS"
+          ]
+        },
+        "api_endpoints": [
+          {
+            "path": "/health",
+            "method": "GET",
+            "description": "Gateway health check",
+            "expected_response": {
+              "type": "json",
+              "structure": {
+                "status": "string",
+                "version": "string"
+              }
+            },
+            "confidence_boost": 0.2
+          },
+          {
+            "path": "/api/v1/status",
+            "method": "GET",
+            "description": "Runtime status endpoint",
+            "expected_response": {
+              "type": "json",
+              "structure": {
+                "agent_status": "string",
+                "memory_usage": "number",
+                "uptime": "number"
+              }
+            },
+            "confidence_boost": 0.2
+          },
+          {
+            "path": "/api/v1/agents",
+            "method": "GET",
+            "description": "List configured agents",
+            "expected_response": {
+              "type": "json",
+              "structure": "array of agent objects"
+            },
+            "confidence_boost": 0.15
+          },
+          {
+            "path": "/webhook",
+            "method": "POST",
+            "description": "Webhook receiver for messaging channels",
+            "expected_response": {
+              "type": "json",
+              "structure": "acknowledgment object"
+            },
+            "confidence_boost": 0.15
+          }
+        ],
+        "reference_test": {
+          "target": "192.168.0.245:18789",
+          "notes": "Test against PicoClaw deployment"
+        },
+        "total_confidence_boost": 0.2,
+        "uniqueness_score": "VERY_HIGH",
+        "notes": "PicoClaw is a single static Go binary (<10MB). All webhook-based channels served on single shared Gateway (default 127.0.0.1:18790). Config at ~/.picoclaw/config.json. Supports RISC-V, ARM, MIPS, x86. Extremely fast startup (<1s). Model list configuration allows zero-code provider addition."
+      },
+      "icon": {
+        "icon": "🦀",
+        "color": "#f59e0b",
+        "category": "agent_gateway"
+      }
+    },
+    {
+      "name": "ZeroClaw",
+      "description": "Rust-native autonomous agent runtime (<5MB RAM, ultra-lean)",
+      "ports": [
+        8080,
+        9000
+      ],
+      "detection": {
+        "http_patterns": {
+          "title_contains": [
+            "ZeroClaw",
+            "ZeroClaw Gateway"
+          ],
+          "headers": {
+            "server_contains": [
+              "rustls",
+              "hyper",
+              "Rust"
+            ],
+            "content_type": [
+              "text/html",
+              "application/json"
+            ]
+          },
+          "body_keywords": [
+            "zeroclaw",
+            "ZeroClaw",
+            "Rust",
+            "zero overhead",
+            "<5MB",
+            "trait-driven",
+            "secure-by-default",
+            "pluggable",
+            "autonomous runtime"
+          ]
+        },
+        "api_endpoints": [
+          {
+            "path": "/api/status",
+            "method": "GET",
+            "description": "Runtime status",
+            "expected_response": {
+              "type": "json",
+              "structure": {
+                "status": "string",
+                "memory": "number",
+                "uptime_ms": "number"
+              }
+            },
+            "confidence_boost": 0.2
+          },
+          {
+            "path": "/api/v1/health",
+            "method": "GET",
+            "description": "Health check endpoint",
+            "expected_response": {
+              "type": "json",
+              "structure": {
+                "healthy": "boolean",
+                "version": "string"
+              }
+            },
+            "confidence_boost": 0.15
+          },
+          {
+            "path": "/api/v1/channels",
+            "method": "GET",
+            "description": "List configured channels",
+            "expected_response": {
+              "type": "json",
+              "structure": "array of channel objects"
+            },
+            "confidence_boost": 0.2
+          },
+          {
+            "path": "/api/v1/agents",
+            "method": "GET",
+            "description": "List active agents",
+            "expected_response": {
+              "type": "json",
+              "structure": "array of agent objects"
+            },
+            "confidence_boost": 0.2
+          },
+          {
+            "path": "/webhook",
+            "method": "POST",
+            "description": "Webhook receiver",
+            "expected_response": {
+              "type": "json",
+              "structure": "ack object"
+            },
+            "confidence_boost": 0.15
+          }
+        ],
+        "reference_test": {
+          "target": "192.168.0.245:18789",
+          "notes": "Test against ZeroClaw deployment"
+        },
+        "total_confidence_boost": 0.2,
+        "uniqueness_score": "VERY_HIGH",
+        "notes": "ZeroClaw is a single Rust binary (~8.8MB release). Gateway binds to 127.0.0.1:8080 by default. Use 'zeroclaw gateway --port 0' for random port. Config at ~/.zeroclaw/config.toml (encrypted API keys). Trait-driven architecture with provider/channel/tool swappable. Commands like 'zeroclaw status', 'zeroclaw doctor', 'zeroclaw daemon'. Podman/Docker support for sandboxed runtime."
+      },
+      "icon": {
+        "icon": "⚡",
+        "color": "#fbbf24",
+        "category": "agent_gateway"
+      }
+    }
+  ],
+  "detection_algorithm": {
+    "steps": [
+      {
+        "step": 1,
+        "action": "port_scan",
+        "description": "Scan common ports (5000, 8000, 8080, 9000, 18790, 50080)"
+      },
+      {
+        "step": 2,
+        "action": "http_probe",
+        "description": "GET / on each open port, capture title, headers, body"
+      },
+      {
+        "step": 3,
+        "action": "pattern_match",
+        "description": "Match HTTP patterns against framework signatures"
+      },
+      {
+        "step": 4,
+        "action": "api_probe",
+        "description": "Probe framework-specific API endpoints for confirmation"
+      },
+      {
+        "step": 5,
+        "action": "confidence_calc",
+        "description": "Calculate confidence score based on pattern matches and API responses"
+      }
+    ],
+    "confidence_calculation": {
+      "base_confidence": 0.5,
+      "title_match": 0.15,
+      "body_keyword_match": 0.1,
+      "header_match": 0.05,
+      "api_endpoint_hit": 0.1,
+      "api_response_structure_match": 0.15,
+      "max_confidence": 1.0,
+      "detection_threshold": 0.6
+    }
+  },
+  "notes": "Signatures compiled from official documentation, GitHub repositories, and community resources. All frameworks support containerized deployment. Test against Neo gateway at 192.168.0.245:18789 as reference implementation."
+}

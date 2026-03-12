@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block page_title %}Analytics{% endblock %}
+
+{% block content %}
+<div class="mb-6">
+    <h2 class="text-2xl font-bold text-white mb-2">Analytics & Trends</h2>
+    <p class="text-gray mb-6">Visual insights into AI agent detection patterns</p>
+    
+    <!-- Charts Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        <!-- Framework Distribution -->
+        <div class="bg-navy-light rounded-xl p-6 border border-teal/10">
+            <h3 class="text-lg font-semibold text-white mb-4">Framework Distribution</h3>
+            <div class="h-64 flex items-center justify-center">
+                <div class="text-center">
+                    <i data-lucide="chart-pie" class="w-16 h-16 text-teal/30 mb-4"></i>
+                    <p class="text-gray">Chart.js pie chart will render here</p>
+                    <p class="text-xs text-gray mt-2">Framework breakdown by percentage</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Detection Timeline -->
+        <div class="bg-navy-light rounded-xl p-6 border border-teal/10">
+            <h3 class="text-lg font-semibold text-white mb-4">Detection Timeline</h3>
+            <div class="h-64 flex items-center justify-center">
+                <div class="text-center">
+                    <i data-lucide="trending-up" class="w-16 h-16 text-cyan/30 mb-4"></i>
+                    <p class="text-gray">Chart.js line chart will render here</p>
+                    <p class="text-xs text-gray mt-2">Agents discovered over time</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Security Posture -->
+        <div class="bg-navy-light rounded-xl p-6 border border-teal/10">
+            <h3 class="text-lg font-semibold text-white mb-4">Security Posture</h3>
+            <div class="h-64 flex items-center justify-center">
+                <div class="text-center">
+                    <i data-lucide="shield" class="w-16 h-16 text-green/30 mb-4"></i>
+                    <p class="text-gray">Chart.js bar chart will render here</p>
+                    <p class="text-xs text-gray mt-2">Security status distribution</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Network Heatmap -->
+        <div class="bg-navy-light rounded-xl p-6 border border-teal/10">
+            <h3 class="text-lg font-semibold text-white mb-4">Network Heatmap</h3>
+            <div class="h-64 flex items-center justify-center">
+                <div class="text-center">
+                    <i data-lucide="map" class="w-16 h-16 text-teal/30 mb-4"></i>
+                    <p class="text-gray">Network visualization will render here</p>
+                    <p class="text-xs text-gray mt-2">Agent density by subnet</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Statistics Summary -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="bg-navy-light rounded-xl p-6 border border-teal/10 text-center">
+            <p class="text-gray text-sm mb-2">Total Scans</p>
+            <p class="text-4xl font-bold text-teal">247</p>
+            <p class="text-xs text-gray mt-2">+12 this week</p>
+        </div>
+        <div class="bg-navy-light rounded-xl p-6 border border-teal/10 text-center">
+            <p class="text-gray text-sm mb-2">Avg. Confidence</p>
+            <p class="text-4xl font-bold text-cyan">82%</p>
+            <p class="text-xs text-gray mt-2">+3% from last week</p>
+        </div>
+        <div class="bg-navy-light rounded-xl p-6 border border-teal/10 text-center">
+            <p class="text-gray text-sm mb-2">Unique Hosts</p>
+            <p class="text-4xl font-bold text-teal">1,247</p>
+            <p class="text-xs text-gray mt-2">Across 5 subnets</p>
+        </div>
+        <div class="bg-navy-light rounded-xl p-6 border border-teal/10 text-center">
+            <p class="text-gray text-sm mb-2">Security Issues</p>
+            <p class="text-4xl font-bold text-red">3</p>
+            <p class="text-xs text-gray mt-2">Requires attention</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,57 @@
+{
+  "framework": "openclaw",
+  "name": "OpenClaw",
+  "version": "1.0+",
+  "category": "self-hosted-gateway",
+  "ports": {
+    "primary": 18789,
+    "alternative": [8787],
+    "websocket": 18789,
+    "http": 18789
+  },
+  "http_fingerprints": {
+    "title_patterns": ["OpenClaw", "Gateway"],
+    "header_patterns": {
+      "server": "OpenClaw-Gateway",
+      "x_openclaw_version": ".*"
+    },
+    "body_patterns": ["openclaw-app", "WebSocket Gateway", "Control UI"],
+    "response_check_paths": ["/", "/api/status", "/v1/gateway"]
+  },
+  "api_endpoints": {
+    "status": "/api/status",
+    "gateway": "/v1/gateway",
+    "sessions": "/api/sessions",
+    "agents": "/api/agents"
+  },
+  "websocket": {
+    "enabled": true,
+    "path": "/ws",
+    "protocol": "openclaw-v1",
+    "handshake_patterns": ["Upgrade: websocket", "Sec-WebSocket-Protocol: openclaw"]
+  },
+  "config_files": [
+    "~/.openclaw/config.json",
+    "~/.openclaw/sessions.json",
+    "/etc/openclaw/gateway.conf"
+  ],
+  "process_names": ["openclaw", "openclaw-gateway"],
+  "network_signatures": {
+    "mdns": "_openclaw._tcp.local",
+    "txt_records": ["version=", "node_id="]
+  },
+  "confidence": {
+    "port_match": 0.30,
+    "http_pattern": 0.15,
+    "http_multiple": 0.10,
+    "api_validated": 0.25,
+    "websocket_match": 0.15,
+    "framework_specific": 0.05,
+    "threshold_confirmed": 0.85,
+    "threshold_likely": 0.60,
+    "threshold_possible": 0.30
+  },
+  "detection_priority": 1,
+  "notes": "Most widespread in self-hosted community. Multiple variants (NanoClaw, PicoClaw, ZeroClaw, IronClaw) share same port.",
+  "variants": ["nanoclaw", "picoclaw", "zeroclaw", "ironclaw", "microclaw"]
+}

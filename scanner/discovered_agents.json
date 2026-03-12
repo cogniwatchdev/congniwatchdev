@@ -1,0 +1,69 @@
+{
+  "scan_time": "2026-03-08T03:25:49.123542",
+  "network": "192.168.0.0/24",
+  "hosts_scanned": 254,
+  "agents_found": 3,
+  "agents": [
+    {
+      "id": "agent-192-168-0-245-unknown",
+      "host": "192.168.0.245",
+      "type": "backend_only",
+      "confidence": 0.24,
+      "confidence_badge": "unknown",
+      "timestamp": "2026-03-08T03:25:49.068954+00:00",
+      "correlation_source": "correlation_engine",
+      "backend": {
+        "port": 8000,
+        "framework": "crewai",
+        "model": "unknown",
+        "confidence": 0.3,
+        "gateway_status": "not_detected"
+      }
+    },
+    {
+      "id": "agent-192-168-0-245-unknown",
+      "host": "192.168.0.245",
+      "type": "backend_only",
+      "confidence": 0.24,
+      "confidence_badge": "unknown",
+      "timestamp": "2026-03-08T03:25:49.069059+00:00",
+      "correlation_source": "correlation_engine",
+      "backend": {
+        "port": 8080,
+        "framework": "autogen",
+        "model": "unknown",
+        "confidence": 0.3,
+        "gateway_status": "not_detected"
+      }
+    },
+    {
+      "id": "agent-192-168-0-245-unknown",
+      "host": "192.168.0.245",
+      "type": "backend_only",
+      "confidence": 0.24,
+      "confidence_badge": "unknown",
+      "timestamp": "2026-03-08T03:25:49.069134+00:00",
+      "correlation_source": "correlation_engine",
+      "backend": {
+        "port": 5000,
+        "framework": "picoclaw",
+        "model": "unknown",
+        "confidence": 0.3,
+        "gateway_status": "not_detected"
+      }
+    }
+  ],
+  "clawjacked_detection": {
+    "websocket_anomalies": [],
+    "auth_brute_force": [],
+    "device_registrations": [],
+    "overall_risk": "LOW",
+    "clawjacked_confidence": 0.1,
+    "summary": {
+      "websocket_alerts": 0,
+      "auth_alerts": 0,
+      "device_alerts": 0,
+      "total_alerts": 0
+    }
+  }
+}

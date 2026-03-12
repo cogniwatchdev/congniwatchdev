@@ -1,0 +1,108 @@
+{
+  "framework": "ollama",
+  "name": "Ollama",
+  "version": "0.4+",
+  "category": "LLM Backend",
+  "description": "Lightweight LLM inference server with model management",
+  "detection_tier": "llm_backend",
+  "ports": {
+    "default": 11434,
+    "alternative": [8080, 5000],
+    "protocol": "HTTP"
+  },
+  "http_fingerprints": {
+    "root_response": {
+      "contains": "Ollama is running",
+      "content_type": "text/plain"
+    },
+    "api_tags": {
+      "endpoint": "/api/tags",
+      "method": "GET",
+      "response_contains": "models",
+      "required": true
+    },
+    "api_generate": {
+      "endpoint": "/api/generate",
+      "method": "POST",
+      "response_contains": "response"
+    },
+    "api_chat": {
+      "endpoint": "/api/chat",
+      "method": "POST",
+      "response_contains": "message"
+    }
+  },
+  "api_endpoints": {
+    "/api/tags": {
+      "method": "GET",
+      "description": "List installed models",
+      "confidence_boost": 0.30,
+      "tier_indicator": "llm_backend"
+    },
+    "/api/generate": {
+      "method": "POST",
+      "description": "Generate completion",
+      "confidence_boost": 0.25,
+      "tier_indicator": "llm_backend"
+    },
+    "/api/chat": {
+      "method": "POST",
+      "description": "Chat completion endpoint",
+      "confidence_boost": 0.25,
+      "tier_indicator": "llm_backend"
+    },
+    "/api/version": {
+      "method": "GET",
+      "description": "Get Ollama version",
+      "confidence_boost": 0.20,
+      "tier_indicator": "llm_backend"
+    },
+    "/api/show": {
+      "method": "POST",
+      "description": "Show model information",
+      "confidence_boost": 0.20,
+      "tier_indicator": "llm_backend"
+    }
+  },
+  "websocket": {
+    "supported": false,
+    "note": "Ollama uses HTTP streaming, not WebSocket"
+  },
+  "config_files": [
+    "~/.ollama/config.json",
+    "/etc/ollama/config.json"
+  ],
+  "process_names": [
+    "ollama",
+    "ollama serve"
+  ],
+  "network_signatures": {
+    "user_agent": "Go-http-client",
+    "server_header": "Ollama"
+  },
+  "confidence": {
+    "port_match": 0.30,
+    "http_pattern": 0.15,
+    "api_validated": 0.25,
+    "api_tags_hit": 0.30,
+    "baseline_confidence": 0.50,
+    "max_confidence_without_gateway": 0.60,
+    "max_confidence_with_gateway": 0.95,
+    "threshold_confirmed": 0.85,
+    "threshold_likely": 0.50,
+    "threshold_possible": 0.30
+  },
+  "detection_priority": 2,
+  "notes": "Ollama is an LLM backend, NOT an agent gateway. It provides raw inference only. Agents may run on top of Ollama, but Ollama itself doesn't orchestrate agents. Detection confidence should be 0.50-0.60 for standalone, 0.85-0.95 if correlated with nearby agent gateway.",
+  "variants": [
+    "ollama",
+    "Ollama",
+    "OLLAMA"
+  ],
+  "tier_classification": {
+    "tier": 2,
+    "type": "llm_backend",
+    "agent_capability": "none",
+    "reasoning": "Ollama is a model inference engine. It does not have orchestration, tools, workflows, or memory management. It MAY be used by agent frameworks, but Ollama itself is not an agent platform."
+  }
+}

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - CogniWatch</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            DEFAULT: '#0a192f',
+                            light: '#112240',
+                            lighter: '#233554'
+                        },
+                        teal: '#64ffda',
+                        cyan: '#00bcd4',
+                        pink: '#ff4081',
+                        white: '#e6f1ff',
+                        gray: '#8892b0'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-navy text-white font-sans min-h-screen flex items-center justify-center p-4">
+    <!-- Login Container -->
+    <div class="w-full max-w-md">
+        <!-- Logo & Title -->
+        <div class="text-center mb-8">
+            <div class="inline-flex items-center justify-center w-20 h-20 mb-4 rounded-full bg-navy-light border-2 border-teal/20">
+                <svg class="w-12 h-12 text-teal" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+                </svg>
+            </div>
+            <h1 class="text-3xl font-bold text-white mb-2">CogniWatch</h1>
+            <p class="text-gray">AI Agent Detection Network</p>
+        </div>
+        
+        <!-- Login Form -->
+        <div class="bg-navy-light rounded-lg border border-teal/10 p-8 shadow-lg">
+            <h2 class="text-xl font-semibold text-white mb-6">Sign In</h2>
+            
+            <form id="loginForm" class="space-y-6">
+                <!-- Username -->
+                <div>
+                    <label for="username" class="block text-sm font-medium text-gray mb-2">Username</label>
+                    <input type="text" id="username" name="username" required
+                        class="w-full px-4 py-3 bg-navy-lighter border border-teal/20 rounded-lg text-white placeholder-gray focus:outline-none focus:border-teal focus:ring-1 focus:ring-teal transition-colors"
+                        placeholder="Enter your username" autocomplete="username">
+                </div>
+                
+                <!-- Password -->
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray mb-2">Password</label>
+                    <input type="password" id="password" name="password" required
+                        class="w-full px-4 py-3 bg-navy-lighter border border-teal/20 rounded-lg text-white placeholder-gray focus:outline-none focus:border-teal focus:ring-1 focus:ring-teal transition-colors"
+                        placeholder="Enter your password" autocomplete="current-password">
+                </div>
+                
+                <!-- Submit Button -->
+                <button type="submit"
+                    class="w-full py-3 px-4 bg-teal hover:bg-teal/90 text-navy font-semibold rounded-lg transition-colors duration-200 flex items-center justify-center">
+                    <span id="btnText">Sign In</span>
+                    <svg id="btnSpinner" class="hidden animate-spin ml-2 h-5 w-5 text-navy" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                </button>
+            </form>
+            
+            <!-- Error Message -->
+            <div id="errorMessage" class="hidden mt-4 p-3 bg-red/10 border border-red/30 rounded-lg text-red text-sm"></div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="text-center mt-6 text-sm text-gray">
+            <p>Protected by CogniWatch Security</p>
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const btnText = document.getElementById('btnText');
+            const btnSpinner = document.getElementById('btnSpinner');
+            const errorDiv = document.getElementById('errorMessage');
+            
+            // Show loading state
+            btnText.textContent = 'Signing in...';
+            btnSpinner.classList.remove('hidden');
+            errorDiv.classList.add('hidden');
+            
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok && data.success) {
+                    // Login successful - redirect to dashboard
+                    window.location.href = '/dashboard';
+                } else {
+                    // Login failed
+                    errorDiv.textContent = data.error || 'Invalid username or password';
+                    errorDiv.classList.remove('hidden');
+                    btnText.textContent = 'Sign In';
+                    btnSpinner.classList.add('hidden');
+                }
+            } catch (error) {
+                errorDiv.textContent = 'Network error. Please try again.';
+                errorDiv.classList.remove('hidden');
+                btnText.textContent = 'Sign In';
+                btnSpinner.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+</html>

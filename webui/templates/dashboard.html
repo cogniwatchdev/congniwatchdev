@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CogniWatch - Security Dashboard</title>
+    <link rel="stylesheet" href="/static/css/cogniwatch-2026.css">
+    <link rel="stylesheet" href="/static/css/security.css">
+    <style>
+        :root {
+            --navy: #0a192f;
+            --navy-light: #112240;
+            --navy-lighter: #233554;
+            --teal: #64ffda;
+            --cyan: #00bcd4;
+            --pink: #ff4081;
+            --white: #e6f1ff;
+            --gray: #8892b0;
+            --green: #22c55e;
+            --yellow: #f59e0b;
+            --red: #ef4444;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--navy);
+            color: var(--white);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: var(--navy-light);
+            padding: 20px 0;
+            border-bottom: 2px solid var(--teal);
+            margin-bottom: 30px;
+        }
+        
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        h1 {
+            color: var(--teal);
+            font-size: 2rem;
+        }
+        
+        h1 span {
+            color: var(--white);
+            font-size: 1rem;
+            display: block;
+            margin-top: 5px;
+        }
+        
+        .status-badge {
+            background: var(--teal);
+            color: var(--navy);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 24px;
+            border-bottom: 2px solid var(--navy-lighter);
+            padding-bottom: 10px;
+        }
+        
+        .nav-tab {
+            background: transparent;
+            color: var(--gray);
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: 600;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        
+        .nav-tab:hover {
+            background: var(--navy-lighter);
+            color: var(--white);
+        }
+        
+        .nav-tab.active {
+            background: var(--teal);
+            color: var(--navy);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>
+                🦈 CogniWatch
+                <span>Security Intelligence Dashboard</span>
+            </h1>
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <span class="status-badge" style="background: var(--navy-lighter);">● <span id="current-user">Admin</span></span>
+                <button onclick="logout()" style="background: var(--pink); color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 600; transition: all 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
+                    Logout
+                </button>
+                <span class="status-badge">● System Online</span>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <!-- Navigation Tabs -->
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="switchTab('overview')">Overview</button>
+            <button class="nav-tab" onclick="switchTab('agents')">Agents</button>
+            <button class="nav-tab" onclick="switchTab('security')">Security</button>
+            <button class="nav-tab" onclick="switchTab('costs')">Costs</button>
+            <button class="nav-tab" onclick="switchTab('alerts')">Alerts</button>
+        </div>
+        
+        <!-- Overview Tab -->
+        <div id="overview" class="tab-content active">
+            <!-- TrustMRR Widget -->
+            <div id="trustmrr-widget-container"></div>
+            
+            <!-- Quick Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Total Agents</h3>
+                    <div class="value" id="total-agents">4</div>
+                    <div class="trend">Active ecosystem</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Security Score</h3>
+                    <div class="value" id="security-score">72/100</div>
+                    <div class="trend" style="color: var(--yellow)">⚠️ Moderate Risk</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Active Alerts</h3>
+                    <div class="value" id="active-alerts">3</div>
+                    <div class="trend" style="color: var(--red)">1 Critical</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Cost Today</h3>
+                    <div class="value" id="cost-today">$0.00</div>
+                    <div class="trend">Within budget</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Agents Tab -->
+        <div id="agents" class="tab-content">
+            <div class="agents-section">
+                <div class="agents-header">
+                    <h2>Discovered Agents</h2>
+                    <div class="filter-controls">
+                        <label>Framework:</label>
+                        <select id="framework-filter" onchange="filterAgents()">
+                            <option value="all">All Frameworks</option>
+                            <option value="OpenClaw">OpenClaw</option>
+                            <option value="Custom">Custom</option>
+                            <option value="Flask">Flask</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="agents-grid" id="agents-grid">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Security Tab -->
+        <div id="security" class="tab-content">
+            <!-- TrustMRR Widget -->
+            <div id="trustmrr-widget-security"></div>
+            
+            <!-- Security Posture -->
+            <div id="security-posture-container"></div>
+            
+            <!-- Detection Feed -->
+            <div id="detection-feed-container"></div>
+        </div>
+        
+        <!-- Costs Tab -->
+        <div id="costs" class="tab-content">
+            <h2>Cost Tracking</h2>
+            <p>Cost analytics coming soon...</p>
+        </div>
+        
+        <!-- Alerts Tab -->
+        <div id="alerts" class="tab-content">
+            <h2>System Alerts</h2>
+            <div id="detection-feed-alerts"></div>
+        </div>
+    </div>
+    
+    <!-- Load Component Templates -->
+    <script>
+        // Tab Switching
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.nav-tab').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            document.getElementById(tabId).classList.add('active');
+            event.target.classList.add('active');
+            
+            // Load components when Security tab is opened
+            if (tabId === 'security') {
+                loadSecurityComponents();
+            }
+        }
+        
+        // Load Security Components
+        async function loadSecurityComponents() {
+            // Load TrustMRR Widget
+            if (!document.getElementById('trustmrr-loaded')) {
+                await loadWidget('/templates/trustmrr_widget.html', 'trustmrr-widget-security');
+                document.getElementById('trustmrr-loaded').dataset.loaded = 'true';
+            }
+            
+            // Load Security Posture
+            if (!document.getElementById('security-posture-loaded')) {
+                await loadWidget('/templates/security_posture.html', 'security-posture-container');
+                document.getElementById('security-posture-loaded').dataset.loaded = 'true';
+            }
+            
+            // Load Detection Feed
+            if (!document.getElementById('detection-feed-loaded')) {
+                await loadWidget('/templates/detection_feed.html', 'detection-feed-container');
+                document.getElementById('detection-feed-loaded').dataset.loaded = 'true';
+            }
+        }
+        
+        // Load Widget Helper
+        async function loadWidget(url, containerId) {
+            try {
+                const response = await fetch(url);
+                const html = await response.text();
+                document.getElementById(containerId).innerHTML = html;
+                
+                // Execute inline scripts
+                const scripts = document.getElementById(containerId).getElementsByTagName('script');
+                for (let script of scripts) {
+                    const newScript = document.createElement('script');
+                    newScript.textContent = script.textContent;
+                    document.body.appendChild(newScript);
+                }
+            } catch (error) {
+                console.error('Failed to load widget:', url, error);
+            }
+        }
+        
+        // Load main dashboard widgets
+        async function loadOverviewWidgets() {
+            await loadWidget('/templates/trustmrr_widget.html', 'trustmrr-widget-container');
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', async function() {
+            await loadOverviewWidgets();
+            loadAgents();
+            
+            // Create hidden marker elements to track loaded widgets
+            const markerIds = ['trustmrr-loaded', 'security-posture-loaded', 'detection-feed-loaded'];
+            markerIds.forEach(id => {
+                const marker = document.createElement('div');
+                marker.id = id;
+                marker.dataset.loaded = 'false';
+                marker.style.display = 'none';
+                document.body.appendChild(marker);
+            });
+        });
+        
+        // Load Agents
+        async function loadAgents() {
+            try {
+                const response = await fetch('/api/agents');
+                const data = await response.json();
+                
+                const grid = document.getElementById('agents-grid');
+                grid.innerHTML = data.agents.map(agent => `
+                    <div class="agent-card">
+                        <div class="agent-status ${agent.status}"></div>
+                        <h3>${agent.name}</h3>
+                        <p class="agent-framework">${agent.framework}</p>
+                        <div class="agent-details">
+                            <span>🌐 ${agent.host}:${agent.port}</span>
+                            <span>🤖 ${agent.model}</span>
+                        </div>
+                        <div class="confidence-badge ${agent.confidence_badge}">
+                            ${Math.round(agent.confidence * 100)}% Confidence
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Failed to load agents:', error);
+            }
+        }
+        
+        function filterAgents() {
+            const framework = document.getElementById('framework-filter').value;
+            const cards = document.querySelectorAll('.agent-card');
+            
+            cards.forEach(card => {
+                const fw = card.querySelector('.agent-framework').textContent;
+                card.style.display = framework === 'all' || fw === framework ? 'block' : 'none';
+            });
+        }
+        
+        // Logout function
+        async function logout() {
+            try {
+                await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' });
+                window.location.href = '/login';
+            } catch (error) {
+                console.error('Logout failed:', error);
+                window.location.href = '/login';
+            }
+        }
+    </script>
+</body>
+</html>

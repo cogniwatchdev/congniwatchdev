@@ -1,0 +1,120 @@
+# Python
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# Logs
+*.log
+logs/
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+data/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Secrets
+*.key
+*.pem
+secrets/
+
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# CogniWatch specific
+*.service
+deploy/
+deployment/
+tests/
+test_*.py
+*_test.py
+stress_test_output.log
+*.tar.gz
+exploit*.py
+pentest*.py
+comprehensive_pentest.py
+RESEARCH*.md
+FIELD_TEST*.md
+INTEGRATION_TEST*.md
+DETECTION_ACCURACY*.md
+KNOWN_ISSUES*.md
+PERFORMANCE_OPTIMIZATION*.md
+REDESIGN_DIAGNOSTIC.md
+SUBAGENT_REPORT.md
+TIERED_CLASSIFICATION*.md
+WAVE*.md
+EXPERIMENT*.md
+BACKUP*.md
+OLD*.md
+*.bak
+*.backup
+chart*.py
+fix*.py
+insert_data.py
+ins.py
+update_*.py
+update_*.js
+activity_fix.js
+verify_deliverables.py
+test_confidence_badges.html
+test_redesign.html
+test.css
+test-js.js
+test.html
+*.tmp
+tmp/
+
+# Documentation drafts
+*_DRAFT.md
+*_WORKING.md
+*_NOTES.md
+
+**/node_modules/

@@ -1,0 +1,55 @@
+{
+  "framework": "langgraph",
+  "name": "LangGraph",
+  "version": "1.0+",
+  "category": "graph-state-agents",
+  "ports": {
+    "primary": 8123,
+    "alternative": [8000, 8080],
+    "websocket": 8123,
+    "http": 8123
+  },
+  "http_fingerprints": {
+    "title_patterns": ["LangGraph", "LangChain"],
+    "header_patterns": {
+      "server": "LangGraph.*"
+    },
+    "body_patterns": ["langgraph", "state machine", "graph-based", "LangChain"],
+    "response_check_paths": ["/", "/api/graph", "/api/state"]
+  },
+  "api_endpoints": {
+    "status": "/api/status",
+    "graph": "/api/graph",
+    "state": "/api/state",
+    "runs": "/api/runs"
+  },
+  "websocket": {
+    "enabled": true,
+    "path": "/ws",
+    "protocol": "langgraph-v1",
+    "handshake_patterns": ["Upgrade: websocket"]
+  },
+  "config_files": [
+    "langgraph.json",
+    "langchain.json"
+  ],
+  "process_names": ["langgraph", "langserve"],
+  "network_signatures": {
+    "mdns": null,
+    "txt_records": []
+  },
+  "confidence": {
+    "port_match": 0.30,
+    "http_pattern": 0.15,
+    "http_multiple": 0.10,
+    "api_validated": 0.25,
+    "websocket_match": 0.10,
+    "framework_specific": 0.10,
+    "threshold_confirmed": 0.85,
+    "threshold_likely": 0.60,
+    "threshold_possible": 0.30
+  },
+  "detection_priority": 1,
+  "notes": "LangChain's official agent platform. Self-hostable via Docker. Strong enterprise adoption.",
+  "variants": ["langserve"]
+}

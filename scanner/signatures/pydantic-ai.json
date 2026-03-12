@@ -1,0 +1,55 @@
+{
+  "framework": "pydantic-ai",
+  "name": "Pydantic AI",
+  "version": "1.0+",
+  "category": "type-safe-agent-framework",
+  "ports": {
+    "primary": 8000,
+    "alternative": [],
+    "websocket": null,
+    "http": 8000
+  },
+  "http_fingerprints": {
+    "title_patterns": ["Pydantic AI", "PydanticAI", "Type-Safe AI"],
+    "header_patterns": {
+      "server": "Pydantic-AI.*"
+    },
+    "body_patterns": ["pydantic-ai", "pydanticai", "type-safe", "Type-Safe AI Agents"],
+    "response_check_paths": ["/", "/docs", "/openapi.json"]
+  },
+  "api_endpoints": {
+    "status": "/api/status",
+    "docs": "/docs",
+    "openapi": "/openapi.json",
+    "execute": "/api/execute"
+  },
+  "websocket": {
+    "enabled": false,
+    "path": null,
+    "protocol": null,
+    "handshake_patterns": []
+  },
+  "config_files": [
+    "~/.pydantic-ai/config.yaml",
+    "pyproject.toml"
+  ],
+  "process_names": ["pydantic-ai", "pydanticai", "uvicorn"],
+  "network_signatures": {
+    "mdns": null,
+    "txt_records": []
+  },
+  "confidence": {
+    "port_match": 0.30,
+    "http_pattern": 0.15,
+    "http_multiple": 0.10,
+    "api_validated": 0.25,
+    "websocket_match": 0.00,
+    "framework_specific": 0.10,
+    "threshold_confirmed": 0.85,
+    "threshold_likely": 0.60,
+    "threshold_possible": 0.30
+  },
+  "detection_priority": 2,
+  "notes": "FastAPI-based framework with type-safe agent building. Uses /docs and /openapi.json for API documentation.",
+  "variants": []
+}

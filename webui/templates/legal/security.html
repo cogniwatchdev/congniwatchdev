@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Policy - CogniWatch 2026</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            DEFAULT: '#0a192f',
+                            light: '#112240',
+                            lighter: '#233554'
+                        },
+                        teal: '#64ffda',
+                        cyan: '#00bcd4',
+                        pink: '#ff4081',
+                        white: '#e6f1ff',
+                        gray: '#8892b0'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'Fira Code', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <link rel="stylesheet" href="/static/css/cogniwatch-2026.css">
+</head>
+<body class="bg-navy text-white font-sans min-h-screen">
+    <div class="max-w-4xl mx-auto px-4 py-12">
+        <!-- Back to Dashboard -->
+        <a href="/" class="inline-flex items-center gap-2 text-teal hover:text-teal/80 mb-8 transition-colors group">
+            <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+            <span>Back to Dashboard</span>
+        </a>
+        
+        <!-- Document Header -->
+        <div class="mb-12 pb-8 border-b border-teal/10">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-12 h-12 rounded-xl bg-cyan/10 flex items-center justify-center">
+                    <i data-lucide="shield-check" class="w-6 h-6 text-cyan"></i>
+                </div>
+                <div>
+                    <p class="text-gray text-sm mb-1">Legal Document</p>
+                    <h1 class="text-3xl font-bold text-white">Security Policy</h1>
+                </div>
+            </div>
+            <div class="flex items-center gap-4 text-sm text-gray">
+                <span>Effective: March 8, 2026</span>
+                <span>•</span>
+                <span>Version 1.0.0</span>
+            </div>
+        </div>
+        
+        <!-- Document Content -->
+        <article class="prose prose-invert prose-lg max-w-none">
+            <h2>🛡️ SECURITY COMMITMENT</h2>
+            <p>CogniWatch is committed to maintaining the security of our software and protecting user data. This Security Policy outlines our security practices, responsibilities, and how to report security vulnerabilities.</p>
+            
+            <h2>1. SECURITY OVERVIEW</h2>
+            <h3>1.1 Security by Design</h3>
+            <p>CogniWatch is built with security as a core principle:</p>
+            <ul>
+                <li><strong>Local-first architecture:</strong> All scan data remains on your infrastructure</li>
+                <li><strong>Minimal data collection:</strong> We collect only essential information</li>
+                <li><strong>Defense in depth:</strong> Multiple security layers protect against threats</li>
+                <li><strong>Regular updates:</strong> Security patches are released promptly</li>
+            </ul>
+            
+            <h3>1.2 Security Model</h3>
+            <p>CogniWatch operates on a trust-but-verify model:</p>
+            <ul>
+                <li>Authentication is required for dashboard access</li>
+                <li>API endpoints enforce access controls</li>
+                <li>All inputs are validated and sanitized</li>
+                <li>Rate limiting prevents abuse</li>
+            </ul>
+            
+            <h2>2. SECURITY FEATURES</h2>
+            <h3>2.1 Authentication & Authorization</h3>
+            <ul>
+                <li><strong>Token-based authentication:</strong> JWT tokens for secure session management</li>
+                <li><strong>Role-based access control:</strong> Admin and viewer roles</li>
+                <li><strong>API key support:</strong> Programmatic access with scoped permissions</li>
+                <li><strong>Session expiration:</strong> Sessions expire after configurable time periods</li>
+            </ul>
+            
+            <h3>2.2 Input Validation</h3>
+            <ul>
+                <li><strong>Parameter validation:</strong> All inputs validated against expected formats</li>
+                <li><strong>SQL injection prevention:</strong> Parameterized queries only</li>
+                <li><strong>XSS prevention:</strong> Output encoding and Content Security Policy</li>
+                <li><strong>CSRF protection:</strong> CSRF tokens for state-changing operations</li>
+            </ul>
+            
+            <h3>2.3 Network Security</h3>
+            <ul>
+                <li><strong>HTTPS recommended:</strong> Encrypt traffic with TLS</li>
+                <li><strong>CORS configuration:</strong> Restrict cross-origin requests</li>
+                <li><strong>IP allowlisting:</strong> Optional restriction to trusted IPs</li>
+                <li><strong>Rate limiting:</strong> Prevent brute-force and DoS attacks</li>
+            </ul>
+            
+            <h3>2.4 Data Protection</h3>
+            <ul>
+                <li><strong>Encrypted storage:</strong> Sensitive data encrypted at rest</li>
+                <li><strong>Secure credentials:</strong> Secrets stored in environment variables</li>
+                <li><strong>No data exfiltration:</strong> Scan results never sent to external servers</li>
+                <li><strong>Database security:</strong> SQLite with restricted file permissions</li>
+            </ul>
+            
+            <h2>3. SECURITY CONFIGURATION</h2>
+            <h3>3.1 Required Configuration</h3>
+            <p>Before deploying CogniWatch, configure the following security settings:</p>
+            <ul>
+                <li><code>COGNIWATCH_SECRET_KEY</code> - Unique secret key for session encryption</li>
+                <li><code>COGNIWATCH_ADMIN_TOKEN</code> - Strong token for admin authentication</li>
+                <li><code>COGNIWATCH_ALLOWED_IPS</code> - Comma-separated list of allowed client IPs (optional)</li>
+            </ul>
+            
+            <h3>3.2 Recommended Configuration</h3>
+            <ul>
+                <li><strong>Enable HTTPS:</strong> Use reverse proxy with TLS termination</li>
+                <li><strong>Set up rate limiting:</strong> Configure requests per minute</li>
+                <li><strong>Regular password rotation:</strong> Change admin tokens periodically</li>
+                <li><strong>Enable logging:</strong> Monitor access and errors</li>
+                <li><strong>Backup database:</strong> Regular backups of cogniwatch.db</li>
+            </ul>
+            
+            <h3>3.3 Production Deployment</h3>
+            <p>For production environments:</p>
+            <ul>
+                <li>Run with <code>--debug=false</code></li>
+                <li>Use a reverse proxy (nginx, Apache)</li>
+                <li>Configure firewall rules to restrict access</li>
+                <li>Enable security headers (HSTS, CSP, X-Frame-Options)</li>
+                <li>Run as non-root user with minimal privileges</li>
+            </ul>
+            
+            <h2>4. VULNERABILITY DISCLOSURE</h2>
+            <h3>4.1 Responsible Disclosure</h3>
+            <p>We encourage responsible disclosure of security vulnerabilities:</p>
+            <ol>
+                <li><strong>Report privately:</strong> Email security@cogniwatch.dev</li>
+                <li><strong>Include details:</strong> Steps to reproduce, impact, affected versions</li>
+                <li><strong>Allow time for response:</strong> We'll acknowledge within 48 hours</li>
+                <li><strong>Coordinate disclosure:</strong> Work with us on public disclosure timeline</li>
+            </ol>
+            
+            <h3>4.2 What to Report</h3>
+            <p>We're interested in hearing about:</p>
+            <ul>
+                <li>Authentication bypasses</li>
+                <li>SQL injection vulnerabilities</li>
+                <li>Cross-site scripting (XSS)</li>
+                <li>Cross-site request forgery (CSRF)</li>
+                <li>Information disclosure</li>
+                <li>Remote code execution</li>
+                <li>Privilege escalation</li>
+                <li>Denial of service vulnerabilities</li>
+            </ul>
+            
+            <h3>4.3 What NOT to Report</h3>
+            <p>Please don't report:</p>
+            <ul>
+                <li>Issues requiring unrealistic attack scenarios</li>
+                <li>Theoretical vulnerabilities without proof of concept</li>
+                <li>Issues already fixed in latest version</li>
+                <li>Login CSRF on logout endpoints</li>
+                <li>Social engineering attacks against our team</li>
+            </ul>
+            
+            <h3>4.4 Recognition</h3>
+            <p>Security researchers who report valid vulnerabilities will be acknowledged in our security advisory (unless they prefer anonymity).</p>
+            
+            <h2>5. SECURITY UPDATES</h2>
+            <h3>5.1 Update Policy</h3>
+            <ul>
+                <li><strong>Critical patches:</strong> Released within 72 hours of confirmed vulnerability</li>
+                <li><strong>Security advisories:</strong> Published with each security update</li>
+                <li><strong>Changelog:</strong> Security fixes documented in release notes</li>
+                <li><strong>Backward compatibility:</strong> Security updates maintain compatibility where possible</li>
+            </ul>
+            
+            <h3>5.2 Staying Updated</h3>
+            <ul>
+                <li>Subscribe to our security mailing list</li>
+                <li>Monitor GitHub releases</li>
+                <li>Check security advisories regularly</li>
+                <li>Enable auto-updates in production</li>
+            </ul>
+            
+            <h2>6. INCIDENT RESPONSE</h2>
+            <h3>6.1 If You Suspect a Breach</h3>
+            <ol>
+                <li><strong>Stop the scan:</strong> Halt CogniWatch processes</li>
+                <li><strong>Preserve evidence:</strong> Save logs and database state</li>
+                <li><strong>Change credentials:</strong> Rotate all tokens and API keys</li>
+                <li><strong>Contact us:</strong> Email security@cogniwatch.dev</li>
+                <li><strong>Review access:</strong> Check for unauthorized access</li>
+            </ol>
+            
+            <h3>6.2 Our Response</h3>
+            <p>Upon notification of a security incident, we will:</p>
+            <ul>
+                <li>Investigate and assess the situation</li>
+                <li>Provide guidance on containment</li>
+                <li>Release patches if needed</li>
+                <li>Communicate findings (as appropriate)</li>
+            </ul>
+            
+            <h2>7. COMPLIANCE</h2>
+            <h3>7.1 Security Standards</h3>
+            <p>CogniWatch development follows security best practices aligned with:</p>
+            <ul>
+                <li>OWASP Top 10 awareness</li>
+                <li>NIST Cybersecurity Framework principles</li>
+                <li>CIS Controls for application security</li>
+            </ul>
+            
+            <h3>7.2 Audit Support</h3>
+            <p>Documentation and logs are available to support security audits of your CogniWatch deployment.</p>
+            
+            <h2>8. SECURITY LOGGING</h2>
+            <p>CogniWatch logs security-relevant events including:</p>
+            <ul>
+                <li>Login attempts (successful and failed)</li>
+                <li>API access</li>
+                <li>Configuration changes</li>
+                <li>Scanner activity</li>
+                <li>Error conditions</li>
+            </ul>
+            
+            <p>Logs are stored locally and should be reviewed regularly.</p>
+            
+            <h2>9. THIRD-PARTY DEPENDENCIES</h2>
+            <p>CogniWatch uses third-party libraries and services:</p>
+            <ul>
+                <li><strong>Flask:</strong> Web framework</li>
+                <li><strong>JWT:</strong> Token authentication</li>
+                <li><strong>SQLite:</strong> Database</li>
+            </ul>
+            
+            <p>We monitor dependencies for security updates and patch promptly.</p>
+            
+            <h2>10. SECURITY CONTACT</h2>
+            <p>For security-related matters:</p>
+            <p>
+                <strong>Email:</strong> security@cogniwatch.dev<br>
+                <strong>PGP Key:</strong> Available upon request<br>
+                <strong>Response Time:</strong> Within 48 hours
+            </p>
+            
+            <div class="bg-teal/10 border border-teal/30 rounded-lg p-6 mt-8">
+                <div class="flex items-start gap-3">
+                    <i data-lucide="info" class="w-6 h-6 text-teal flex-shrink-0 mt-0.5"></i>
+                    <div>
+                        <h3 class="text-teal font-bold mb-2">Security Best Practices</h3>
+                        <ul class="text-gray text-sm space-y-2 mb-0">
+                            <li>✓ Always use HTTPS in production</li>
+                            <li>✓ Rotate credentials regularly</li>
+                            <li>✓ Restrict access to trusted IPs when possible</li>
+                            <li>✓ Keep CogniWatch updated to latest version</li>
+                            <li>✓ Monitor logs for suspicious activity</li>
+                            <li>✓ Backup your database regularly</li>
+                            <li>✓ Use strong, unique secret keys</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </article>
+        
+        <!-- Footer Navigation -->
+        <div class="mt-16 pt-8 border-t border-teal/10">
+            <div class="flex flex-wrap gap-4 justify-center text-sm text-gray">
+                <a href="/legal/terms" class="hover:text-teal transition-colors">Terms of Service</a>
+                <span>•</span>
+                <a href="/legal/privacy" class="hover:text-teal transition-colors">Privacy Policy</a>
+                <span>•</span>
+                <a href="/legal/disclaimer" class="hover:text-teal transition-colors">Disclaimer</a>
+                <span>•</span>
+                <a href="/legal/security" class="hover:text-teal transition-colors">Security</a>
+                <span>•</span>
+                <a href="/legal/acceptable-use" class="hover:text-teal transition-colors">Acceptable Use</a>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

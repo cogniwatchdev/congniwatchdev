@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CogniWatch Documentation - Shodan for AI Agents</title>
+    <meta name="description" content="Complete documentation for CogniWatch - Detect, monitor, and secure AI agent deployments across your infrastructure">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: #334155;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --accent-primary: #06b6d4;
+            --accent-secondary: #8b5cf6;
+            --accent-success: #10b981;
+            --accent-warning: #f59e0b;
+            --accent-danger: #ef4444;
+            --border-color: #475569;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, #1e1b4b 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            padding: 60px 0 40px;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            font-size: 4rem;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .tagline {
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .badges {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .badge {
+            background: var(--bg-card);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+
+        .badge.success {
+            border-color: var(--accent-success);
+            color: var(--accent-success);
+        }
+
+        /* Navigation Tabs */
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .nav-tab {
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            padding: 10px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+            border: 1px solid var(--border-color);
+        }
+
+        .nav-tab:hover {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            transform: translateY(-2px);
+        }
+
+        .nav-tab.active {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            border-color: transparent;
+        }
+
+        /* Main Content */
+        .docs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .doc-card {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 30px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s;
+            box-shadow: var(--shadow);
+        }
+
+        .doc-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--accent-primary);
+        }
+
+        .doc-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .doc-card h2 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        .doc-card p {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+
+        .doc-card ul {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+
+        .doc-card li {
+            color: var(--text-muted);
+            padding: 5px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .doc-card li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--accent-primary);
+        }
+
+        .doc-link {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            padding: 10px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .doc-link:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(6, 182, 212, 0.4);
+        }
+
+        /* Quick Start Section */
+        .quick-start {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 60px;
+            border: 1px solid var(--border-color);
+        }
+
+        .quick-start h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+        }
+
+        .command-steps {
+            background: var(--bg-primary);
+            border-radius: 8px;
+            padding: 25px;
+            font-family: 'Courier New', monospace;
+            margin: 20px 0;
+        }
+
+        .command-step {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .step-number {
+            background: var(--accent-primary);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .command-code {
+            flex: 1;
+        }
+
+        .command-code code {
+            background: var(--bg-card);
+            padding: 8px 15px;
+            border-radius: 6px;
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            color: var(--accent-primary);
+            overflow-x: auto;
+        }
+
+        .command-comment {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-left: 43px;
+        }
+
+        /* Features Grid */
+        .features-section {
+            margin-bottom: 60px;
+        }
+
+        .features-section h2 {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .feature-item {
+            background: var(--bg-card);
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 4px solid var(--accent-primary);
+        }
+
+        .feature-item h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        .feature-item p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--border-color);
+            padding: 40px 0;
+            text-align: center;
+            color: var(--text-muted);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-primary);
+        }
+
+        .github-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--bg-card);
+            padding: 10px 20px;
+            border-radius: 8px;
+            color: var(--text-primary);
+            text-decoration: none;
+            margin-top: 15px;
+            transition: all 0.2s;
+        }
+
+        .github-link:hover {
+            background: var(--border-color);
+            transform: translateY(-2px);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .tagline {
+                font-size: 1.2rem;
+            }
+
+            .docs-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-tabs {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .doc-card, .quick-start, .feature-item {
+            animation: fadeIn 0.5s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">🔍</div>
+            <h1>CogniWatch Documentation</h1>
+            <p class="tagline">Shodan for AI Agents — Detect, monitor, and secure AI deployments</p>
+            
+            <div class="badges">
+                <span class="badge success">✅ Production Ready</span>
+                <span class="badge success">✅ OWASP Compliant</span>
+                <span class="badge">📦 v1.0.0</span>
+                <span class="badge">🤖 23+ Frameworks</span>
+                <span class="badge">⚡ MIT License</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Quick Start -->
+        <section class="quick-start">
+            <h2>🚀 Quick Start</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 20px;">Get CogniWatch running in 3 commands:</p>
+            
+            <div class="command-steps">
+                <div class="command-step">
+                    <div class="step-number">1</div>
+                    <div class="command-code">
+                        <code>git clone https://github.com/neo/cogniwatch.git && cd cogniwatch</code>
+                        <div class="command-comment">Clone the repository</div>
+                    </div>
+                </div>
+                
+                <div class="command-step">
+                    <div class="step-number">2</div>
+                    <div class="command-code">
+                        <code>docker compose up -d</code>
+                        <div class="command-comment">Start with Docker</div>
+                    </div>
+                </div>
+                
+                <div class="command-step">
+                    <div class="step-number">3</div>
+                    <div class="command-code">
+                        <code>open http://localhost:9000</code>
+                        <div class="command-comment">Open your browser</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 20px;">
+                <a href="QUICKSTART.md" class="doc-link">View Full Quick Start Guide →</a>
+            </div>
+        </section>
+
+        <!-- Documentation Cards -->
+        <div class="docs-grid">
+            <!-- README -->
+            <div class="doc-card">
+                <div class="doc-icon">📖</div>
+                <h2>README</h2>
+                <p>Main project overview, features, quick start, and introduction to CogniWatch. Start here to understand what CogniWatch does and how it works.</p>
+                <ul>
+                    <li>Project overview</li>
+                    <li>Features & capabilities</li>
+                    <li>Supported frameworks</li>
+                    <li>Installation options</li>
+                    <li>Usage examples</li>
+                    <li>Contributing guidelines</li>
+                </ul>
+                <a href="../README.md" class="doc-link">View README</a>
+            </div>
+
+            <!-- User Guide -->
+            <div class="doc-card">
+                <div class="doc-icon">👤</div>
+                <h2>User Guide</h2>
+                <p>Complete end-user documentation covering dashboard navigation, running scans, understanding results, and configuring settings.</p>
+                <ul>
+                    <li>Dashboard tour</li>
+                    <li>Running scans</li>
+                    <li>Understanding results</li>
+                    <li>Working with agents</li>
+                    <li>Telemetry & monitoring</li>
+                    <li>Settings configuration</li>
+                </ul>
+                <a href="USER_GUIDE.md" class="doc-link">View User Guide</a>
+            </div>
+
+            <!-- API Reference -->
+            <div class="doc-card">
+                <div class="doc-icon">🛠️</div>
+                <h2>API Reference</h2>
+                <p>Complete API documentation with all endpoints, authentication, request/response schemas, and code examples in Python, JavaScript, and cURL.</p>
+                <ul>
+                    <li>Authentication methods</li>
+                    <li>All REST endpoints</li>
+                    <li>WebSocket API</li>
+                    <li>Error codes</li>
+                    <li>Rate limiting</li>
+                    <li>Code examples</li>
+                </ul>
+                <a href="API.md" class="doc-link">View API Docs</a>
+            </div>
+
+            <!-- Deployment Guide -->
+            <div class="doc-card">
+                <div class="doc-icon">🚀</div>
+                <h2>Deployment Guide</h2>
+                <p>Production deployment instructions for Docker, VPS (Ubuntu/Debian), and from-source installations with HTTPS setup and firewall configuration.</p>
+                <ul>
+                    <li>Docker deployment</li>
+                    <li>VPS deployment</li>
+                    <li>From-source setup</li>
+                    <li>HTTPS configuration</li>
+                    <li>Firewall rules</li>
+                    <li>Troubleshooting</li>
+                </ul>
+                <a href="DEPLOYMENT.md" class="doc-link">View Deployment</a>
+            </div>
+
+            <!-- Architecture -->
+            <div class="doc-card">
+                <div class="doc-icon">🏗️</div>
+                <h2>Architecture</h2>
+                <p>Technical architecture documentation covering system design, component breakdown, data flow, security architecture, and scalability.</p>
+                <ul>
+                    <li>System overview</li>
+                    <li>Component details</li>
+                    <li>Data flow diagrams</li>
+                    <li>Security architecture</li>
+                    <li>Scalability strategy</li>
+                    <li>Technology stack</li>
+                </ul>
+                <a href="ARCHITECTURE.md" class="doc-link">View Architecture</a>
+            </div>
+
+            <!-- Security -->
+            <div class="doc-card">
+                <div class="doc-icon">🛡️</div>
+                <h2>Security</h2>
+                <p>Security policy, responsible disclosure process, OWASP compliance matrix, known limitations, and user best practices for secure deployments.</p>
+                <ul>
+                    <li>Security commitments</li>
+                    <li>Responsible disclosure</li>
+                    <li>OWASP compliance</li>
+                    <li>Known limitations</li>
+                    <li>Best practices</li>
+                    <li>Audit summary</li>
+                </ul>
+                <a href="SECURITY.md" class="doc-link">View Security</a>
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <section class="features-section">
+            <h2>✨ Key Features</h2>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <h3>🔎 Multi-Layer Detection</h3>
+                    <p>HTTP headers, API endpoints, WebSocket protocols, TLS/JA3 fingerprinting, and behavioral analysis for accurate framework identification.</p>
+                </div>
+                
+                <div class="feature-item">
+                    <h3>🎯 23+ Frameworks</h3>
+                    <p>OpenClaw (all variants), Agent-Zero, LangGraph, AutoGen, CrewAI, Microsoft/Google frameworks, and more with confidence scoring.</p>
+                </div>
+                
+                <div class="feature-item">
+                    <h3>📊 Real-Time Telemetry</h3>
+                    <p>Monitor agent connections, API calls, WebSocket messages, response times, and error rates with historical trend analysis.</p>
+                </div>
+                
+                <div class="feature-item">
+                    <h3>🛡️ OWASP Compliant</h3>
+                    <p>Full compliance with OWASP Top 10:2025 and LLM Top 10:2025, JWT authentication, RBAC, and AES-256-GCM encryption.</p>
+                </div>
+                
+                <div class="feature-item">
+                    <h3>🐳 Docker Ready</h3>
+                    <p>Deploy in minutes with Docker Compose. Pre-configured security, isolated environment, and easy updates.</p>
+                </div>
+                
+                <div class="feature-item">
+                    <h3>🔌 REST API</h3>
+                    <p>Complete programmatic control with RESTful API, WebSocket real-time updates, and SDK support for Python and JavaScript.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Supported Frameworks -->
+        <section style="margin-bottom: 60px; background: var(--bg-secondary); padding: 30px; border-radius: 12px; border: 1px solid var(--border-color);">
+            <h2 style="text-align: center; margin-bottom: 30px;">🤖 Supported Frameworks</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                <div>
+                    <h3 style="color: var(--accent-primary); margin-bottom: 15px;">Tier 1 (High Confidence)</h3>
+                    <ul style="color: var(--text-secondary); line-height: 2;">
+                        <li>OpenClaw (all variants)</li>
+                        <li>Agent-Zero</li>
+                        <li>LangGraph</li>
+                        <li>AutoGen Studio</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 style="color: var(--accent-secondary); margin-bottom: 15px;">Tier 2 (Medium Confidence)</h3>
+                    <ul style="color: var(--text-secondary); line-height: 2;">
+                        <li>CrewAI</li>
+                        <li>Microsoft Agent Framework</li>
+                        <li>Google ADK</li>
+                        <li>Pydantic AI</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 style="color: var(--text-muted); margin-bottom: 15px;">Tier 3 (Emerging)</h3>
+                    <ul style="color: var(--text-secondary); line-height: 2;">
+                        <li>Smolagents</li>
+                        <li>Agno (ex-Phidata)</li>
+                        <li>Strands Agents</li>
+                        <li>Semantic Kernel</li>
+                    </ul>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 30px;">
+                <a href="../README.md#-supported-frameworks" style="color: var(--accent-primary); text-decoration: none;">View complete framework list →</a>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="../README.md">Home</a>
+                <a href="https://github.com/neo/cogniwatch">GitHub</a>
+                <a href="../CHANGELOG.md">Changelog</a>
+                <a href="../SECURITY.md">Security</a>
+                <a href="../LICENSE">License</a>
+            </div>
+            
+            <a href="https://github.com/neo/cogniwatch" class="github-link">
+                <span>⭐ Star on GitHub</span>
+            </a>
+            
+            <p style="margin-top: 30px; font-size: 0.9rem;">
+                Built with ⚡ by Neo<br>
+                <span style="color: var(--text-muted);">Because visibility is the first step to security</span>
+            </p>
+            
+            <p style="margin-top: 20px; font-size: 0.85rem; color: var(--text-muted);">
+                MIT License • Documentation last updated: March 8, 2026
+            </p>
+        </div>
+    </footer>
+</body>
+</html>

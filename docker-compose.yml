@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  cogniwatch-webui:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: cogniwatch:latest
+    container_name: cogniwatch-webui
+    ports:
+      - "${COGNIWATCH_PORT:-9000}:9000"
+    volumes:
+      - cogniwatch-data:/cogniwatch/data
+      - cogniwatch-config:/cogniwatch/config
+    environment:
+      - PYTHONPATH=/cogniwatch
+      - COGNIWATCH_HOST=0.0.0.0
+      - COGNIWATCH_PORT=9000
+      - COGNIWATCH_DEBUG=${COGNIWATCH_DEBUG:-false}
+      - COGNIWATCH_ADMIN_USER=${COGNIWATCH_ADMIN_USER:-admin}
+      - COGNIWATCH_ADMIN_PASSWORD=${COGNIWATCH_ADMIN_PASSWORD:-admin123}
+      - COGNIWATCH_SECRET_KEY=${COGNIWATCH_SECRET_KEY:-}
+      - SCANNER_NETWORK=${SCANNER_NETWORK:-192.168.0.0/24}
+      - OPENCLAW_GATEWAY_URL=${OPENCLAW_GATEWAY_URL:-ws://127.0.0.1:18789}
+      - OPENCLAW_GATEWAY_TOKEN=${OPENCLAW_GATEWAY_TOKEN}
+    depends_on:
+      - cogniwatch-scanner
+    restart: unless-stopped
+    networks:
+      - cogniwatch-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  cogniwatch-scanner:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: cogniwatch:latest
+    container_name: cogniwatch-scanner
+    volumes:
+      - cogniwatch-data:/cogniwatch/data
+      - cogniwatch-config:/cogniwatch/config
+      - ./scanner:/cogniwatch/scanner:ro
+    environment:
+      - SCANNER_NETWORK=${SCANNER_NETWORK:-192.168.0.0/24}
+      - SCANNER_INTERVAL_HOURS=${SCANNER_INTERVAL_HOURS:-24}
+      - OPENCLAW_GATEWAY_URL=${OPENCLAW_GATEWAY_URL:-ws://127.0.0.1:18789}
+      - OPENCLAW_GATEWAY_TOKEN=${OPENCLAW_GATEWAY_TOKEN}
+    entrypoint: ["python3", "/cogniwatch/scanner/scanner_daemon.py"]
+    restart: unless-stopped
+    networks:
+      - cogniwatch-network
+    # Enable host networking for LAN scanning (optional, more permissive)
+    # network_mode: host
+
+volumes:
+  cogniwatch-data:
+    driver: local
+  cogniwatch-config:
+    driver: local
+
+networks:
+  cogniwatch-network:
+    driver: bridge

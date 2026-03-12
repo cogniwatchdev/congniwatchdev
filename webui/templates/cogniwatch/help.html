@@ -1,0 +1,223 @@
+{% extends "base.html" %}
+
+{% block page_title %}Help & Documentation{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold text-white mb-4">Getting Started Guide</h2>
+        <p class="text-gray text-lg">Everything you need to start detecting AI agents</p>
+    </div>
+    
+    <!-- Quick Start -->
+    <div class="bg-navy-light rounded-xl p-8 border border-teal/10 mb-8">
+        <h3 class="text-xl font-bold text-teal mb-6 flex items-center gap-2">
+            <i data-lucide="zap" class="w-5 h-5"></i>
+            Quick Start (5 Minutes)
+        </h3>
+        <div class="space-y-4">
+            <div class="flex gap-4">
+                <div class="flex-shrink-0 w-8 h-8 bg-teal text-navy rounded-full flex items-center justify-center font-bold">1</div>
+                <div>
+                    <h4 class="text-lg font-semibold text-white mb-2">Access the Dashboard</h4>
+                    <p class="text-gray">Navigate to your CogniWatch instance at <code class="bg-navy px-2 py-1 rounded text-teal text-sm">http://localhost:8080</code></p>
+                </div>
+            </div>
+            
+            <div class="flex gap-4">
+                <div class="flex-shrink-0 w-8 h-8 bg-teal text-navy rounded-full flex items-center justify-center font-bold">2</div>
+                <div>
+                    <h4 class="text-lg font-semibold text-white mb-2">Configure Your First Scan</h4>
+                    <p class="text-gray">Go to <strong>Scan</strong> → Enter your network range (e.g., <code class="bg-navy px-2 py-1 rounded text-teal text-sm">192.168.1.0/24</code>) → Select "Standard Scan" → Click "Start Scan"</p>
+                </div>
+            </div>
+            
+            <div class="flex gap-4">
+                <div class="flex-shrink-0 w-8 h-8 bg-teal text-navy rounded-full flex items-center justify-center font-bold">3</div>
+                <div>
+                    <h4 class="text-lg font-semibold text-white mb-2">View Results</h4>
+                    <p class="text-gray">Watch real-time progress on the <strong>Dashboard</strong>. Detected agents will appear in the discovery table with confidence scores.</p>
+                </div>
+            </div>
+            
+            <div class="flex gap-4">
+                <div class="flex-shrink-0 w-8 h-8 bg-teal text-navy rounded-full flex items-center justify-center font-bold">4</div>
+                <div>
+                    <h4 class="text-lg font-semibold text-white mb-2">Review Security</h4>
+                    <p class="text-gray">Check the <strong>Security</strong> tab for any flagged issues. Address critical alerts first.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Detailed Guides -->
+    <div class="grid md:grid-cols-2 gap-6 mb-8">
+        <div class="bg-navy-light rounded-xl p-6 border border-teal/10">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="p-2 bg-teal/10 rounded-lg">
+                    <i data-lucide="scan" class="w-5 h-5 text-teal"></i>
+                </div>
+                <h3 class="text-lg font-bold text-white">Scanning Guide</h3>
+            </div>
+            <ul class="space-y-2 text-gray text-sm">
+                <li class="flex items-center gap-2">
+                    <i data-lucide="chevron-right" class="w-4 h-4 text-teal"></i>
+                    <span>Network range configuration</span>
+                </li>
+                <li class="flex items-center gap-2">
+                    <i data-lucide="chevron-right" class="w-4 h-4 text-teal"></i>
+                    <span>Scan profiles explained</span>
+                </li>
+                <li class="flex items-center gap-2">
+                    <i data-lucide="chevron-right" class="w-4 h-4 text-teal"></i>
+                    <span>Scheduling automatic scans</span>
+                </li>
+                <li class="flex items-center gap-2">
+                    <i data-lucide="chevron-right" class="w-4 h-4 text-teal"></i>
+                    <span>Interpreting scan results</span>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="bg-navy-light rounded-xl p-6 border border-teal/10">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="p-2 bg-cyan/10 rounded-lg">
+                    <i data-lucide="cpu" class="w-5 h-5 text-cyan"></i>
+                </div>
+                <h3 class="text-lg font-bold text-white">Framework Detection</h3>
+            </div>
+            <ul class="space-y-2 text-gray text-sm">
+                <li class="flex items-center gap-2">
+                    <i data-lucide="chevron-right" class="w-4 h-4 text-cyan"></i>
+                    <span>Supported frameworks list</span>
+                </li>
+                <li class="flex items-center gap-2">
+                    <i data-lucide="chevron-right" class="w-4 h-4 text-cyan"></i>
+                    <span>How detection works</span>
+                </li>
+                <li class="flex items-center gap-2">
+                    <i data-lucide="chevron-right" class="w-4 h-4 text-cyan"></i>
+                    <span>Confidence scoring system</span>
+                </li>
+                <li class="flex items-center gap-2">
+                    <i data-lucide="chevron-right" class="w-4 h-4 text-cyan"></i>
+                    <span>Requesting new frameworks</span>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="bg-navy-light rounded-xl p-6 border border-teal/10">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="p-2 bg-green/10 rounded-lg">
+                    <i data-lucide="shield-check" class="w-5 h-5 text-green"></i>
+                </div>
+                <h3 class="text-lg font-bold text-white">Security Best Practices</h3>
+            </div>
+            <ul class="space-y-2 text-gray text-sm">
+                <li class="flex items-center gap-2">
+                    <i data-lucide="chevron-right" class="w-4 h-4 text-green"></i>
+                    <span>Common vulnerabilities</span>
+                </li>
+                <li class="flex items-center gap-2">
+                    <i data-lucide="chevron-right" class="w-4 h-4 text-green"></i>
+                    <span>Hardening AI agents</span>
+                </li>
+                <li class="flex items-center gap-2">
+                    <i data-lucide="chevron-right" class="w-4 h-4 text-green"></i>
+                    <span>Authentication setup</span>
+                </li>
+                <li class="flex items-center gap-2">
+                    <i data-lucide="chevron-right" class="w-4 h-4 text-green"></i>
+                    <span>Network segmentation</span>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="bg-navy-light rounded-xl p-6 border border-teal/10">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="p-2 bg-teal/10 rounded-lg">
+                    <i data-lucide="settings" class="w-5 h-5 text-teal"></i>
+                </div>
+                <h3 class="text-lg font-bold text-white">Configuration</h3>
+            </div>
+            <ul class="space-y-2 text-gray text-sm">
+                <li class="flex items-center gap-2">
+                    <i data-lucide="chevron-right" class="w-4 h-4 text-teal"></i>
+                    <span>System requirements</span>
+                </li>
+                <li class="flex items-center gap-2">
+                    <i data-lucide="chevron-right" class="w-4 h-4 text-teal"></i>
+                    <span>Environment variables</span>
+                </li>
+                <li class="flex items-center gap-2">
+                    <i data-lucide="chevron-right" class="w-4 h-4 text-teal"></i>
+                    <span>Database configuration</span>
+                </li>
+                <li class="flex items-center gap-2">
+                    <i data-lucide="chevron-right" class="w-4 h-4 text-teal"></i>
+                    <span>Backup & restore</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- API Documentation -->
+    <div class="bg-navy-light rounded-xl p-8 border border-teal/10 mb-8">
+        <h3 class="text-xl font-bold text-cyan mb-4 flex items-center gap-2">
+            <i data-lucide="file-code-2" class="w-5 h-5"></i>
+            API Documentation
+        </h3>
+        <p class="text-gray mb-6">CogniWatch provides a RESTful API for automation and integration with your existing tools.</p>
+        
+        <div class="bg-navy rounded-lg p-6 font-mono text-sm overflow-x-auto">
+            <div class="flex items-center gap-2 text-gray mb-4">
+                <i data-lucide="circle-terminal" class="w-4 h-4"></i>
+                <span>Example API Calls</span>
+            </div>
+            
+            <div class="space-y-4">
+                <div>
+                    <p class="text-teal mb-2"># Start a network scan</p>
+                    <code class="text-gray">curl -X POST http://localhost:8080/api/scan/start \<br/>
+  -H "Authorization: Bearer YOUR_TOKEN" \<br/>
+  -d '{"network": "192.168.1.0/24", "profile": "standard"}'</code>
+                </div>
+                
+                <div>
+                    <p class="text-cyan mb-2"># Get detected agents</p>
+                    <code class="text-gray">curl http://localhost:8080/api/agents \<br/>
+  -H "Authorization: Bearer YOUR_TOKEN"</code>
+                </div>
+                
+                <div>
+                    <p class="text-green mb-2"># Get security alerts</p>
+                    <code class="text-gray">curl http://localhost:8080/api/security/alerts \<br/>
+  -H "Authorization: Bearer YOUR_TOKEN"</code>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-6">
+            <a href="#" class="inline-flex items-center gap-2 bg-teal hover:bg-teal/90 text-navy font-semibold px-6 py-3 rounded-lg">
+                <i data-lucide="book-open" class="w-5 h-5"></i>
+                View Full API Docs
+            </a>
+        </div>
+    </div>
+    
+    <!-- Support -->
+    <div class="text-center">
+        <p class="text-gray mb-4">Need more help?</p>
+        <div class="flex justify-center gap-4">
+            <a href="#" class="inline-flex items-center gap-2 bg-navy-light hover:bg-navy-lighter text-white border border-teal/20 px-6 py-3 rounded-lg">
+                <i data-lucide="message-square" class="w-5 h-5"></i>
+                Community Forum
+            </a>
+            <a href="#" class="inline-flex items-center gap-2 bg-navy-light hover:bg-navy-lighter text-white border border-teal/20 px-6 py-3 rounded-lg">
+                <i data-lucide="mail" class="w-5 h-5"></i>
+                Email Support
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

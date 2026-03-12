@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disclaimer - CogniWatch 2026</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            DEFAULT: '#0a192f',
+                            light: '#112240',
+                            lighter: '#233554'
+                        },
+                        teal: '#64ffda',
+                        cyan: '#00bcd4',
+                        pink: '#ff4081',
+                        white: '#e6f1ff',
+                        gray: '#8892b0'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'Fira Code', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <link rel="stylesheet" href="/static/css/cogniwatch-2026.css">
+</head>
+<body class="bg-navy text-white font-sans min-h-screen">
+    <div class="max-w-4xl mx-auto px-4 py-12">
+        <!-- Back to Dashboard -->
+        <a href="/" class="inline-flex items-center gap-2 text-teal hover:text-teal/80 mb-8 transition-colors group">
+            <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+            <span>Back to Dashboard</span>
+        </a>
+        
+        <!-- Document Header -->
+        <div class="mb-12 pb-8 border-b border-teal/10">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-12 h-12 rounded-xl bg-pink/10 flex items-center justify-center">
+                    <i data-lucide="circle-alert" class="w-6 h-6 text-pink"></i>
+                </div>
+                <div>
+                    <p class="text-gray text-sm mb-1">Legal Document</p>
+                    <h1 class="text-3xl font-bold text-white">Disclaimer</h1>
+                </div>
+            </div>
+            <div class="flex items-center gap-4 text-sm text-gray">
+                <span>Effective: March 8, 2026</span>
+                <span>•</span>
+                <span>Version 1.0.0</span>
+            </div>
+        </div>
+        
+        <!-- Document Content -->
+        <article class="prose prose-invert prose-lg max-w-none">
+            <div class="bg-yellow/10 border border-yellow/30 rounded-lg p-6 mb-8">
+                <div class="flex items-start gap-3">
+                    <i data-lucide="triangle-alert" class="w-6 h-6 text-yellow flex-shrink-0 mt-0.5"></i>
+                    <div>
+                        <h3 class="text-yellow font-bold mb-2">IMPORTANT NOTICE</h3>
+                        <p class="text-gray text-sm mb-0">Please read this disclaimer carefully before using CogniWatch. Your use of the software constitutes acceptance of these disclaimers.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <h2>⚠️ GENERAL DISCLAIMER</h2>
+            <p>CogniWatch is provided <strong>"AS IS"</strong> and <strong>"AS AVAILABLE"</strong> without any warranties of any kind, whether express, implied, statutory, or otherwise.</p>
+            
+            <h2>1. NO WARRANTIES</h2>
+            <h3>1.1 No Express Warranties</h3>
+            <p>No express warranty of any kind has been made or is made by CogniWatch or its creators, including but not limited to:</p>
+            <ul>
+                <li>Warranties of merchantability</li>
+                <li>Warranties of fitness for a particular purpose</li>
+                <li>Warranties of non-infringement</li>
+                <li>Warranties of quality or performance</li>
+            </ul>
+            
+            <h3>1.2 No Implied Warranties</h3>
+            <p>There are no implied warranties. All implied warranties are expressly disclaimed, including any implied warranty arising from usage, trade, or course of dealing.</p>
+            
+            <h2>2. SOFTWARE ACCURACY</h2>
+            <h3>2.1 Detection Accuracy</h3>
+            <p>CogniWatch attempts to detect AI agents and security vulnerabilities, but:</p>
+            <ul>
+                <li><strong>Detection is not guaranteed.</strong> The software may fail to detect agents or vulnerabilities that exist.</li>
+                <li><strong>False positives may occur.</strong> The software may incorrectly identify systems as AI agents or flag non-vulnerabilities.</li>
+                <li><strong>Confidence scores are estimates.</strong> Confidence levels are based on heuristics and may not reflect actual system classification.</li>
+            </ul>
+            
+            <h3>2.2 Completeness of Scans</h3>
+            <p>Network scans may not detect all hosts, services, or agents due to:</p>
+            <ul>
+                <li>Network configuration and segmentation</li>
+                <li>Firewall rules and security measures</li>
+                <li>Rate limiting and blocking mechanisms</li>
+                <li>System timeouts and availability</li>
+                <li>Limitations in detection signatures and heuristics</li>
+            </ul>
+            
+            <h2>3. NO PROFESSIONAL ADVICE</h2>
+            <h3>3.1 Not a Substitute for Professional Services</h3>
+            <p>CogniWatch is a software tool, not a substitute for professional security consulting, penetration testing, or AI governance services.</p>
+            
+            <h3>3.2 No Security Guarantees</h3>
+            <p>Findings from CogniWatch should not be relied upon as comprehensive security assessments. Always consult with security professionals for critical systems.</p>
+            
+            <h3>3.3 Not Legal Advice</h3>
+            <p>Nothing in CogniWatch or its documentation constitutes legal advice. Consult with qualified legal counsel for compliance with cybersecurity laws and regulations.</p>
+            
+            <h2>4. USE AT YOUR OWN RISK</h2>
+            <p>Your use of CogniWatch is at your own risk. We are not responsible for:</p>
+            <ul>
+                <li>Damage to your systems or data</li>
+                <li>Network disruptions caused by scans</li>
+                <li>Inaccurate or incomplete results</li>
+                <li>Misuse of scan findings</li>
+                <li>Legal violations stemming from your use</li>
+                <li>Unauthorized access to systems</li>
+            </ul>
+            
+            <h2>5. THIRD-PARTY SERVICES</h2>
+            <h3>5.1 External Dependencies</h3>
+            <p>CogniWatch may integrate with or depend on third-party services (APIs, databases, etc.). We do not control these services and:</p>
+            <ul>
+                <li>Make no warranties about their availability or accuracy</li>
+                <li>Are not responsible for their terms of service or privacy practices</li>
+                <li>Are not liable for any issues arising from their use</li>
+            </ul>
+            
+            <h3>5.2 Links to External Sites</h3>
+            <p>The software or documentation may contain links to external websites. We do not endorse, control, or assume responsibility for third-party content.</p>
+            
+            <h2>6. TECHNICAL REQUIREMENTS</h2>
+            <h3>6.1 System Compatibility</h3>
+            <p>CogniWatch requires specific system configurations. Compatibility is not guaranteed for all systems, environments, or use cases.</p>
+            
+            <h3>6.2 Performance</h3>
+            <p>Performance varies based on:</p>
+            <ul>
+                <li>Network size and complexity</li>
+                <li>System resources (CPU, memory, storage)</li>
+                <li>Network bandwidth and latency</li>
+                <li>Concurrent usage and workload</li>
+            </ul>
+            
+            <h2>7. NO LIABILITY FOR DAMAGES</h2>
+            <p><strong>TO THE MAXIMUM EXTENT PERMITTED BY LAW, COGNIWATCH AND ITS CREATORS SHALL NOT BE LIABLE FOR ANY DAMAGES WHATSOEVER,</strong> including but not limited to:</p>
+            <ul>
+                <li><strong>Direct damages</strong> - Direct losses from software use</li>
+                <li><strong>Indirect damages</strong> - Consequential losses</li>
+                <li><strong>Incidental damages</strong> - Costs incidental to main damages</li>
+                <li><strong>Special damages</strong> - Special or extraordinary losses</li>
+                <li><strong>Punitive damages</strong> - Damages intended as punishment</li>
+                <li><strong>Loss of profits or revenue</strong> - Business losses</li>
+                <li><strong>Loss of data</strong> - Data corruption or loss</li>
+                <li><strong>Loss of business opportunities</strong> - Missed opportunities</li>
+                <li><strong>Reputational harm</strong> - Damage to reputation</li>
+                <li><strong>Service interruptions</strong> - Downtime or unavailability</li>
+            </ul>
+            
+            <h2>8. INDEMNIFICATION</h2>
+            <p>You agree to indemnify and hold harmless CogniWatch and its creators from any claims, damages, losses, liabilities, costs, and expenses (including reasonable attorney fees) arising from:</p>
+            <ul>
+                <li>Your use of CogniWatch</li>
+                <li>Your violation of these terms</li>
+                <li>Your violation of any third-party rights</li>
+                <li>Your violation of any laws or regulations</li>
+                <li>Any unauthorized scanning you perform</li>
+            </ul>
+            
+            <h2>9. EXPORT CONTROLS</h2>
+            <p>CogniWatch may be subject to export control laws and regulations. You are responsible for compliance with applicable export control laws and may not download, use, or re-export the software in violation of such laws.</p>
+            
+            <h2>10. GOVERNMENT USERS</h2>
+            <p>The software and documentation are "commercial items" as defined by 48 C.F.R. §2.101. If acquired by or on behalf of the U.S. Government, the software is subject to the restrictions in 48 C.F.R. §12.212 and 48 C.F.R. §227.7202.</p>
+            
+            <h2>11. SEVERABILITY</h2>
+            <p>If any provision of this disclaimer is held to be invalid or unenforceable, the remaining provisions remain in full force and effect.</p>
+            
+            <h2>12. NO WAIVER</h2>
+            <p>Failure to enforce any provision of this disclaimer does not waive that provision or any other provision.</p>
+            
+            <h2>13. COMPLETE DISCLAIMER</h2>
+            <p>This disclaimer constitutes the entire disclaimer regarding CogniWatch and supersedes all prior or contemporaneous understandings, whether oral or written.</p>
+            
+            <h2>14. CONTACT</h2>
+            <p>For questions about this disclaimer:</p>
+            <p>
+                <strong>Email:</strong> legal@cogniwatch.dev<br>
+                <strong>Website:</strong> <a href="/" class="text-teal hover:underline">https://cogniwatch.dev</a>
+            </p>
+        </article>
+        
+        <!-- Footer Navigation -->
+        <div class="mt-16 pt-8 border-t border-teal/10">
+            <div class="flex flex-wrap gap-4 justify-center text-sm text-gray">
+                <a href="/legal/terms" class="hover:text-teal transition-colors">Terms of Service</a>
+                <span>•</span>
+                <a href="/legal/privacy" class="hover:text-teal transition-colors">Privacy Policy</a>
+                <span>•</span>
+                <a href="/legal/disclaimer" class="hover:text-teal transition-colors">Disclaimer</a>
+                <span>•</span>
+                <a href="/legal/security" class="hover:text-teal transition-colors">Security</a>
+                <span>•</span>
+                <a href="/legal/acceptable-use" class="hover:text-teal transition-colors">Acceptable Use</a>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

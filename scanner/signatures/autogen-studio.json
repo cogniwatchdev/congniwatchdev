@@ -1,0 +1,55 @@
+{
+  "framework": "autogen-studio",
+  "name": "AutoGen Studio",
+  "version": "1.0+",
+  "category": "multi-agent-conversation",
+  "ports": {
+    "primary": 8080,
+    "alternative": [8000],
+    "websocket": 8080,
+    "http": 8080
+  },
+  "http_fingerprints": {
+    "title_patterns": ["AutoGen", "Microsoft"],
+    "header_patterns": {
+      "server": "AutoGen.*"
+    },
+    "body_patterns": ["autogen", "Microsoft Research", "multi-agent conversation"],
+    "response_check_paths": ["/", "/api/history", "/api/sessions"]
+  },
+  "api_endpoints": {
+    "status": "/api/status",
+    "history": "/api/history",
+    "sessions": "/api/sessions",
+    "agents": "/api/agents"
+  },
+  "websocket": {
+    "enabled": true,
+    "path": "/ws",
+    "protocol": "autogen-v1",
+    "handshake_patterns": ["Upgrade: websocket"]
+  },
+  "config_files": [
+    "autogen.json",
+    "settings.json"
+  ],
+  "process_names": ["autogen", "autogen-studio"],
+  "network_signatures": {
+    "mdns": null,
+    "txt_records": []
+  },
+  "confidence": {
+    "port_match": 0.30,
+    "http_pattern": 0.15,
+    "http_multiple": 0.10,
+    "api_validated": 0.25,
+    "websocket_match": 0.10,
+    "framework_specific": 0.10,
+    "threshold_confirmed": 0.85,
+    "threshold_likely": 0.60,
+    "threshold_possible": 0.30
+  },
+  "detection_priority": 1,
+  "notes": "Microsoft Research project. Local deployment common. Combines with Semantic Kernel in Microsoft Agent Framework.",
+  "variants": ["microsoft-agent-framework"]
+}

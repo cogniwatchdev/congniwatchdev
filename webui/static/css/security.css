@@ -1,0 +1,309 @@
+/* CogniWatch Security Dashboard Styles */
+
+/* Security-specific component styles */
+.security-dashboard {
+    --security-green: #22c55e;
+    --security-yellow: #f59e0b;
+    --security-red: #ef4444;
+    --security-cyan: #00bcd4;
+    --security-navy: #0a192f;
+    --security-navy-light: #112240;
+    --security-navy-lighter: #233554;
+    --security-teal: #64ffda;
+}
+
+/* TrustMRR Widget Integration */
+.trustmrr-widget-integration {
+    grid-column: 1 / -1;
+    margin-bottom: 24px;
+}
+
+/* Security Posture Grid */
+.security-posture-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 20px;
+    margin-bottom: 24px;
+}
+
+/* Risk Score Visualization */
+.risk-score-circle {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: conic-gradient(
+        var(--risk-color) var(--risk-percent),
+        var(--security-navy-lighter) 0deg
+    );
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin: 0 auto;
+}
+
+.risk-score-circle::before {
+    content: '';
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background: var(--security-navy-light);
+    border-radius: 50%;
+}
+
+.risk-score-value {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+}
+
+.risk-score-value .score {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--security-teal);
+}
+
+.risk-score-value .label {
+    font-size: 0.75rem;
+    color: var(--gray);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Security Event Timeline */
+.security-timeline {
+    position: relative;
+    padding-left: 30px;
+}
+
+.security-timeline::before {
+    content: '';
+    position: absolute;
+    left: 10px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--security-navy-lighter);
+}
+
+.timeline-event {
+    position: relative;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: var(--security-navy-light);
+    border-radius: 8px;
+    border-left: 3px solid var(--security-teal);
+}
+
+.timeline-event::before {
+    content: '';
+    position: absolute;
+    left: -25px;
+    top: 20px;
+    width: 12px;
+    height: 12px;
+    background: var(--security-teal);
+    border-radius: 50%;
+    border: 3px solid var(--security-navy);
+}
+
+.timeline-event.critical::before {
+    background: var(--security-red);
+}
+
+.timeline-event.high::before {
+    background: var(--security-yellow);
+}
+
+.timeline-time {
+    font-size: 0.85rem;
+    color: var(--gray);
+    margin-bottom: 8px;
+}
+
+.timeline-title {
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 6px;
+}
+
+.timeline-details {
+    font-size: 0.9rem;
+    color: var(--gray);
+}
+
+/* Quick Actions Panel */
+.security-quick-actions {
+    background: var(--security-navy-light);
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 24px;
+}
+
+.security-quick-actions h4 {
+    color: var(--security-teal);
+    margin-bottom: 16px;
+}
+
+.quick-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+}
+
+.quick-action-btn {
+    background: var(--security-navy-lighter);
+    border: 1px solid var(--security-teal);
+    color: var(--security-teal);
+    padding: 12px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+    text-align: center;
+}
+
+.quick-action-btn:hover {
+    background: var(--security-teal);
+    color: var(--security-navy);
+}
+
+.quick-action-btn i {
+    display: block;
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+}
+
+/* Security Metrics Cards */
+.security-metrics-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.security-metric-card {
+    background: linear-gradient(135deg, var(--security-navy-light) 0%, var(--security-navy-lighter) 100%);
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 4px solid var(--security-teal);
+}
+
+.security-metric-card.warning {
+    border-left-color: var(--security-yellow);
+}
+
+.security-metric-card.danger {
+    border-left-color: var(--security-red);
+}
+
+.security-metric-label {
+    color: var(--gray);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+
+.security-metric-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--white);
+}
+
+.security-metric-trend {
+    margin-top: 8px;
+    font-size: 0.85rem;
+}
+
+.security-metric-trend.up {
+    color: var(--security-red);
+}
+
+.security-metric-trend.down {
+    color: var(--security-green);
+}
+
+/* Tooltip Styles */
+.security-tooltip {
+    position: relative;
+}
+
+.security-tooltip:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--security-navy);
+    color: var(--white);
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    border: 1px solid var(--security-teal);
+    z-index: 1000;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1024px) {
+    .security-posture-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .risk-score-circle {
+        transform: scale(0.8);
+    }
+}
+
+@media (max-width: 768px) {
+    .security-metrics-row {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .quick-actions-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Animation for new alerts */
+@keyframes alertPulse {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+    }
+}
+
+.alert-new {
+    animation: alertPulse 2s infinite;
+}
+
+/* Security Badge Styles */
+.security-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.security-badge.secure {
+    background: rgba(34, 197, 94, 0.2);
+    color: var(--security-green);
+}
+
+.security-badge.at-risk {
+    background: rgba(245, 158, 11, 0.2);
+    color: var(--security-yellow);
+}
+
+.security-badge.compromised {
+    background: rgba(239, 68, 68, 0.2);
+    color: var(--security-red);
+}

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Background Circle -->
+  <circle cx="50" cy="50" r="48" fill="#001f3f" stroke="#39cccc" stroke-width="2"/>
+  
+  <!-- Shield Shape -->
+  <path d="M50 15 L75 25 L75 50 C75 70 50 85 50 85 C50 85 25 70 25 50 L25 25 Z" 
+        fill="none" stroke="#39cccc" stroke-width="3"/>
+  
+  <!-- AI Brain / Network Pattern -->
+  <circle cx="50" cy="40" r="5" fill="#7fdbff"/>
+  <circle cx="40" cy="55" r="4" fill="#39cccc"/>
+  <circle cx="60" cy="55" r="4" fill="#39cccc"/>
+  <circle cx="45" cy="65" r="3" fill="#7fdbff"/>
+  <circle cx="55" cy="65" r="3" fill="#7fdbff"/>
+  
+  <!-- Connection Lines -->
+  <line x1="50" y1="40" x2="40" y2="55" stroke="#39cccc" stroke-width="2"/>
+  <line x1="50" y1="40" x2="60" y2="55" stroke="#39cccc" stroke-width="2"/>
+  <line x1="40" y1="55" x2="45" y2="65" stroke="#7fdbff" stroke-width="2"/>
+  <line x1="60" y1="55" x2="55" y2="65" stroke="#7fdbff" stroke-width="2"/>
+  <line x1="45" y1="65" x2="55" y2="65" stroke="#7fdbff" stroke-width="2"/>
+  
+  <!-- Scan Waves -->
+  <path d="M30 35 Q25 40 30 45" fill="none" stroke="#7fdbff" stroke-width="2" opacity="0.6"/>
+  <path d="M70 35 Q75 40 70 45" fill="none" stroke="#7fdbff" stroke-width="2" opacity="0.6"/>
+</svg>

@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CogniWatch - Modern Dashboard</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        bg: {
+                            primary: 'oklch(0.145 0 0)',
+                            secondary: 'oklch(0.18 0 0)',
+                            tertiary: 'oklch(0.22 0 0)',
+                        },
+                        text: {
+                            primary: 'oklch(0.95 0 0)',
+                            secondary: 'oklch(0.72 0 0)',
+                            muted: 'oklch(0.55 0 0)',
+                        },
+                        accent: {
+                            primary: 'oklch(0.65 0.24 260)',
+                            secondary: 'oklch(0.70 0.18 180)',
+                            success: 'oklch(0.68 0.15 150)',
+                            warning: 'oklch(0.75 0.18 70)',
+                            danger: 'oklch(0.62 0.25 25)',
+                            info: 'oklch(0.70 0.12 220)',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'fade-in': 'fadeIn 400ms ease-out',
+                        'slide-in': 'slideIn 350ms ease-out',
+                        'spin-slow': 'spin 3s linear infinite',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        slideIn: {
+                            '0%': { opacity: '0', transform: 'translateX(-20px)' },
+                            '100%': { opacity: '1', transform: 'translateX(0)' },
+                        },
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <!-- Flowbite CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.0.0/dist/flowbite.min.css" rel="stylesheet">
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="/static/css/cogniwatch-modern.css">
+</head>
+<body class="bg-bg-primary text-text-primary font-sans min-h-screen">
+    <!-- Header -->
+    <header class="bg-bg-secondary border-b border-white/10 sticky top-0 z-50 backdrop-blur-sm bg-opacity-90">
+        <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-accent-primary to-accent-secondary flex items-center justify-center border border-accent-primary/30 shadow-lg shadow-accent-primary/20">
+                        <i data-lucide="shield-alert" class="w-6 h-6 text-white"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold text-white tracking-tight">COGNIWATCH</h1>
+                        <p class="text-xs text-text-muted font-mono">v0.2.0 • Production Ready</p>
+                    </div>
+                </div>
+                
+                <!-- Navigation -->
+                <nav class="hidden md:flex items-center gap-1">
+                    <a href="#" class="px-4 py-2 text-sm font-medium text-white bg-white/10 rounded-lg border border-accent-primary/30">Dashboard</a>
+                    <a href="#" class="px-4 py-2 text-sm font-medium text-text-secondary hover:text-white hover:bg-white/5 rounded-lg transition-all duration-200">Agents</a>
+                    <a href="#" class="px-4 py-2 text-sm font-medium text-text-secondary hover:text-white hover:bg-white/5 rounded-lg transition-all duration-200">Telemetry</a>
+                    <a href="#" class="px-4 py-2 text-sm font-medium text-text-secondary hover:text-white hover:bg-white/5 rounded-lg transition-all duration-200">Security</a>
+                    <a href="#" class="px-4 py-2 text-sm font-medium text-text-secondary hover:text-white hover:bg-white/5 rounded-lg transition-all duration-200">Settings</a>
+                </nav>
+                
+                <!-- Actions -->
+                <div class="flex items-center gap-3">
+                    <!-- Scan Button -->
+                    <button id="start-scan-btn" onclick="startScan()" class="hidden sm:flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-accent-primary to-accent-secondary text-white font-semibold rounded-lg border border-accent-primary/50 shadow-lg shadow-accent-primary/30 hover:shadow-accent-primary/50 hover:scale-105 transition-all duration-200 active:scale-95">
+                        <i data-lucide="scan" class="w-4 h-4"></i>
+                        <span>START SCAN</span>
+                    </button>
+                    
+                    <!-- Status Indicator -->
+                    <div id="system-status" class="flex items-center gap-2 px-3 py-1.5 bg-bg-tertiary rounded-full border border-accent-success/30">
+                        <div class="w-2 h-2 rounded-full bg-accent-success animate-pulse"></div>
+                        <span class="text-xs font-medium text-accent-success">Online</span>
+                    </div>
+                    
+                    <!-- Mobile Menu Button -->
+                    <button class="md:hidden p-2 text-text-secondary hover:text-white" onclick="toggleMobileMenu()">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden border-t border-white/10 bg-bg-secondary">
+            <div class="px-4 py-3 space-y-2">
+                <a href="#" class="block px-3 py-2 text-sm font-medium text-white bg-white/10 rounded-lg">Dashboard</a>
+                <a href="#" class="block px-3 py-2 text-sm font-medium text-text-secondary hover:text-white hover:bg-white/5 rounded-lg">Agents</a>
+                <a href="#" class="block px-3 py-2 text-sm font-medium text-text-secondary hover:text-white hover:bg-white/5 rounded-lg">Telemetry</a>
+                <a href="#" class="block px-3 py-2 text-sm font-medium text-text-secondary hover:text-white hover:bg-white/5 rounded-lg">Security</a>
+                <a href="#" class="block px-3 py-2 text-sm font-medium text-text-secondary hover:text-white hover:bg-white/5 rounded-lg">Settings</a>
+            </div>
+        </div>
+    </header>
+    
+    <main class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Hero Stats Bar -->
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8 animate-fade-in">
+            <!-- Total Agents -->
+            <div class="group relative bg-bg-secondary rounded-xl p-6 border border-white/10 hover:border-accent-primary/50 transition-all duration-200 hover:shadow-lg hover:shadow-accent-primary/10 hover:-translate-y-1 overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-br from-accent-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div class="relative">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-medium text-text-muted uppercase tracking-wider">Total Agents</h3>
+                        <i data-lucide="cpu" class="w-5 h-5 text-accent-primary"></i>
+                    </div>
+                    <div class="flex items-baseline gap-2">
+                        <span id="stat-total-agents" class="text-4xl font-bold text-white font-mono">0</span>
+                        <span class="text-sm text-accent-success font-medium">+2 this week</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Scan Progress -->
+            <div class="group relative bg-bg-secondary rounded-xl p-6 border border-white/10 hover:border-accent-secondary/50 transition-all duration-200 hover:shadow-lg hover:shadow-accent-secondary/10 hover:-translate-y-1 overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-br from-accent-secondary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div class="relative">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-medium text-text-muted uppercase tracking-wider">Scan Progress</h3>
+                        <i data-lucide="activity" class="w-5 h-5 text-accent-secondary"></i>
+                    </div>
+                    <div class="space-y-2">
+                        <span id="stat-scan-progress" class="text-4xl font-bold text-white font-mono">0%</span>
+                        <div class="text-sm text-text-secondary font-mono" id="stat-hosts-scanned">0 / 254 hosts</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Security Alerts -->
+            <div class="group relative bg-bg-secondary rounded-xl p-6 border border-white/10 hover:border-accent-danger/50 transition-all duration-200 hover:shadow-lg hover:shadow-accent-danger/10 hover:-translate-y-1 overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-br from-accent-danger/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div class="relative">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-medium text-text-muted uppercase tracking-wider">Security Alerts</h3>
+                        <i data-lucide="triangle-alert" class="w-5 h-5 text-accent-danger"></i>
+                    </div>
+                    <div class="flex items-baseline gap-2">
+                        <span id="stat-security-alerts" class="text-4xl font-bold text-white font-mono">0</span>
+                        <span class="text-xs text-text-secondary">1 critical</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Last Scan -->
+            <div class="group relative bg-bg-secondary rounded-xl p-6 border border-white/10 hover:border-accent-info/50 transition-all duration-200 hover:shadow-lg hover:shadow-accent-info/10 hover:-translate-y-1 overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-br from-accent-info/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div class="relative">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-medium text-text-muted uppercase tracking-wider">Last Scan</h3>
+                        <i data-lucide="clock" class="w-5 h-5 text-accent-info"></i>
+                    </div>
+                    <div class="space-y-1">
+                        <span id="stat-last-scan" class="text-2xl font-bold text-white font-mono">--:--</span>
+                        <div class="text-xs text-text-muted" id="stat-last-scan-relative">Never</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Live Scan Progress Section -->
+        <section class="bg-bg-secondary rounded-xl p-6 border border-white/10 mb-8 animate-fade-in" style="animation-delay: 100ms;">
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-accent-secondary to-accent-primary flex items-center justify-center">
+                        <i data-lucide="radar" class="w-5 h-5 text-white"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-lg font-bold text-white">Live Scan Progress</h2>
+                        <p class="text-sm text-text-muted">Real-time network discovery</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2 px-4 py-2 bg-bg-tertiary rounded-lg border border-white/10">
+                    <div id="scan-status-indicator" class="w-3 h-3 rounded-full bg-text-muted"></div>
+                    <span id="scan-status-text" class="text-sm font-medium text-text-secondary">Idle</span>
+                </div>
+            </div>
+            
+            <!-- Progress Bar -->
+            <div class="mb-6">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-sm font-medium text-text-secondary">Network Scan Progress</span>
+                    <span id="progress-percentage" class="text-sm font-mono text-accent-secondary">0%</span>
+                </div>
+                <div class="relative h-6 bg-bg-tertiary rounded-full overflow-hidden border border-white/10">
+                    <div id="scan-progress-bar" class="absolute inset-y-0 left-0 bg-gradient-to-r from-accent-secondary to-accent-primary rounded-full transition-all duration-500 ease-out flex items-center justify-end pr-2" style="width: 0%;">
+                        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Scan Stats Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="bg-bg-tertiary rounded-lg p-4 border border-white/10">
+                    <div class="text-xs text-text-muted mb-1">Hosts Scanned</div>
+                    <div id="scan-hosts" class="text-xl font-bold text-white font-mono">0 / 254</div>
+                </div>
+                <div class="bg-bg-tertiary rounded-lg p-4 border border-white/10">
+                    <div class="text-xs text-text-muted mb-1">Agents Found</div>
+                    <div id="scan-agents" class="text-xl font-bold text-white font-mono">0</div>
+                </div>
+                <div class="bg-bg-tertiary rounded-lg p-4 border border-white/10">
+                    <div class="text-xs text-text-muted mb-1">Scan Rate</div>
+                    <div id="scan-rate" class="text-xl font-bold text-white font-mono">0.0 <span class="text-sm">hosts/s</span></div>
+                </div>
+                <div class="bg-bg-tertiary rounded-lg p-4 border border-white/10">
+                    <div class="text-xs text-text-muted mb-1">Est. Time Remaining</div>
+                    <div id="scan-eta" class="text-xl font-bold text-white font-mono">--:--</div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Main Content Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+            <!-- Agent Discovery Table (2 columns) -->
+            <section class="lg:col-span-2 bg-bg-secondary rounded-xl border border-white/10 overflow-hidden animate-fade-in" style="animation-delay: 200ms;">
+                <div class="p-6 border-b border-white/10">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-accent-primary to-accent-info flex items-center justify-center">
+                                <i data-lucide="table" class="w-5 h-5 text-white"></i>
+                            </div>
+                            <div>
+                                <h2 class="text-lg font-bold text-white">Agent Discovery</h2>
+                                <p class="text-sm text-text-muted">Discovered agents with confidence scores</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <!-- Confidence Filter -->
+                            <select id="confidence-filter" onchange="filterAgents()" class="bg-bg-tertiary text-text-secondary text-sm rounded-lg border border-white/10 px-3 py-2 focus:outline-none focus:border-accent-primary/50 transition-colors cursor-pointer">
+                                <option value="all">All Confidence</option>
+                                <option value="confirmed">✅ Confirmed (≥85%)</option>
+                                <option value="likely">⚠️ Likely (60-84%)</option>
+                                <option value="possible">❓ Possible (30-59%)</option>
+                                <option value="unknown">❌ Unknown (&lt;30%)</option>
+                            </select>
+                            <!-- Sort -->
+                            <select id="sort-order" onchange="sortAgents()" class="bg-bg-tertiary text-text-secondary text-sm rounded-lg border border-white/10 px-3 py-2 focus:outline-none focus:border-accent-primary/50 transition-colors cursor-pointer">
+                                <option value="confidence-desc">Confidence ↓</option>
+                                <option value="confidence-asc">Confidence ↑</option>
+                                <option value="name-asc">Name A-Z</option>
+                                <option value="name-desc">Name Z-A</option>
+                                <option value="discovered-desc">Newest First</option>
+                                <option value="discovered-asc">Oldest First</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-bg-tertiary">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-text-muted uppercase tracking-wider cursor-pointer hover:text-white transition-colors" onclick="sortBy('confidence')">
+                                    <div class="flex items-center gap-1">Confidence <i data-lucide="arrow-up-down" class="w-3 h-3"></i></div>
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-text-muted uppercase tracking-wider cursor-pointer hover:text-white transition-colors" onclick="sortBy('name')">
+                                    <div class="flex items-center gap-1">Agent <i data-lucide="arrow-up-down" class="w-3 h-3"></i></div>
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-text-muted uppercase tracking-wider cursor-pointer hover:text-white transition-colors" onclick="sortBy('host')">
+                                    <div class="flex items-center gap-1">Location <i data-lucide="arrow-up-down" class="w-3 h-3"></i></div>
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-text-muted uppercase tracking-wider">Framework</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-text-muted uppercase tracking-wider">Security</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-text-muted uppercase tracking-wider">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="agents-table-body" class="divide-y divide-white/5">
+                            <!-- Agents will be rendered here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            
+            <!-- Telemetry & Charts (1 column) -->
+            <section class="space-y-8">
+                <!-- Telemetry Heatmap -->
+                <div class="bg-bg-secondary rounded-xl border border-white/10 overflow-hidden animate-fade-in" style="animation-delay: 300ms;">
+                    <div class="p-6 border-b border-white/10">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-accent-warning to-accent-danger flex items-center justify-center">
+                                <i data-lucide="chart-pie" class="w-5 h-5 text-white"></i>
+                            </div>
+                            <div>
+                                <h2 class="text-lg font-bold text-white">Telemetry</h2>
+                                <p class="text-sm text-text-muted">Agent distribution</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6 space-y-6">
+                        <!-- Framework Breakdown -->
+                        <div>
+                            <h3 class="text-sm font-medium text-text-muted mb-3">Framework Distribution</h3>
+                            <div class="h-48 relative">
+                                <canvas id="framework-chart"></canvas>
+                            </div>
+                        </div>
+                        <!-- Security Posture -->
+                        <div>
+                            <h3 class="text-sm font-medium text-text-muted mb-3">Security Posture</h3>
+                            <div class="space-y-2" id="security-posture-bars">
+                                <!-- Dynamic bars will be inserted here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Security Alerts & Activity Feed -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            <!-- Security Alerts Panel -->
+            <section class="bg-bg-secondary rounded-xl border border-white/10 overflow-hidden animate-fade-in" style="animation-delay: 400ms;">
+                <div class="p-6 border-b border-white/10">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-accent-danger to-accent-warning flex items-center justify-center">
+                                <i data-lucide="shield-alert" class="w-5 h-5 text-white"></i>
+                            </div>
+                            <div>
+                                <h2 class="text-lg font-bold text-white">Security Alerts</h2>
+                                <p class="text-sm text-text-muted">Critical findings & vulnerabilities</p>
+                            </div>
+                        </div>
+                        <button class="text-xs text-accent-primary hover:text-white transition-colors font-medium">View All</button>
+                    </div>
+                </div>
+                <div id="security-alerts-list" class="divide-y divide-white/5">
+                    <!-- Alerts will be rendered here -->
+                </div>
+            </section>
+            
+            <!-- Recent Activity Feed -->
+            <section class="bg-bg-secondary rounded-xl border border-white/10 overflow-hidden animate-fade-in" style="animation-delay: 500ms;">
+                <div class="p-6 border-b border-white/10">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-accent-success to-accent-secondary flex items-center justify-center">
+                            <i data-lucide="activity" class="w-5 h-5 text-white"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-lg font-bold text-white">Activity Feed</h2>
+                            <p class="text-sm text-text-muted">Live scan events & discoveries</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="activity-feed-list" class="divide-y divide-white/5 max-h-[400px] overflow-y-auto">
+                    <!-- Activity items will be rendered here -->
+                </div>
+            </section>
+        </div>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="border-t border-white/10 bg-bg-secondary mt-16">
+        <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-2 text-text-muted text-sm">
+                    <span>CogniWatch v0.2.0</span>
+                    <span class="text-white/20">•</span>
+                    <span class="flex items-center gap-1 text-accent-success">
+                        <i data-lucide="circle-check" class="w-3 h-3"></i>
+                        Production Ready
+                    </span>
+                </div>
+                <div class="flex items-center gap-6">
+                    <a href="#" class="text-sm text-text-muted hover:text-white transition-colors flex items-center gap-1">
+                        <i data-lucide="book-open" class="w-3 h-3"></i>
+                        Docs
+                    </a>
+                    <a href="#" class="text-sm text-text-muted hover:text-white transition-colors flex items-center gap-1">
+                        <i data-lucide="github" class="w-4 h-4"></i>
+                        GitHub
+                    </a>
+                    <a href="#" class="text-sm text-text-muted hover:text-white transition-colors flex items-center gap-1">
+                        <i data-lucide="shield" class="w-3 h-3"></i>
+                        Security Report
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Flowbite JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.0.0/dist/flowbite.min.js"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
+    <!-- Custom JS -->
+    <script src="/static/js/cogniwatch-modern.js"></script>
+    <script src="/static/js/telemetry-charts.js"></script>
+</body>
+</html>

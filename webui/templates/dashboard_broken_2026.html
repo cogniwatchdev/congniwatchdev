@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CogniWatch 2026 - Next-Gen Dashboard</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="/static/css/cogniwatch-2026.css">
+    
+    <!-- INLINE CSS - Replaces Tailwind utilities -->
+    <style>
+        /* Base utilities */
+        .bg-navy { background-color: #0a192f; }
+        .bg-navy-light { background-color: #112240; }
+        .text-white { color: #e6f1ff; }
+        .text-teal { color: #64ffda; }
+        .text-cyan { color: #00bcd4; }
+        .text-pink { color: #ff4081; }
+        
+        /* Layout */
+        .flex { display: flex; }
+        .flex-1 { flex: 1; }
+        .flex-shrink-0 { flex-shrink: 0; }
+        .min-h-screen { min-height: 100vh; }
+        .overflow-hidden { overflow: hidden; }
+        
+        /* Spacing */
+        .p-8 { padding: 2rem; }
+        .p-4 { padding: 1rem; }
+        .mt-4 { margin-top: 1rem; }
+        .ml-2 { margin-left: 0.5rem; }
+        
+        /* Typography */
+        .text-2xl { font-size: 1.5rem; }
+        .text-xl { font-size: 1.25rem; }
+        .font-bold { font-weight: 700; }
+        .font-sans { font-family: 'Inter', system-ui, sans-serif; }
+        
+        /* Borders */
+        .border-r { border-right: 1px solid rgba(100, 255, 218, 0.1); }
+        .border-teal\\/10 { border-color: rgba(100, 255, 218, 0.1); }
+        
+        /* Rounded */
+        .rounded { border-radius: 0.25rem; }
+        
+        /* Display */
+        .hidden { display: none; }
+    </style>
+</head>
+<body class="bg-navy text-white font-sans min-h-screen overflow-hidden">
+    <!-- App Container -->
+    <div id="app" class="flex min-h-screen">
+        
+        <!-- LEFT SIDEBAR NAVIGATION -->
+        <aside id="sidebar" class="sidebar sidebar-collapsed bg-navy-light border-r flex-shrink-0">
+            <!-- Sidebar Header -->
+            <div class="sidebar-header">
+                <div class="logo-container">
+                    <div class="logo-icon">
+                        <i data-lucide="shield-alert" class="w-6 h-6 text-teal"></i>
+                    </div>
+                    <span class="logo-text">CogniWatch</span>
+                </div>
+                <button id="sidebar-toggle" class="toggle-btn" aria-label="Toggle sidebar">
+                    <i data-lucide="chevrons-left" class="w-4 h-4"></i>
+                </button>
+            </div>
+            
+            <!-- Navigation Menu -->
+            <nav class="sidebar-nav">
+                <!-- Overview -->
+                <div class="nav-section">
+                    <button class="nav-item nav-item-expanded" data-section="overview">
+                        <div class="nav-icon">
+                            <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                        </div>
+                        <span class="nav-label">Overview</span>
+                    </button>
+                    <div class="nav-subitems">
+                        <a href="#" class="nav-subitem active">
+                            <i data-lucide="circle" class="w-2 h-2"></i>
+                            <span>Dashboard</span>
+                        </a>
+                        <a href="#" class="nav-subitem">
+                            <i data-lucide="circle" class="w-2 h-2"></i>
+                            <span>Scan History</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Scanner -->
+                <div class="nav-section">
+                    <button class="nav-item nav-item-expanded" data-section="scanner">
+                        <div class="nav-icon">
+                            <i data-lucide="radar" class="w-5 h-5"></i>
+                        </div>
+                        <span class="nav-label">Scanner</span>
+                    </button>
+                    <div class="nav-subitems">
+                        <a href="#" class="nav-subitem">
+                            <i data-lucide="circle" class="w-2 h-2"></i>
+                            <span>New Scan</span>
+                        </a>
+                        <a href="#" class="nav-subitem">
+                            <i data-lucide="circle" class="w-2 h-2"></i>
+                            <span>Scheduled</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Agents -->
+                <div class="nav-section">
+                    <button class="nav-item nav-item-expanded" data-section="agents">
+                        <div class="nav-icon">
+                            <i data-lucide="bot" class="w-5 h-5"></i>
+                        </div>
+                        <span class="nav-label">Agents</span>
+                    </button>
+                    <div class="nav-subitems">
+                        <a href="#" class="nav-subitem">
+                            <i data-lucide="circle" class="w-2 h-2"></i>
+                            <span>Discovery</span>
+                        </a>
+                        <a href="#" class="nav-subitem">
+                            <i data-lucide="circle" class="w-2 h-2"></i>
+                            <span>Telemetry</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Settings -->
+                <div class="nav-section">
+                    <button class="nav-item nav-item-expanded" data-section="settings">
+                        <div class="nav-icon">
+                            <i data-lucide="settings" class="w-5 h-5"></i>
+                        </div>
+                        <span class="nav-label">Settings</span>
+                    </button>
+                    <div class="nav-subitems">
+                        <a href="#" class="nav-subitem">
+                            <i data-lucide="circle" class="w-2 h-2"></i>
+                            <span>API Keys</span>
+                        </a>
+                        <a href="#" class="nav-subitem">
+                            <i data-lucide="circle" class="w-2 h-2"></i>
+                            <span>Configuration</span>
+                        </a>
+                    </div>
+                </div>
+            </nav>
+            
+            <!-- Sidebar Footer -->
+            <div class="sidebar-footer">
+                <div class="version-badge">v0.3.0 • 2026</div>
+            </div>
+        </aside>
+        
+        <!-- MAIN CONTENT AREA -->
+        <main id="main-content" class="main-content flex-1 overflow-hidden">
+            <!-- Top Bar -->
+            <div class="top-bar">
+                <div class="top-bar-left">
+                    <div class="search-container">
+                        <i data-lucide="search" class="search-icon"></i>
+                        <input type="text" class="search-input" placeholder="Search agents, hosts...">
+                    </div>
+                </div>
+                <div class="top-bar-right">
+                    <div class="status-indicator">
+                        <div class="status-dot active"></div>
+                        <span>Online</span>
+                    </div>
+                    <button class="btn-primary" id="start-scan-btn">
+                        <i data-lucide="play" class="w-4 h-4"></i>
+                        Start Scan
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Scrollable Content Area -->
+            <div class="content-scroll">
+                <!-- Stats Bar -->
+                <div class="stats-grid" id="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon teal">
+                            <i data-lucide="bot" class="w-5 h-5"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-label">Total Agents</div>
+                            <div class="stat-value" id="stat-agents">0</div>
+                            <div class="stat-change positive">+2</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon cyan">
+                            <i data-lucide="activity" class="w-5 h-5"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-label">Scan Progress</div>
+                            <div class="stat-value" id="stat-progress">0%</div>
+                            <div class="stat-detail" id="stat-detail">0/254 hosts</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon pink">
+                            <i data-lucide="shield-alert" class="w-5 h-5"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-label">Security Alerts</div>
+                            <div class="stat-value" id="stat-alerts">0</div>
+                            <div class="stat-change negative" id="stat-alerts-detail">1 critical</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon teal">
+                            <i data-lucide="clock" class="w-5 h-5"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-label">Last Scan</div>
+                            <div class="stat-value" id="stat-last-scan">Never</div>
+                            <div class="stat-detail">-</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Live Scan Progress -->
+                <div class="panel live-scan-panel">
+                    <div class="panel-header">
+                        <h3 class="panel-title">
+                            <i data-lucide="circle-check" class="w-5 h-5"></i>
+                            Live Scan Progress
+                        </h3>
+                        <div class="panel-badge" id="scan-status">Idle</div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" id="progress-bar">
+                                <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <div class="scan-metrics">
+                            <div class="metric">
+                                <span class="metric-label">Hosts Scanned</span>
+                                <span class="metric-value" id="metric-hosts">0/254</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-label">Agents Found</span>
+                                <span class="metric-value" id="metric-agents">0</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-label">Scan Rate</span>
+                                <span class="metric-value" id="metric-rate">0.0 hosts/s</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-label">Time Remaining</span>
+                                <span class="metric-value" id="metric-time">--:--</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Agent Discovery Section -->
+                <div class="panel agent-discovery-panel">
+                    <div class="panel-header">
+                        <h3 class="panel-title">
+                            <i data-lucide="radar" class="w-5 h-5"></i>
+                            Agent Discovery
+                        </h3>
+                        <div class="panel-actions">
+                            <button class="btn-ghost btn-sm">
+                                <i data-lucide="filter" class="w-4 h-4"></i>
+                                Filter
+                            </button>
+                            <button class="btn-ghost btn-sm">
+                                <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+                                Refresh
+                            </button>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="agents-grid" id="agents-grid">
+                            <!-- Agent cards will be inserted here by JS -->
+                            <div class="empty-state" id="agents-empty">
+                                <i data-lucide="radar" class="w-12 h-12 text-gray"></i>
+                                <p class="empty-text">No agents detected yet</p>
+                                <p class="empty-subtext">Start a scan to discover AI agents on your network</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Telemetry Section -->
+                <div class="panel telemetry-panel">
+                    <div class="panel-header">
+                        <h3 class="panel-title">
+                            <i data-lucide="circle-help" class="w-5 h-5"></i>
+                            Telemetry
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="charts-grid">
+                            <div class="chart-container">
+                                <h4 class="chart-title">Framework Distribution</h4>
+                                <canvas id="framework-chart"></canvas>
+                            </div>
+                            <div class="chart-container">
+                                <h4 class="chart-title">Detection Confidence</h4>
+                                <canvas id="confidence-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <!-- RIGHT DETAIL PANEL -->
+        <aside id="detail-panel" class="detail-panel detail-panel-closed">
+            <div class="detail-header">
+                <h3 class="detail-title">Agent Details</h3>
+                <button id="detail-close-btn" class="icon-btn" aria-label="Close panel">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            
+            <div id="detail-content" class="detail-content">
+                <div class="detail-empty">
+                    <i data-lucide="bot" class="w-12 h-12 text-gray"></i>
+                    <p class="detail-empty-text">Select an agent to view details</p>
+                </div>
+            </div>
+        </aside>
+    </div>
+    
+    <!-- Backdrop (for mobile/detail panel) -->
+    <div id="backdrop" class="backdrop hidden"></div>
+    
+    <!-- Custom JavaScript -->
+    <script src="/static/js/cogniwatch-2026.js" type="module"></script>
+</body>
+</html>

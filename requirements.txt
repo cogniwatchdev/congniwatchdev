@@ -1,0 +1,39 @@
+# CogniWatch Dependencies
+# Install with: pip install -r requirements.txt
+
+# Core Framework
+Flask==3.0.2
+Flask-CORS==4.0.0
+
+# Database
+# SQLite is built into Python (no additional package needed)
+
+# HTTP Client (for OpenClaw Gateway API)
+requests==2.31.0
+websocket-client==1.7.0
+
+# Configuration
+python-dotenv==1.0.1
+
+# Utilities
+python-dateutil==2.9.0
+
+# Testing
+pytest==8.1.1
+pytest-cov==4.1.0
+
+# Security (REQUIRED FOR PRODUCTION)
+PyJWT==2.8.0                # JWT token authentication
+bcrypt==4.1.2               # Password hashing
+cryptography==42.0.5        # Encryption for secrets
+Flask-Limiter==3.5.0        # Rate limiting
+bleach==6.1.0               # HTML sanitization
+
+# Phase B+ (Network Scanning - optional for now)
+# python-nmap==0.7.1
+# scapy==2.5.0
+
+# Phase C+ (Production - optional for now)
+# gunicorn==21.2.0
+# psycopg2-binary==2.9.9  # PostgreSQL
+# redis==5.0.1  # Caching

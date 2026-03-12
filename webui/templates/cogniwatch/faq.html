@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+
+{% block page_title %}FAQ{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold text-white mb-4">Frequently Asked Questions</h2>
+        <p class="text-gray text-lg">Everything you need to know about CogniWatch</p>
+    </div>
+    
+    <!-- FAQ Categories -->
+    <div class="space-y-8">
+        <!-- General -->
+        <div class="bg-navy-light rounded-xl p-6 border border-teal/10">
+            <h3 class="text-xl font-bold text-teal mb-4 flex items-center gap-2">
+                <i data-lucide="info" class="w-5 h-5"></i>
+                General
+            </h3>
+            <div class="space-y-4">
+                <div class="border-b border-teal/10 pb-4">
+                    <h4 class="text-lg font-semibold text-white mb-2">What is CogniWatch?</h4>
+                    <p class="text-gray">CogniWatch is an AI agent detection network that scans your network to identify AI agents and frameworks. Think of it as "Shodan for AI Agents" - we help you discover what AI systems are running on your network, assess their security posture, and monitor for unauthorized deployments.</p>
+                </div>
+                
+                <div class="border-b border-teal/10 pb-4">
+                    <h4 class="text-lg font-semibold text-white mb-2">How does CogniWatch work?</h4>
+                    <p class="text-gray">CogniWatch uses advanced fingerprinting techniques to detect AI agents by analyzing:</p>
+                    <ul class="list-disc list-inside text-gray mt-2 space-y-1">
+                        <li>Network port signatures and service banners</li>
+                        <li>HTTP headers and API response patterns</li>
+                        <li>Framework-specific endpoints and behaviors</li>
+                        <li>Telemetry data and communication patterns</li>
+                    </ul>
+                </div>
+                
+                <div class="border-b border-teal/10 pb-4">
+                    <h4 class="text-lg font-semibold text-white mb-2">What frameworks can you detect?</h4>
+                    <p class="text-gray">We currently detect 23+ AI frameworks including:</p>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-2 mt-2">
+                        <span class="text-sm bg-navy px-3 py-1 rounded text-gray">LangChain</span>
+                        <span class="text-sm bg-navy px-3 py-1 rounded text-gray">AutoGen</span>
+                        <span class="text-sm bg-navy px-3 py-1 rounded text-gray">CrewAI</span>
+                        <span class="text-sm bg-navy px-3 py-1 rounded text-gray">Agent Zero</span>
+                        <span class="text-sm bg-navy px-3 py-1 rounded text-gray">LlamaIndex</span>
+                        <span class="text-sm bg-navy px-3 py-1 rounded text-gray">Haystack</span>
+                        <span class="text-sm bg-navy px-3 py-1 rounded text-gray">Semantic Kernel</span>
+                        <span class="text-sm bg-navy px-3 py-1 rounded text-gray">OpenClaw</span>
+                        <span class="text-sm bg-navy px-3 py-1 rounded text-gray">And more...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Technical -->
+        <div class="bg-navy-light rounded-xl p-6 border border-teal/10">
+            <h3 class="text-xl font-bold text-cyan mb-4 flex items-center gap-2">
+                <i data-lucide="cpu" class="w-5 h-5"></i>
+                Technical
+            </h3>
+            <div class="space-y-4">
+                <div class="border-b border-teal/10 pb-4">
+                    <h4 class="text-lg font-semibold text-white mb-2">How accurate is detection?</h4>
+                    <p class="text-gray">Our confidence scoring system provides:</p>
+                    <ul class="list-disc list-inside text-gray mt-2 space-y-1">
+                        <li><strong>Confirmed (≥85%)</strong> - High-confidence detection with multiple matching signatures</li>
+                        <li><strong>Likely (60-84%)</strong> - Strong indicators present, manual verification recommended</li>
+                        <li><strong>Possible (30-59%)</strong> - Some matching patterns, could be false positive</li>
+                        <li><strong>Unknown (&lt;30%)</strong> - Weak signals, likely not an AI agent</li>
+                    </ul>
+                </div>
+                
+                <div class="border-b border-teal/10 pb-4">
+                    <h4 class="text-lg font-semibold text-white mb-2">Does scanning affect network performance?</h4>
+                    <p class="text-gray">CogniWatch uses non-intrusive scanning techniques. A typical scan of a /24 subnet (254 hosts) completes in 2-5 minutes with minimal network impact. You can configure scan intensity and concurrent threads to balance speed vs. network load.</p>
+                </div>
+                
+                <div class="border-b border-teal/10 pb-4">
+                    <h4 class="text-lg font-semibold text-white mb-2">Can I schedule automatic scans?</h4>
+                    <p class="text-gray">Yes! You can schedule recurring scans with custom intervals (hourly, daily, weekly). Scheduled scans run in the background and results are automatically added to your dashboard.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Security & Privacy -->
+        <div class="bg-navy-light rounded-xl p-6 border border-teal/10">
+            <h3 class="text-xl font-bold text-green mb-4 flex items-center gap-2">
+                <i data-lucide="shield-check" class="w-5 h-5"></i>
+                Security & Privacy
+            </h3>
+            <div class="space-y-4">
+                <div class="border-b border-teal/10 pb-4">
+                    <h4 class="text-lg font-semibold text-white mb-2">Is CogniWatch secure?</h4>
+                    <p class="text-gray">Absolutely. CogniWatch runs entirely on your infrastructure - we don't send any data to external servers. All scan data, agent information, and telemetry stay within your network. We also provide security recommendations for any agents we find with misconfigurations.</p>
+                </div>
+                
+                <div class="border-b border-teal/10 pb-4">
+                    <h4 class="text-lg font-semibold text-white mb-2">Do you store my data?</h4>
+                    <p class="text-gray">No. CogniWatch is self-hosted and all data is stored locally. You have complete control over retention policies and can export or delete data at any time.</p>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold text-white mb-2">Can detected agents be exploited?</h4>
+                    <p class="text-gray">CogniWatch only identifies agents - it doesn't attempt to exploit or penetrate them. However, we do flag security issues like exposed APIs, missing authentication, or default configurations so you can remediate them.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pricing -->
+        <div class="bg-navy-light rounded-xl p-6 border border-teal/10">
+            <h3 class="text-xl font-bold text-teal mb-4 flex items-center gap-2">
+                <i data-lucide="dollar-sign" class="w-5 h-5"></i>
+                Pricing
+            </h3>
+            <div class="space-y-4">
+                <div class="bg-teal/10 border border-teal/20 rounded-lg p-4">
+                    <h4 class="text-lg font-bold text-teal mb-2">🎉 Free Beta Program</h4>
+                    <p class="text-gray">CogniWatch is currently in <strong>free beta</strong>! You get full access to all features including:</p>
+                    <ul class="list-disc list-inside text-gray mt-2 space-y-1">
+                        <li>Unlimited network scans</li>
+                        <li>23+ framework detection signatures</li>
+                        <li>Real-time monitoring and alerts</li>
+                        <li>Analytics and reporting</li>
+                        <li>API access for automation</li>
+                    </ul>
+                    <p class="text-gray mt-3">Beta status will continue through 2026. Premium tiers with advanced features will be announced in 2027.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Still Have Questions -->
+    <div class="text-center mt-12">
+        <p class="text-gray mb-4">Still have questions?</p>
+        <a href="/help" class="inline-flex items-center gap-2 bg-teal hover:bg-teal/90 text-navy font-semibold px-6 py-3 rounded-lg">
+            <i data-lucide="message-circle" class="w-5 h-5"></i>
+            Contact Support
+        </a>
+    </div>
+</div>
+{% endblock %}

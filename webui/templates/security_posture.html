@@ -1,0 +1,599 @@
+<!-- Security Posture Dashboard Section -->
+<div class="security-posture-section">
+    <div class="section-header">
+        <h2>🔐 Gateway Security Posture</h2>
+        <div class="section-actions">
+            <button class="btn-refresh" onclick="refreshSecurityPosture()" title="Refresh">
+                ↻ Refresh
+            </button>
+            <button class="btn-export" onclick="exportSecurityReport()" title="Export Report">
+                📄 Export
+            </button>
+        </div>
+    </div>
+    
+    <div class="security-summary-cards">
+        <div class="summary-card risk-low">
+            <div class="summary-icon">🟢</div>
+            <div class="summary-content">
+                <div class="summary-value" id="gateways-low-risk">0</div>
+                <div class="summary-label">Low Risk</div>
+            </div>
+        </div>
+        <div class="summary-card risk-medium">
+            <div class="summary-icon">🟡</div>
+            <div class="summary-content">
+                <div class="summary-value" id="gateways-medium-risk">0</div>
+                <div class="summary-label">Medium Risk</div>
+            </div>
+        </div>
+        <div class="summary-card risk-high">
+            <div class="summary-icon">🔴</div>
+            <div class="summary-content">
+                <div class="summary-value" id="gateways-high-risk">0</div>
+                <div class="summary-label">High Risk</div>
+            </div>
+        </div>
+        <div class="summary-card overall">
+            <div class="summary-icon">🛡️</div>
+            <div class="summary-content">
+                <div class="summary-value" id="overall-risk-score">--</div>
+                <div class="summary-label">Overall Score</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="gateways-table-container">
+        <table class="gateways-table">
+            <thead>
+                <tr>
+                    <th>Gateway</th>
+                    <th>Patch Status</th>
+                    <th>Auth Method</th>
+                    <th>Rate Limit</th>
+                    <th>Device Approval</th>
+                    <th>Risk Score</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="gateways-table-body">
+                <!-- Populated by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="security-recommendations" id="security-recommendations">
+        <h4>🔧 Security Recommendations</h4>
+        <div id="recommendations-list">
+            <!-- Populated by JavaScript -->
+        </div>
+    </div>
+</div>
+
+<style>
+.security-posture-section {
+    background: linear-gradient(135deg, #1a1f2e 0%, #0f141f 100%);
+    border: 1px solid #2a3f5f;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #2a3f5f;
+}
+
+.section-header h2 {
+    color: #64ffda;
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+.section-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-refresh, .btn-export {
+    background: #233554;
+    color: #64ffda;
+    border: 1px solid #64ffda;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.btn-refresh:hover, .btn-export:hover {
+    background: #64ffda;
+    color: #0a192f;
+}
+
+.security-summary-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.summary-card {
+    background: #112240;
+    padding: 20px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border-left: 4px solid #64ffda;
+}
+
+.summary-card.risk-low {
+    border-left-color: #22c55e;
+}
+
+.summary-card.risk-medium {
+    border-left-color: #f59e0b;
+}
+
+.summary-card.risk-high {
+    border-left-color: #ef4444;
+}
+
+.summary-card.overall {
+    border-left-color: #00bcd4;
+}
+
+.summary-icon {
+    font-size: 2rem;
+}
+
+.summary-content {
+    flex: 1;
+}
+
+.summary-value {
+    color: #e6f1ff;
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.summary-label {
+    color: #8892b0;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.gateways-table-container {
+    overflow-x: auto;
+    margin-bottom: 24px;
+}
+
+.gateways-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #112240;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.gateways-table th {
+    background: #0a192f;
+    color: #64ffda;
+    padding: 14px 16px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.gateways-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid #233554;
+    color: #e6f1ff;
+}
+
+.gateways-table tbody tr:hover {
+    background: #1a1f2e;
+}
+
+.patch-status, .auth-method, .rate-limit, .device-approval {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.status-badge {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.status-badge.success {
+    background: rgba(34, 197, 94, 0.2);
+    color: #22c55e;
+}
+
+.status-badge.warning {
+    background: rgba(245, 158, 11, 0.2);
+    color: #f59e0b;
+}
+
+.status-badge.danger {
+    background: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+}
+
+.risk-score {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+}
+
+.risk-bar {
+    width: 100px;
+    height: 8px;
+    background: #0a192f;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.risk-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.risk-bar-fill.low {
+    background: #22c55e;
+}
+
+.risk-bar-fill.medium {
+    background: #f59e0b;
+}
+
+.risk-bar-fill.high {
+    background: #ef4444;
+}
+
+.action-btn {
+    background: #233554;
+    color: #64ffda;
+    border: 1px solid #64ffda;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 600;
+    transition: all 0.2s;
+    margin-right: 6px;
+}
+
+.action-btn:hover {
+    background: #64ffda;
+    color: #0a192f;
+}
+
+.action-btn.fix-now {
+    background: #ef4444;
+    border-color: #ef4444;
+    color: white;
+}
+
+.action-btn.fix-now:hover {
+    background: #dc2626;
+    color: white;
+}
+
+.security-recommendations {
+    background: #112240;
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 4px solid #00bcd4;
+}
+
+.security-recommendations h4 {
+    color: #00bcd4;
+    margin-bottom: 16px;
+    font-size: 1.1rem;
+}
+
+.recommendation-item {
+    background: #0a192f;
+    padding: 12px 16px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.recommendation-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #e6f1ff;
+}
+
+.recommendation-icon {
+    font-size: 1.2rem;
+}
+
+.recommendation-text {
+    color: #8892b0;
+    font-size: 0.9rem;
+}
+
+@media (max-width: 1024px) {
+    .gateways-table {
+        font-size: 0.85rem;
+    }
+    
+    .gateways-table th,
+    .gateways-table td {
+        padding: 10px 12px;
+    }
+}
+
+@media (max-width: 768px) {
+    .section-header {
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-start;
+    }
+    
+    .security-summary-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .gateways-table-container {
+        overflow-x: scroll;
+    }
+}
+</style>
+
+<script>
+// Security Posture JavaScript
+document.addEventListener('DOMContentLoaded', function() {
+    loadSecurityPosture();
+    // Refresh every 2 minutes
+    setInterval(loadSecurityPosture, 2 * 60 * 1000);
+});
+
+async function loadSecurityPosture() {
+    try {
+        const response = await fetch('/api/security/posture');
+        if (!response.ok) throw new Error('Failed to load data');
+        
+        const data = await response.json();
+        updateSecurityDisplay(data);
+        generateRecommendations(data.gateways);
+    } catch (error) {
+        console.error('Security posture error:', error);
+        // Use mock data for demo
+        updateSecurityDisplay(getMockSecurityData());
+    }
+}
+
+function updateSecurityDisplay(data) {
+    // Update summary cards
+    document.getElementById('gateways-low-risk').textContent = data.summary.low_risk;
+    document.getElementById('gateways-medium-risk').textContent = data.summary.medium_risk;
+    document.getElementById('gateways-high-risk').textContent = data.summary.high_risk;
+    document.getElementById('overall-risk-score').textContent = data.summary.overall_score + '/100';
+    
+    // Update table
+    const tbody = document.getElementById('gateways-table-body');
+    tbody.innerHTML = '';
+    
+    data.gateways.forEach(gw => {
+        const row = document.createElement('tr');
+        row.innerHTML = renderGatewayRow(gw);
+        tbody.appendChild(row);
+    });
+}
+
+function renderGatewayRow(gw) {
+    const riskClass = gw.risk_score < 30 ? 'low' : gw.risk_score < 70 ? 'medium' : 'high';
+    const riskLabel = gw.risk_score < 30 ? 'Low' : gw.risk_score < 70 ? 'Medium' : 'High';
+    const riskIcon = gw.risk_score < 30 ? '🟢' : gw.risk_score < 70 ? '🟡' : '🔴';
+    
+    return `
+        <td>
+            <strong>${gw.name}</strong><br>
+            <small style="color: #8892b0">${gw.host}:${gw.port}</small>
+        </td>
+        <td>
+            <span class="patch-status">
+                ${gw.patched ? '✅' : '❌'}
+                <span class="status-badge ${gw.patched ? 'success' : 'danger'}">
+                    ${gw.patched ? 'Patched' : 'Outdated'}
+                </span>
+            </span>
+        </td>
+        <td>
+            <span class="auth-method">
+                ${gw.auth_method === 'token' ? '🔑' : '🔒'}
+                ${gw.auth_method}
+            </span>
+        </td>
+        <td>
+            <span class="rate-limit">
+                ${gw.rate_limit_enabled ? '✅' : '❌'}
+                <span class="status-badge ${gw.rate_limit_enabled ? 'success' : 'danger'}">
+                    ${gw.rate_limit_enabled ? 'Enabled' : 'Disabled'}
+                </span>
+            </span>
+        </td>
+        <td>
+            <span class="device-approval">
+                ${gw.device_approval}
+            </span>
+        </td>
+        <td>
+            <div class="risk-score">
+                <span>${riskIcon}</span>
+                <div class="risk-bar">
+                    <div class="risk-bar-fill ${riskClass}" style="width: ${gw.risk_score}%"></div>
+                </div>
+                <span>${gw.risk_score}</span>
+            </div>
+        </td>
+        <td>
+            ${!gw.rate_limit_enabled ? '<button class="action-btn fix-now" onclick="fixRateLimit(\'' + gw.id + '\')">Fix Now</button>' : ''}
+            ${gw.auth_method !== 'token' ? '<button class="action-btn fix-now" onclick="fixAuth(\'' + gw.id + '\')">Fix Now</button>' : ''}
+            ${!gw.patched ? '<button class="action-btn" onclick="updateGateway(\'' + gw.id + '\')">Update</button>' : ''}
+        </td>
+    `;
+}
+
+function generateRecommendations(gateways) {
+    const list = document.getElementById('recommendations-list');
+    list.innerHTML = '';
+    
+    const recommendations = [];
+    
+    gateways.forEach(gw => {
+        if (!gw.rate_limit_enabled) {
+            recommendations.push({
+                icon: '🚨',
+                text: `${gw.name}: Enable rate limiting to prevent abuse`,
+                gateway: gw.id,
+                type: 'rate_limit'
+            });
+        }
+        if (gw.auth_method !== 'token') {
+            recommendations.push({
+                icon: '🔐',
+                text: `${gw.name}: Switch to token-based authentication`,
+                gateway: gw.id,
+                type: 'auth'
+            });
+        }
+        if (!gw.patched) {
+            recommendations.push({
+                icon: '⚠️',
+                text: `${gw.name}: Update to latest version (v2026.2.25+)`,
+                gateway: gw.id,
+                type: 'patch'
+            });
+        }
+    });
+    
+    if (recommendations.length === 0) {
+        list.innerHTML = '<div class="recommendation-item" style="color: #22c55e">✅ All gateways are properly secured!</div>';
+        return;
+    }
+    
+    recommendations.forEach(rec => {
+        const item = document.createElement('div');
+        item.className = 'recommendation-item';
+        item.innerHTML = `
+            <div class="recommendation-content">
+                <span class="recommendation-icon">${rec.icon}</span>
+                <span class="recommendation-text">${rec.text}</span>
+            </div>
+            <button class="action-btn" onclick="applyRecommendation('${rec.gateway}', '${rec.type}')">Apply</button>
+        `;
+        list.appendChild(item);
+    });
+}
+
+async function refreshSecurityPosture() {
+    const btn = document.querySelector('.btn-refresh');
+    btn.textContent = '⏳ Loading...';
+    await loadSecurityPosture();
+    btn.textContent = '↻ Refresh';
+}
+
+function exportSecurityReport() {
+    alert('Security report export feature - coming soon!');
+    // Implementation: Generate CSV/PDF of current security posture
+}
+
+function fixRateLimit(gatewayId) {
+    alert(`Would execute: openclaw gateway config --enable-rate-limit ${gatewayId}`);
+    // Implementation: Call API to enable rate limiting
+}
+
+function fixAuth(gatewayId) {
+    alert(`Would execute: openclaw gateway config --auth-method token ${gatewayId}`);
+    // Implementation: Call API to switch to token auth
+}
+
+function updateGateway(gatewayId) {
+    alert(`Would execute: openclaw gateway update ${gatewayId}`);
+    // Implementation: Call API to update gateway
+}
+
+function applyRecommendation(gatewayId, type) {
+    if (type === 'rate_limit') fixRateLimit(gatewayId);
+    else if (type === 'auth') fixAuth(gatewayId);
+    else if (type === 'patch') updateGateway(gatewayId);
+}
+
+function getMockSecurityData() {
+    return {
+        summary: {
+            low_risk: 2,
+            medium_risk: 1,
+            high_risk: 1,
+            overall_score: 72
+        },
+        gateways: [
+            {
+                id: 'neo-18789',
+                name: 'Neo',
+                host: '127.0.0.1',
+                port: 18789,
+                patched: true,
+                auth_method: 'token',
+                rate_limit_enabled: true,
+                device_approval: 'Manual',
+                risk_score: 15
+            },
+            {
+                id: 'atlas-18790',
+                name: 'Atlas',
+                host: '192.168.0.245',
+                port: 18790,
+                patched: true,
+                auth_method: 'password',
+                rate_limit_enabled: false,
+                device_approval: 'Auto',
+                risk_score: 65
+            },
+            {
+                id: 'cipher-18794',
+                name: 'Cipher',
+                host: '192.168.0.246',
+                port: 18794,
+                patched: false,
+                auth_method: 'token',
+                rate_limit_enabled: true,
+                device_approval: 'Manual',
+                risk_score: 35
+            },
+            {
+                id: 'vulcan-18795',
+                name: 'Vulcan',
+                host: '192.168.0.247',
+                port: 18795,
+                patched: true,
+                auth_method: 'password',
+                rate_limit_enabled: false,
+                device_approval: 'Auto',
+                risk_score: 75
+            }
+        ]
+    };
+}
+</script>

@@ -1,0 +1,54 @@
+{
+  "framework": "zeroclaw",
+  "name": "ZeroClaw",
+  "version": "0.1.7+",
+  "category": "lightweight-gateway",
+  "ports": {
+    "primary": 42617,
+    "alternative": [3000, 8080],
+    "websocket": null,
+    "http": 42617
+  },
+  "http_fingerprints": {
+    "title_patterns": ["ZeroClaw"],
+    "header_patterns": {
+      "server": "ZeroClaw"
+    },
+    "body_patterns": ["ZeroClaw", "zeroclaw"],
+    "required_patterns": ["ZeroClaw"],
+    "response_check_paths": ["/", "/health", "/api/status"]
+  },
+  "api_endpoints": {
+    "status": "/api/status",
+    "health": "/health",
+    "pair": "/pair",
+    "webhook": "/webhook"
+  },
+  "websocket": {
+    "enabled": true,
+    "path": "/ws",
+    "protocol": "zeroclaw-ws"
+  },
+  "config_files": [
+    "~/.zeroclaw/config.toml"
+  ],
+  "process_names": ["zeroclaw"],
+  "network_signatures": {
+    "mdns": null,
+    "txt_records": []
+  },
+  "confidence": {
+    "port_match": 0.50,
+    "http_pattern": 0.25,
+    "http_multiple": 0.10,
+    "api_validated": 0.15,
+    "websocket_match": 0.00,
+    "framework_specific": 0.00,
+    "threshold_confirmed": 0.85,
+    "threshold_likely": 0.60,
+    "threshold_possible": 0.30
+  },
+  "detection_priority": 1,
+  "notes": "Ultra-lightweight Rust-based gateway. Primary port 42617. Signature: title contains 'ZeroClaw'.",
+  "variants": []
+}

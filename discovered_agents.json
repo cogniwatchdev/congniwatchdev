@@ -1,0 +1,55 @@
+{
+  "scan_time": "2026-03-07T10:34:38.771863",
+  "network": "192.168.0.0/24",
+  "hosts_scanned": 254,
+  "agents_found": 3,
+  "agents": [
+    {
+      "id": "agent-192-168-0-202-50080",
+      "host": "192.168.0.202",
+      "type": "gateway_only",
+      "confidence": 0.44999999999999996,
+      "confidence_badge": "possible",
+      "timestamp": "2026-03-07T10:34:38.771118+00:00",
+      "correlation_source": "correlation_engine",
+      "gateway": {
+        "port": 50080,
+        "framework": "agent-zero",
+        "confidence": 0.44999999999999996,
+        "backend_status": "unknown"
+      }
+    },
+    {
+      "id": "agent-192-168-0-245-unknown",
+      "host": "192.168.0.245",
+      "type": "backend_only",
+      "confidence": 0.24,
+      "confidence_badge": "unknown",
+      "timestamp": "2026-03-07T10:34:38.771255+00:00",
+      "correlation_source": "correlation_engine",
+      "backend": {
+        "port": 8000,
+        "framework": "crewai",
+        "model": "unknown",
+        "confidence": 0.3,
+        "gateway_status": "not_detected"
+      }
+    },
+    {
+      "id": "agent-192-168-0-245-unknown",
+      "host": "192.168.0.245",
+      "type": "backend_only",
+      "confidence": 0.24,
+      "confidence_badge": "unknown",
+      "timestamp": "2026-03-07T10:34:38.771302+00:00",
+      "correlation_source": "correlation_engine",
+      "backend": {
+        "port": 5000,
+        "framework": "autogen",
+        "model": "unknown",
+        "confidence": 0.3,
+        "gateway_status": "not_detected"
+      }
+    }
+  ]
+}

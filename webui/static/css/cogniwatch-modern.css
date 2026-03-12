@@ -1,0 +1,658 @@
+/* CogniWatch Modern Dashboard - Custom Styles */
+/* Complementing Tailwind with advanced effects and animations */
+
+/* =============================================================================
+   ROOT VARIABLES
+   ============================================================================= */
+
+:root {
+  /* Backgrounds */
+  --bg-primary: oklch(0.145 0 0);
+  --bg-secondary: oklch(0.18 0 0);
+  --bg-tertiary: oklch(0.22 0 0);
+  
+  /* Text */
+  --text-primary: oklch(0.95 0 0);
+  --text-secondary: oklch(0.72 0 0);
+  --text-muted: oklch(0.55 0 0);
+  
+  /* Accents */
+  --accent-primary: oklch(0.65 0.24 260);
+  --accent-secondary: oklch(0.70 0.18 180);
+  --accent-success: oklch(0.68 0.15 150);
+  --accent-warning: oklch(0.75 0.18 70);
+  --accent-danger: oklch(0.62 0.25 25);
+  --accent-info: oklch(0.70 0.12 220);
+  
+  /* Shadows */
+  --shadow-glow-primary: 0 0 30px oklch(0.65 0.24 260 / 0.25);
+  --shadow-glow-secondary: 0 0 30px oklch(0.70 0.18 180 / 0.25);
+}
+
+/* =============================================================================
+   GLOBAL STYLES
+   ============================================================================= */
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background: var(--bg-primary);
+  background-image: 
+    radial-gradient(ellipse at top, oklch(0.18 0.02 260 / 0.5) 0%, transparent 50%),
+    radial-gradient(ellipse at bottom, oklch(0.16 0.02 180 / 0.3) 0%, transparent 50%);
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-tertiary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--text-muted);
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+/* Selection */
+::selection {
+  background: var(--accent-primary);
+  color: white;
+}
+
+/* =============================================================================
+   ANIMATIONS
+   ============================================================================= */
+
+/* Shimmer Effect for Progress Bars */
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s linear infinite;
+}
+
+/* Pulse Glow */
+@keyframes pulse-glow {
+  0%, 100% { 
+    box-shadow: 0 0 20px oklch(0.65 0.24 260 / 0.3);
+  }
+  50% { 
+    box-shadow: 0 0 40px oklch(0.65 0.24 260 / 0.5);
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Fade In Up */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.5s ease-out forwards;
+}
+
+/* Slide In Left */
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft 0.4s ease-out forwards;
+}
+
+/* Counter Animation */
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-count {
+  animation: countUp 0.3s ease-out;
+}
+
+/* Rotate */
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-rotate {
+  animation: rotate 1s linear infinite;
+}
+
+/* Bounce In */
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-bounce-in {
+  animation: bounceIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Staggered Animation Delays */
+.animate-fade-in {
+  opacity: 0;
+  animation: fadeInUp 0.5s ease-out forwards;
+}
+
+/* =============================================================================
+   COMPONENT STYLES
+   ============================================================================= */
+
+/* Cards with Neo-Brutalist Borders */
+.card-neo {
+  background: var(--bg-secondary);
+  border: 1px solid var(--text-muted);
+  border-radius: 0;
+  box-shadow: 4px 4px 0px 0px oklch(0 0 0 / 0.3);
+  transition: all 0.2s ease;
+}
+
+.card-neo:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px 0px oklch(0 0 0 / 0.4);
+}
+
+/* Gradient Borders */
+.gradient-border {
+  position: relative;
+  background: var(--bg-secondary);
+  border-radius: 12px;
+}
+
+.gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 14px;
+  padding: 2px;
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Confidence Badges */
+.confidence-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  transition: all 0.2s ease;
+}
+
+.confidence-badge-confirmed {
+  background: oklch(0.68 0.15 150 / 0.15);
+  color: var(--accent-success);
+  border: 1px solid var(--accent-success);
+}
+
+.confidence-badge-likely {
+  background: oklch(0.75 0.18 70 / 0.15);
+  color: var(--accent-warning);
+  border: 1px solid var(--accent-warning);
+}
+
+.confidence-badge-possible {
+  background: oklch(0.55 0 0 / 0.15);
+  color: var(--text-muted);
+  border: 1px solid var(--text-muted);
+}
+
+.confidence-badge-unknown {
+  background: oklch(0.62 0.25 25 / 0.15);
+  color: var(--accent-danger);
+  border: 1px solid var(--accent-danger);
+}
+
+/* Security Posture Indicators */
+.security-secure {
+  color: var(--accent-success);
+}
+
+.security-exposed {
+  color: var(--accent-warning);
+}
+
+.security-noauth {
+  color: var(--accent-danger);
+}
+
+/* Table Rows with Hover Effect */
+.table-row-hover {
+  transition: all 0.15s ease;
+}
+
+.table-row-hover:hover {
+  background: var(--bg-tertiary);
+  transform: translateX(2px);
+}
+
+/* Expandable Row Animation */
+.expandable-row {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.expandable-row.expanded {
+  background: var(--bg-tertiary);
+}
+
+/* Activity Feed Timeline */
+.timeline-item {
+  position: relative;
+  padding-left: 2rem;
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--text-muted);
+  opacity: 0.3;
+}
+
+.timeline-item::after {
+  content: '';
+  position: absolute;
+  left: -4px;
+  top: 0.5rem;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent-secondary);
+  border: 2px solid var(--bg-secondary);
+}
+
+.timeline-item:last-child::before {
+  bottom: auto;
+  height: 1.5rem;
+}
+
+/* Alert Severity Styles */
+.alert-critical {
+  border-left: 3px solid var(--accent-danger);
+  background: oklch(0.62 0.25 25 / 0.05);
+}
+
+.alert-high {
+  border-left: 3px solid var(--accent-warning);
+  background: oklch(0.75 0.18 70 / 0.05);
+}
+
+.alert-medium {
+  border-left: 3px solid var(--accent-info);
+  background: oklch(0.70 0.12 220 / 0.05);
+}
+
+.alert-low {
+  border-left: 3px solid var(--text-muted);
+  background: oklch(0.55 0 0 / 0.05);
+}
+
+/* =============================================================================
+   BUTTON STYLES
+   ============================================================================= */
+
+/* Primary Button with Glow */
+.btn-primary-glow {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.btn-primary-glow::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, transparent, rgba(255,255,255,0.1), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+}
+
+.btn-primary-glow:hover::before {
+  transform: translateX(100%);
+}
+
+.btn-primary-glow:hover {
+  box-shadow: 0 0 30px oklch(0.65 0.24 260 / 0.4);
+  transform: translateY(-1px);
+}
+
+.btn-primary-glow:active {
+  transform: translateY(1px) scale(0.98);
+}
+
+/* Icon Button */
+.btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.btn-icon:hover {
+  background: var(--bg-tertiary);
+  transform: scale(1.05);
+}
+
+.btn-icon:active {
+  transform: scale(0.95);
+}
+
+/* =============================================================================
+   CHART CONTAINER STYLES
+   ============================================================================= */
+
+.chart-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 200px;
+}
+
+.chart-container canvas {
+  max-height: 100%;
+}
+
+/* Chart Tooltip Customization */
+.chartjs-tooltip {
+  background: var(--bg-secondary) !important;
+  border: 1px solid var(--text-muted) !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 12px oklch(0 0 0 / 0.5) !important;
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 0.75rem !important;
+  opacity: 1 !important;
+}
+
+.chartjs-tooltip-key {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  margin-right: 6px;
+}
+
+/* =============================================================================
+   LOADING STATES
+   ============================================================================= */
+
+/* Skeleton Loader */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--bg-tertiary) 25%,
+    var(--bg-secondary) 50%,
+    var(--bg-tertiary) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite;
+  border-radius: 4px;
+}
+
+@keyframes skeleton-loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Spinner */
+.spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid var(--bg-tertiary);
+  border-top-color: var(--accent-primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Dots Loading */
+.loading-dots {
+  display: inline-flex;
+  gap: 4px;
+}
+
+.loading-dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-primary);
+  animation: dot-pulse 1.4s infinite ease-in-out;
+}
+
+.loading-dots span:nth-child(1) { animation-delay: -0.32s; }
+.loading-dots span:nth-child(2) { animation-delay: -0.16s; }
+
+@keyframes dot-pulse {
+  0%, 80%, 100% {
+    transform: scale(0);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* =============================================================================
+   RESPONSIVE UTILITIES
+   ============================================================================= */
+
+/* Mobile Optimizations */
+@media (max-width: 640px) {
+  .stat-value {
+    font-size: 2rem;
+  }
+  
+  .card-padding {
+    padding: 1rem;
+  }
+  
+  .table-mobile-stack {
+    display: block;
+  }
+  
+  .table-mobile-stack tr {
+    display: block;
+    margin-bottom: 1rem;
+    border: 1px solid var(--text-muted);
+    border-radius: 8px;
+    padding: 1rem;
+  }
+  
+  .table-mobile-stack td {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+  }
+}
+
+/* Tablet Optimizations */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .grid-2-col {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Desktop Optimizations */
+@media (min-width: 1025px) {
+  .hover-lift:hover {
+    transform: translateY(-4px);
+  }
+}
+
+/* =============================================================================
+   ACCESSIBILITY
+   ============================================================================= */
+
+/* Focus Ring */
+*:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  :root {
+    --text-primary: oklch(1 0 0);
+    --text-secondary: oklch(0.9 0 0);
+    --border-primary: oklch(0.7 0 0);
+  }
+}
+
+/* =============================================================================
+   UTILITY CLASSES
+   ============================================================================= */
+
+/* Gradient Text */
+.gradient-text {
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Glow Effect */
+.glow-primary {
+  box-shadow: 0 0 20px oklch(0.65 0.24 260 / 0.3);
+}
+
+.glow-secondary {
+  box-shadow: 0 0 20px oklch(0.70 0.18 180 / 0.3);
+}
+
+/* Text Shadow */
+.text-shadow {
+  text-shadow: 0 2px 10px oklch(0 0 0 / 0.5);
+}
+
+/* Backdrop Blur */
+.backdrop-blur-md {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Glass Effect */
+.glass {
+  background: oklch(0.18 0 0 / 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid oklch(1 0 0 / 0.1);
+}
+
+/* Hide Scrollbar (for clean UI) */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Truncate Text */
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Smooth Transitions */
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
+}
+
+/* =============================================================================
+   PRINT STYLES
+   ============================================================================= */
+
+@media print {
+  body {
+    background: white;
+    color: black;
+  }
+  
+  .no-print {
+    display: none !important;
+  }
+  
+  .card, .table {
+    border: 1px solid #000;
+    page-break-inside: avoid;
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "framework": "google-adk",
+  "name": "Google Agent Development Kit",
+  "version": "1.0+",
+  "category": "agent-development-framework",
+  "ports": {
+    "primary": 8000,
+    "alternative": [8001, 8002, 8003, 8004],
+    "websocket": null,
+    "http": 8000
+  },
+  "http_fingerprints": {
+    "title_patterns": ["Google ADK", "Agent Development Kit", "Google Agent"],
+    "header_patterns": {
+      "server": "Google-ADK.*"
+    },
+    "body_patterns": ["google-adk", "agent-development-kit", "Google Agent Development"],
+    "response_check_paths": ["/", "/api/agents", "/api/tools"]
+  },
+  "api_endpoints": {
+    "status": "/api/status",
+    "agents": "/api/agents",
+    "tools": "/api/tools",
+    "execute": "/api/execute"
+  },
+  "websocket": {
+    "enabled": false,
+    "path": null,
+    "protocol": null,
+    "handshake_patterns": []
+  },
+  "config_files": [
+    "~/.google-adk/config.yaml",
+    "~/.adk/settings.json"
+  ],
+  "process_names": ["google-adk", "adk-server", "adk"],
+  "network_signatures": {
+    "mdns": null,
+    "txt_records": []
+  },
+  "confidence": {
+    "port_match": 0.30,
+    "http_pattern": 0.15,
+    "http_multiple": 0.10,
+    "api_validated": 0.25,
+    "websocket_match": 0.00,
+    "framework_specific": 0.10,
+    "threshold_confirmed": 0.85,
+    "threshold_likely": 0.60,
+    "threshold_possible": 0.30
+  },
+  "detection_priority": 2,
+  "notes": "Google's official Agent Development Kit. Port range 8000-8004 depends on number of agents running.",
+  "variants": []
+}

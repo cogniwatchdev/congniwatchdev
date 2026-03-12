@@ -1,0 +1,55 @@
+{
+  "framework": "picoclaw",
+  "name": "PicoClaw",
+  "version": "0.1.x",
+  "category": "self-hosted-gateway",
+  "ports": {
+    "primary": 18790,
+    "alternative": [18789],
+    "websocket": 18790,
+    "http": 18790
+  },
+  "http_fingerprints": {
+    "title_patterns": ["PicoClaw", "Pico"],
+    "header_patterns": {
+      "server": "PicoClaw-Gateway"
+    },
+    "body_patterns": ["PicoClaw", "ultra-lightweight", "<10MB", "sipeed/picoclaw", "Go-Powered"],
+    "response_check_paths": ["/", "/health", "/api/status", "/.well-known/agent-card.json"]
+  },
+  "api_endpoints": {
+    "status": "/api/status",
+    "health": "/health",
+    "gateway": "/v1/gateway",
+    "agent_card": "/.well-known/agent-card.json"
+  },
+  "websocket": {
+    "enabled": true,
+    "path": "/ws",
+    "protocol": "picoclaw-v1",
+    "handshake_patterns": ["Upgrade: websocket", "Sec-WebSocket-Protocol: picoclaw"]
+  },
+  "config_files": [
+    "~/.picoclaw/config.json",
+    "~/.picoclaw/workspace/AGENTS.md",
+    "~/.picoclaw/workspace/MEMORY.md"
+  ],
+  "process_names": ["picoclaw", "picoclaw-gateway"],
+  "network_signatures": {
+    "mdns": "_picoclaw._tcp.local",
+    "txt_records": ["version=", "workspace="]
+  },
+  "confidence": {
+    "port_match": 0.30,
+    "http_pattern": 0.15,
+    "http_multiple": 0.10,
+    "api_validated": 0.25,
+    "websocket_match": 0.15,
+    "framework_specific": 0.05,
+    "threshold_confirmed": 0.85,
+    "threshold_likely": 0.60,
+    "threshold_possible": 0.30
+  },
+  "detection_priority": 1,
+  "notes": "Ultra-lightweight Go implementation (<10MB RAM). Launched Feb 2026, 12K+ GitHub stars. Uses port 18790 for shared webhook server (all channels). Single binary, runs on $10 hardware. Variant of OpenClaw family."
+}

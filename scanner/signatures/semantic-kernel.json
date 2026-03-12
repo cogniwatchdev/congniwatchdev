@@ -1,0 +1,55 @@
+{
+  "framework": "semantic-kernel",
+  "name": "Microsoft Semantic Kernel",
+  "version": "1.0+",
+  "category": "enterprise-agent-framework",
+  "ports": {
+    "primary": 5000,
+    "alternative": [5001, 5002, 5003, 5004, 5005],
+    "websocket": null,
+    "http": 5000
+  },
+  "http_fingerprints": {
+    "title_patterns": ["Semantic Kernel", "Microsoft Semantic Kernel", "SK"],
+    "header_patterns": {
+      "server": "Semantic-Kernel.*"
+    },
+    "body_patterns": ["semantic-kernel", "semantic_kernel", "Microsoft SK", "SK Framework"],
+    "response_check_paths": ["/", "/api/skills"]
+  },
+  "api_endpoints": {
+    "status": "/api/status",
+    "skills": "/api/skills",
+    "plugins": "/api/plugins",
+    "chat": "/api/chat"
+  },
+  "websocket": {
+    "enabled": false,
+    "path": null,
+    "protocol": null,
+    "handshake_patterns": []
+  },
+  "config_files": [
+    "~/.semantic-kernel/appsettings.json",
+    "~/.sk/config.yaml"
+  ],
+  "process_names": ["semantic-kernel", "semantic_kernel", "sk-agent"],
+  "network_signatures": {
+    "mdns": null,
+    "txt_records": []
+  },
+  "confidence": {
+    "port_match": 0.30,
+    "http_pattern": 0.15,
+    "http_multiple": 0.10,
+    "api_validated": 0.25,
+    "websocket_match": 0.00,
+    "framework_specific": 0.15,
+    "threshold_confirmed": 0.85,
+    "threshold_likely": 0.60,
+    "threshold_possible": 0.30
+  },
+  "detection_priority": 2,
+  "notes": "Microsoft's enterprise agent framework. Port range 5000-5005 depending on configuration.",
+  "variants": []
+}

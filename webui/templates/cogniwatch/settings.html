@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+
+{% block page_title %}Settings{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <h2 class="text-2xl font-bold text-white mb-6">Settings</h2>
+    
+    <!-- Settings Tabs -->
+    <div class="flex gap-2 mb-6 border-b border-teal/10 pb-1">
+        <button class="px-4 py-2 bg-teal text-navy font-semibold rounded-t-lg">General</button>
+        <button class="px-4 py-2 bg-navy-light hover:bg-navy-lighter text-white rounded-t-lg">Network</button>
+        <button class="px-4 py-2 bg-navy-light hover:bg-navy-lighter text-white rounded-t-lg">Security</button>
+        <button class="px-4 py-2 bg-navy-light hover:bg-navy-lighter text-white rounded-t-lg">Notifications</button>
+        <button class="px-4 py-2 bg-navy-light hover:bg-navy-lighter text-white rounded-t-lg">Advanced</button>
+    </div>
+    
+    <!-- General Settings -->
+    <div class="bg-navy-light rounded-xl p-6 border border-teal/10 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4">General Settings</h3>
+        
+        <div class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium text-gray mb-2">Instance Name</label>
+                <input type="text" value="CogniWatch Primary" 
+                       class="w-full bg-navy border border-teal/20 rounded-lg px-4 py-2 text-white">
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray mb-2">Default Network Range</label>
+                <input type="text" value="192.168.1.0/24" 
+                       class="w-full bg-navy border border-teal/20 rounded-lg px-4 py-2 text-white">
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray mb-2">Timezone</label>
+                <select class="w-full bg-navy border border-teal/20 rounded-lg px-4 py-2 text-white">
+                    <option>UTC</option>
+                    <option>America/New_York</option>
+                    <option>America/Los_Angeles</option>
+                    <option>Europe/London</option>
+                </select>
+            </div>
+            
+            <div class="flex items-center justify-between py-3 border-t border-teal/10">
+                <div>
+                    <p class="text-white font-medium">Dark Mode</p>
+                    <p class="text-xs text-gray">Use dark theme interface</p>
+                </div>
+                <button class="w-12 h-6 bg-teal rounded-full relative">
+                    <div class="absolute right-1 top-1 w-4 h-4 bg-navy rounded-full"></div>
+                </button>
+            </div>
+            
+            <div class="flex items-center justify-between py-3 border-t border-teal/10">
+                <div>
+                    <p class="text-white font-medium">Email Notifications</p>
+                    <p class="text-xs text-gray">Receive alerts via email</p>
+                </div>
+                <button class="w-12 h-6 bg-navy rounded-full relative border border-teal/20">
+                    <div class="absolute left-1 top-1 w-4 h-4 bg-gray rounded-full"></div>
+                </button>
+            </div>
+        </div>
+        
+        <div class="mt-6 flex gap-3">
+            <button class="bg-teal hover:bg-teal/90 text-navy font-semibold px-6 py-2 rounded-lg">
+                Save Changes
+            </button>
+            <button class="bg-navy hover:bg-navy-lighter text-white border border-teal/20 px-6 py-2 rounded-lg">
+                Reset to Defaults
+            </button>
+        </div>
+    </div>
+    
+    <!-- API Keys -->
+    <div class="bg-navy-light rounded-xl p-6 border border-teal/10 mb-6">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-semibold text-white">API Keys</h3>
+            <button class="bg-teal hover:bg-teal/90 text-navy text-sm font-semibold px-4 py-2 rounded-lg">
+                Generate New Key
+            </button>
+        </div>
+        
+        <div class="space-y-3">
+            <div class="flex items-center gap-4 p-4 bg-navy rounded-lg">
+                <div class="flex-1">
+                    <p class="text-white font-medium">Production Key</p>
+                    <p class="text-xs text-gray font-mono">cw_prod_••••••••••••••••1234</p>
+                </div>
+                <div class="flex gap-2">
+                    <button class="text-teal hover:text-cyan">
+                        <i data-lucide="copy" class="w-4 h-4"></i>
+                    </button>
+                    <button class="text-red hover:text-red/80">
+                        <i data-lucide="trash" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-4 p-4 bg-navy rounded-lg">
+                <div class="flex-1">
+                    <p class="text-white font-medium">Development Key</p>
+                    <p class="text-xs text-gray font-mono">cw_dev_••••••••••••••••5678</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="px-2 py-1 bg-yellow/20 text-yellow text-xs rounded">Read-only</span>
+                    <div class="flex gap-2">
+                        <button class="text-teal hover:text-cyan">
+                            <i data-lucide="copy" class="w-4 h-4"></i>
+                        </button>
+                        <button class="text-red hover:text-red/80">
+                            <i data-lucide="trash" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Data Management -->
+    <div class="bg-navy-light rounded-xl p-6 border border-teal/10">
+        <h3 class="text-lg font-semibold text-white mb-4">Data Management</h3>
+        
+        <div class="space-y-4">
+            <div class="flex items-center justify-between p-4 bg-navy rounded-lg">
+                <div>
+                    <p class="text-white font-medium">Export All Data</p>
+                    <p class="text-xs text-gray">Download scan history and agent data</p>
+                </div>
+                <button class="bg-navy-lighter hover:bg-navy-lighter/80 text-white border border-teal/20 px-4 py-2 rounded-lg flex items-center gap-2">
+                    <i data-lucide="download" class="w-4 h-4"></i>
+                    Export
+                </button>
+            </div>
+            
+            <div class="flex items-center justify-between p-4 bg-navy rounded-lg">
+                <div>
+                    <p class="text-white font-medium">Clear Scan History</p>
+                    <p class="text-xs text-gray">Remove all historical scan data</p>
+                </div>
+                <button class="bg-red/10 hover:bg-red/20 text-red border border-red/20 px-4 py-2 rounded-lg flex items-center gap-2">
+                    <i data-lucide="trash-2" class="w-4 h-4"></i>
+                    Clear
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

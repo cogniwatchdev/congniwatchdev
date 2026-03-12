@@ -1,0 +1,55 @@
+{
+  "framework": "strands-agents",
+  "name": "AWS Strands Agents",
+  "version": "1.0+",
+  "category": "cloud-agent-framework",
+  "ports": {
+    "primary": 8080,
+    "alternative": [],
+    "websocket": null,
+    "http": 8080
+  },
+  "http_fingerprints": {
+    "title_patterns": ["Strands Agents", "AWS Strands", "Amazon Strands"],
+    "header_patterns": {
+      "server": "Strands-Agents.*"
+    },
+    "body_patterns": ["strands-agents", "aws-strands", "AWS Bedrock", "Amazon Bedrock"],
+    "response_check_paths": ["/", "/api/execute"]
+  },
+  "api_endpoints": {
+    "status": "/api/status",
+    "execute": "/api/execute",
+    "agents": "/api/agents",
+    "tools": "/api/tools"
+  },
+  "websocket": {
+    "enabled": false,
+    "path": null,
+    "protocol": null,
+    "handshake_patterns": []
+  },
+  "config_files": [
+    "~/.strands/config.yaml",
+    "~/.aws/credentials"
+  ],
+  "process_names": ["strands-agents", "strands", "aws-strands"],
+  "network_signatures": {
+    "mdns": null,
+    "txt_records": []
+  },
+  "confidence": {
+    "port_match": 0.30,
+    "http_pattern": 0.15,
+    "http_multiple": 0.10,
+    "api_validated": 0.25,
+    "websocket_match": 0.00,
+    "framework_specific": 0.15,
+    "threshold_confirmed": 0.85,
+    "threshold_likely": 0.60,
+    "threshold_possible": 0.30
+  },
+  "detection_priority": 2,
+  "notes": "AWS-native agent framework using Bedrock. Strong AWS integration patterns.",
+  "variants": []
+}

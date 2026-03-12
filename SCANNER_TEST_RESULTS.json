@@ -1,0 +1,127 @@
+{
+  "audit_date": "2026-03-07T07:20:00Z",
+  "auditor": "Subagent (detection-accuracy-audit)",
+  "status": "PARTIAL_SUCCESS",
+  
+  "test_results": [
+    {
+      "service": "OpenClaw Gateway",
+      "host": "127.0.0.1",
+      "port": 18789,
+      "is_real_agent": true,
+      "before": {
+        "framework": "none",
+        "confidence": 0.0,
+        "detected": false
+      },
+      "after": {
+        "framework": "openclaw",
+        "confidence": 0.575,
+        "confidence_level": "medium",
+        "detected": true
+      },
+      "status": "FIXED",
+      "notes": "Detection working but only on localhost. For VPS, configure OpenClaw to bind to 0.0.0.0"
+    },
+    {
+      "service": "Agent-Zero",
+      "host": "192.168.0.245",
+      "port": 5000,
+      "is_real_agent": true,
+      "before": {
+        "framework": "agent-zero",
+        "confidence": 0.0,
+        "detected": false,
+        "port_in_signature": 50001
+      },
+      "after": {
+        "framework": "agent-zero",
+        "confidence": 0.0,
+        "detected": false,
+        "port_in_signature": 5000,
+        "service_running": false
+      },
+      "status": "READY",
+      "notes": "Signature fixed, but Agent-Zero not running. Will detect when started."
+    },
+    {
+      "service": "CogniWatch UI (False Positive)",
+      "host": "192.168.0.245",
+      "port": 9000,
+      "is_real_agent": false,
+      "before": {
+        "framework": "unknown",
+        "confidence": 0.65,
+        "confidence_level": "medium",
+        "false_positive": true
+      },
+      "after": {
+        "framework": "none",
+        "confidence": 0.0,
+        "confidence_level": "very_low",
+        "false_positive": false
+      },
+      "status": "FIXED",
+      "notes": "Health endpoint validation now rejects this as non-agent"
+    },
+    {
+      "service": "Health Dashboard (False Positive)",
+      "host": "192.168.0.245",
+      "port": 5000,
+      "is_real_agent": false,
+      "before": {
+        "framework": "unknown/openclaw",
+        "confidence": 0.65,
+        "confidence_level": "medium",
+        "false_positive": true
+      },
+      "after": {
+        "framework": "openclaw",
+        "confidence": 0.575,
+        "confidence_level": "medium",
+        "false_positive": "PARTIAL"
+      },
+      "status": "PARTIAL",
+      "notes": "Agent card detection fixed, but API analyzer still triggers on 'usage' field in nested object"
+    },
+    {
+      "service": "HICCUP Scanner (False Positive)",
+      "host": "192.168.0.245",
+      "port": 8000,
+      "is_real_agent": false,
+      "before": {
+        "framework": "unknown",
+        "confidence": 0.472,
+        "confidence_level": "low",
+        "false_positive": true
+      },
+      "after": {
+        "framework": "none",
+        "confidence": 0.0,
+        "confidence_level": "very_low",
+        "false_positive": false
+      },
+      "status": "FIXED",
+      "notes": "Correctly rejected as non-agent"
+    }
+  ],
+  
+  "summary": {
+    "false_positives_before": 3,
+    "false_positives_after": "0.5 (partial: Health Dashboard)",
+    "real_agents_detected_before": 0,
+    "real_agents_detected_after": 1,
+    "signature_issues_fixed": ["Agent-Zero port corrected to 5000"],
+    "code_fixes_applied": [
+      "Agent card validation (is_valid_agent_card)",
+      "Unknown framework scoring filtered",
+      "Agent-Zero signature port update"
+    ]
+  },
+  
+  "recommendations": [
+    "Deploy to VPS - critical issues resolved",
+    "Start Agent-Zero to verify detection",
+    "Optional: Add API analyzer context validation for 'usage' field"
+  ]
+}

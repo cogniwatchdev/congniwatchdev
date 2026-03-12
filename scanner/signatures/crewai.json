@@ -1,0 +1,55 @@
+{
+  "framework": "crewai",
+  "name": "CrewAI",
+  "version": "1.0+",
+  "category": "role-based-agents",
+  "ports": {
+    "primary": 8000,
+    "alternative": [8080],
+    "websocket": null,
+    "http": 8000
+  },
+  "http_fingerprints": {
+    "title_patterns": ["CrewAI", "Crew"],
+    "header_patterns": {
+      "server": "CrewAI.*"
+    },
+    "body_patterns": ["crewai", "role-based", "Agent Crew"],
+    "response_check_paths": ["/", "/api/agents", "/tasks"]
+  },
+  "api_endpoints": {
+    "status": "/api/status",
+    "agents": "/api/agents",
+    "tasks": "/api/tasks",
+    "crews": "/api/crews"
+  },
+  "websocket": {
+    "enabled": false,
+    "path": null,
+    "protocol": null,
+    "handshake_patterns": []
+  },
+  "config_files": [
+    "crewai.json",
+    "crew_config.yaml"
+  ],
+  "process_names": ["crewai"],
+  "network_signatures": {
+    "mdns": null,
+    "txt_records": []
+  },
+  "confidence": {
+    "port_match": 0.30,
+    "http_pattern": 0.15,
+    "http_multiple": 0.10,
+    "api_validated": 0.25,
+    "websocket_match": 0.00,
+    "framework_specific": 0.15,
+    "threshold_confirmed": 0.85,
+    "threshold_likely": 0.60,
+    "threshold_possible": 0.30
+  },
+  "detection_priority": 2,
+  "notes": "Role-based multi-agent framework. Lightweight deployment options available.",
+  "variants": []
+}

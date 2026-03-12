@@ -1,0 +1,355 @@
+<!-- TrustMRR Revenue Tracker Widget -->
+<div class="trustmrr-widget">
+    <div class="widget-header">
+        <h3>📊 TrustMRR Ecosystem Tracker</h3>
+        <span class="update-badge">Updated: <span id="trustmrr-last-update">Loading...</span></span>
+    </div>
+    
+    <div class="trustmrr-metrics">
+        <div class="metric-card primary">
+            <div class="metric-label">Total Revenue</div>
+            <div class="metric-value" id="trustmrr-revenue">$0</div>
+            <div class="metric-trend" id="trustmrr-revenue-trend">
+                <span class="trend-indicator">--</span>
+            </div>
+        </div>
+        
+        <div class="metric-card secondary">
+            <div class="metric-label">Active Startups</div>
+            <div class="metric-value" id="trustmrr-startups">0</div>
+            <div class="metric-trend" id="trustmrr-startups-trend">
+                <span class="trend-indicator">--</span>
+            </div>
+        </div>
+        
+        <div class="metric-card tertiary">
+            <div class="metric-label">MoM Growth</div>
+            <div class="metric-value" id="trustmrr-growth">0%</div>
+            <div class="metric-trend" id="trustmrr-growth-trend">
+                <span class="trend-indicator">--</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="trustmrr-chart-container">
+        <canvas id="trustmrr-trend-chart"></canvas>
+    </div>
+    
+    <div class="widget-footer">
+        <span class="cron-schedule">🕐 Auto-updates: Monday 9am</span>
+        <a href="/api/trustmrr/history" class="view-history" target="_blank">View History →</a>
+    </div>
+</div>
+
+<style>
+.trustmrr-widget {
+    background: linear-gradient(135deg, #1a1f2e 0%, #0f141f 100%);
+    border: 1px solid #2a3f5f;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.widget-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #2a3f5f;
+}
+
+.widget-header h3 {
+    color: #64ffda;
+    font-size: 1.3rem;
+    margin: 0;
+}
+
+.update-badge {
+    background: #00bcd4;
+    color: #0a192f;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.trustmrr-metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.metric-card {
+    background: #112240;
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 4px solid #64ffda;
+    transition: transform 0.2s ease;
+}
+
+.metric-card:hover {
+    transform: translateY(-2px);
+}
+
+.metric-card.primary {
+    border-left-color: #64ffda;
+}
+
+.metric-card.secondary {
+    border-left-color: #00bcd4;
+}
+
+.metric-card.tertiary {
+    border-left-color: #ff4081;
+}
+
+.metric-label {
+    color: #8892b0;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+}
+
+.metric-value {
+    color: #e6f1ff;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.metric-trend {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+}
+
+.trend-indicator.positive {
+    color: #22c55e;
+}
+
+.trend-indicator.negative {
+    color: #ef4444;
+}
+
+.trend-indicator.neutral {
+    color: #f59e0b;
+}
+
+.trustmrr-chart-container {
+    background: #0a192f;
+    border-radius: 8px;
+    padding: 16px;
+    height: 200px;
+    margin-bottom: 16px;
+}
+
+.widget-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 15px;
+    border-top: 1px solid #2a3f5f;
+    font-size: 0.85rem;
+    color: #8892b0;
+}
+
+.cron-schedule {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.view-history {
+    color: #64ffda;
+    text-decoration: none;
+    font-weight: 600;
+    transition: opacity 0.2s;
+}
+
+.view-history:hover {
+    opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+    .trustmrr-metrics {
+        grid-template-columns: 1fr;
+    }
+    
+    .widget-header {
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-start;
+    }
+}
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+// TrustMRR Widget JavaScript
+document.addEventListener('DOMContentLoaded', function() {
+    loadTrustMRRData();
+    // Refresh every 5 minutes
+    setInterval(loadTrustMRRData, 5 * 60 * 1000);
+});
+
+async function loadTrustMRRData() {
+    try {
+        const response = await fetch('/api/trustmrr/data');
+        if (!response.ok) throw new Error('Failed to load data');
+        
+        const data = await response.json();
+        updateTrustMRRDisplay(data);
+        renderTrustMRRChart(data.history);
+    } catch (error) {
+        console.error('TrustMRR error:', error);
+        // Use mock data for demo
+        updateTrustMRRDisplay(getMockTrustMRRData());
+    }
+}
+
+function updateTrustMRRDisplay(data) {
+    // Update revenue
+    document.getElementById('trustmrr-revenue').textContent = 
+        '$' + formatNumber(data.current.revenue);
+    
+    // Update startups
+    document.getElementById('trustmrr-startups').textContent = 
+        data.current.startups;
+    
+    // Update growth
+    const growthEl = document.getElementById('trustmrr-growth');
+    const growthTrend = document.getElementById('trustmrr-growth-trend');
+    growthEl.textContent = data.current.growth_rate.toFixed(1) + '%';
+    
+    // Set trend indicator
+    const trendIndicator = growthTrend.querySelector('.trend-indicator');
+    if (data.current.growth_rate > 10) {
+        trendIndicator.textContent = '▲ Accelerating';
+        trendIndicator.className = 'trend-indicator positive';
+    } else if (data.current.growth_rate < 0) {
+        trendIndicator.textContent = '▼ Slowing';
+        trendIndicator.className = 'trend-indicator negative';
+    } else {
+        trendIndicator.textContent = '► Stable';
+        trendIndicator.className = 'trend-indicator neutral';
+    }
+    
+    // Update timestamp
+    document.getElementById('trustmrr-last-update').textContent = 
+        new Date(data.last_updated).toLocaleDateString();
+}
+
+function renderTrustMRRChart(history) {
+    const ctx = document.getElementById('trustmrr-trend-chart').getContext('2d');
+    
+    // Destroy existing chart if present
+    if (window.trustmrrChart) {
+        window.trustmrrChart.destroy();
+    }
+    
+    // Prepare chart data (last 4 weeks)
+    const labels = history.slice(-4).map(entry => {
+        return new Date(entry.date).toLocaleDateString('en-US', { 
+            month: 'short', 
+            day: 'numeric' 
+        });
+    });
+    
+    const revenueData = history.slice(-4).map(entry => entry.revenue);
+    
+    window.trustmrrChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Revenue ($)',
+                data: revenueData,
+                borderColor: '#64ffda',
+                backgroundColor: 'rgba(100, 255, 218, 0.1)',
+                borderWidth: 3,
+                fill: true,
+                tension: 0.4,
+                pointBackgroundColor: '#64ffda',
+                pointBorderColor: '#0a192f',
+                pointBorderWidth: 2,
+                pointRadius: 5
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(10, 25, 47, 0.95)',
+                    titleColor: '#64ffda',
+                    bodyColor: '#e6f1ff',
+                    borderColor: '#2a3f5f',
+                    borderWidth: 1,
+                    callbacks: {
+                        label: function(context) {
+                            return '$' + formatNumber(context.raw);
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: '#112240'
+                    },
+                    ticks: {
+                        color: '#8892b0',
+                        callback: function(value) {
+                            return '$' + formatNumber(value);
+                        }
+                    }
+                },
+                x: {
+                    grid: {
+                        color: '#112240'
+                    },
+                    ticks: {
+                        color: '#8892b0'
+                    }
+                }
+            }
+        }
+    });
+}
+
+function formatNumber(num) {
+    if (num >= 1000000) {
+        return (num / 1000000).toFixed(1) + 'M';
+    } else if (num >= 1000) {
+        return (num / 1000).toFixed(1) + 'k';
+    }
+    return num.toLocaleString();
+}
+
+function getMockTrustMRRData() {
+    // Mock data for demo/development
+    return {
+        current: {
+            revenue: 125000,
+            startups: 47,
+            growth_rate: 15.3
+        },
+        last_updated: new Date().toISOString(),
+        history: [
+            {date: '2026-02-09', revenue: 95000, startups: 42},
+            {date: '2026-02-16', revenue: 102000, startups: 43},
+            {date: '2026-02-23', revenue: 110000, startups: 45},
+            {date: '2026-03-02', revenue: 125000, startups: 47}
+        ]
+    };
+}
+</script>

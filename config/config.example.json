@@ -1,0 +1,72 @@
+{
+  "openclaw_gateway": {
+    "url": "ws://127.0.0.1:18789",
+    "token": "YOUR_GATEWAY_TOKEN_HERE",
+    "poll_interval_seconds": 30
+  },
+  "monitoring": {
+    "enabled": true,
+    "track_costs": true,
+    "alert_on_high_costs": true,
+    "high_cost_threshold_usd": 5.00,
+    "alert_on_agent_offline": true,
+    "offline_threshold_minutes": 15,
+    "detect_anomalies": true,
+    "anomaly_thresholds": {
+      "api_call_spike_multiplier": 3.0,
+      "token_cost_spike_multiplier": 2.5,
+      "session_error_rate_threshold": 0.1
+    }
+  },
+  "webui": {
+    "host": "0.0.0.0",
+    "port": 9000,
+    "debug": false,
+    "theme": "navy-pink-cyan",
+    "branding": {
+      "name": "CogniWatch",
+      "tagline": "Stay watchful. Trace every thought."
+    }
+  },
+  "database": {
+    "path": "data/cogniwatch.db",
+    "backup_enabled": true,
+    "backup_interval_hours": 24
+  },
+  "scanner": {
+    "enabled": false,
+    "network": "192.168.0.0/24",
+    "scan_interval_hours": 24,
+    "rate_limit_seconds": 1,
+    "ports": {
+      "tier1": [18789, 8787, 50001, 50080, 8123, 8080],
+      "tier2": [8000, 8001, 8002, 8003, 8004],
+      "tier3": [5005, 8005],
+      "all_frameworks": [
+        18789, 8787,
+        50001, 50080,
+        8123, 8000, 8001, 8002, 8003, 8004,
+        8080, 8005,
+        5005,
+        6379, 5432, 22
+      ]
+    },
+    "priority_tiers": {
+      "tier1": ["openclaw", "agent-zero", "langgraph", "autogen-studio"],
+      "tier2": ["crewai", "microsoft-agent-framework", "google-adk", "pydantic-ai"],
+      "tier3": ["smolagents", "agno", "strands-agents", "semantic-kernel"]
+    }
+  },
+  "alerts": {
+    "notify_discord": false,
+    "discord_webhook_url": "",
+    "notify_email": false,
+    "email_recipient": "",
+    "email_smtp_server": ""
+  },
+  "security": {
+    "log_file_access": true,
+    "log_external_calls": true,
+    "policy_file": "config/policy.json"
+  }
+}

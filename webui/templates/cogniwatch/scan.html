@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+
+{% block page_title %}Start Scan{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <div class="bg-navy-light rounded-xl p-8 border border-teal/10 mb-6">
+        <div class="flex items-center gap-4 mb-6">
+            <div class="p-3 bg-teal/10 rounded-lg">
+                <i data-lucide="radar" class="w-8 h-8 text-teal"></i>
+            </div>
+            <div>
+                <h2 class="text-2xl font-bold text-white">Network Scan Configuration</h2>
+                <p class="text-gray">Configure and start a new AI agent detection scan</p>
+            </div>
+        </div>
+        
+        <form class="space-y-6">
+            <!-- Network Range -->
+            <div>
+                <label class="block text-sm font-medium text-gray mb-2">Network Range</label>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <input type="text" id="ip-range" value="192.168.1.0/24" 
+                               class="w-full bg-navy border border-teal/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-teal">
+                        <p class="text-xs text-gray mt-1">CIDR notation (e.g., 192.168.1.0/24)</p>
+                    </div>
+                    <div>
+                        <select id="scan-profile" class="w-full bg-navy border border-teal/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-teal">
+                            <option value="quick" selected>Quick Scan (Common Ports) - 2 min</option>
+                            <option value="standard">Standard Scan (All Agent Ports) - 5 min</option>
+                            <option value="deep">Deep Scan (Full Port Range) - 15 min</option>
+                        </select>
+                        <p class="text-xs text-gray mt-1">⚠️ Please scan responsibly - only networks you own or have permission to scan</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Framework Selection -->
+            <div>
+                <label class="block text-sm font-medium text-gray mb-2">Frameworks to Detect</label>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <label class="flex items-center gap-2 p-3 bg-navy rounded-lg border border-teal/10 cursor-pointer hover:border-teal/30">
+                        <input type="checkbox" checked class="rounded border-teal/20 bg-navy text-teal">
+                        <span class="text-sm text-white">LangChain</span>
+                    </label>
+                    <label class="flex items-center gap-2 p-3 bg-navy rounded-lg border border-teal/10 cursor-pointer hover:border-teal/30">
+                        <input type="checkbox" checked class="rounded border-teal/20 bg-navy text-teal">
+                        <span class="text-sm text-white">AutoGen</span>
+                    </label>
+                    <label class="flex items-center gap-2 p-3 bg-navy rounded-lg border border-teal/10 cursor-pointer hover:border-teal/30">
+                        <input type="checkbox" checked class="rounded border-teal/20 bg-navy text-teal">
+                        <span class="text-sm text-white">CrewAI</span>
+                    </label>
+                    <label class="flex items-center gap-2 p-3 bg-navy rounded-lg border border-teal/10 cursor-pointer hover:border-teal/30">
+                        <input type="checkbox" checked class="rounded border-teal/20 bg-navy text-teal">
+                        <span class="text-sm text-white">Agent Zero</span>
+                    </label>
+                    <label class="flex items-center gap-2 p-3 bg-navy rounded-lg border border-teal/10 cursor-pointer hover:border-teal/30">
+                        <input type="checkbox" checked class="rounded border-teal/20 bg-navy text-teal">
+                        <span class="text-sm text-white">LlamaIndex</span>
+                    </label>
+                    <label class="flex items-center gap-2 p-3 bg-navy rounded-lg border border-teal/10 cursor-pointer hover:border-teal/30">
+                        <input type="checkbox" checked class="rounded border-teal/20 bg-navy text-teal">
+                        <span class="text-sm text-white">Haystack</span>
+                    </label>
+                    <label class="flex items-center gap-2 p-3 bg-navy rounded-lg border border-teal/10 cursor-pointer hover:border-teal/30">
+                        <input type="checkbox" checked class="rounded border-teal/20 bg-navy text-teal">
+                        <span class="text-sm text-white">Semantic Kernel</span>
+                    </label>
+                    <label class="flex items-center gap-2 p-3 bg-navy rounded-lg border border-teal/10 cursor-pointer hover:border-teal/30">
+                        <input type="checkbox" class="rounded border-teal/20 bg-navy text-teal">
+                        <span class="text-sm text-white">All Frameworks</span>
+                    </label>
+                </div>
+            </div>
+            
+            <!-- Responsible Scanning Notice -->
+            <div class="bg-navy/50 border border-teal/20 rounded-lg p-4 mt-4">
+                <div class="flex items-start gap-3">
+                    <i data-lucide="shield-check" class="w-5 h-5 text-teal mt-0.5"></i>
+                    <div>
+                        <h4 class="text-sm font-semibold text-white mb-1">Responsible Scanning Guidelines</h4>
+                        <ul class="text-xs text-gray space-y-1">
+                            <li>• Only scan networks you own or have explicit permission to scan</li>
+                            <li>• Rate-limited to 5 requests/second to avoid network disruption</li>
+                            <li>• Non-intrusive HTTP fingerprinting only (no exploits)</li>
+                            <li>• Results are for security awareness, not exploitation</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="flex gap-4 pt-4">
+                <button type="submit" class="flex-1 bg-teal hover:bg-teal/90 text-navy font-semibold py-3 px-6 rounded-lg flex items-center justify-center gap-2">
+                    <i data-lucide="scan" class="w-5 h-5"></i>
+                    Start Scan
+                </button>
+                <a href="https://github.com/cogniwatch/cogniwatch" target="_blank" 
+                   class="flex-1 bg-navy hover:bg-navy-lighter text-white font-semibold py-3 px-6 rounded-lg border border-teal/20 flex items-center justify-center gap-2">
+                    <i data-lucide="github" class="w-5 h-5"></i>
+                    Download on GitHub
+                </a>
+            </div>
+        </form>
+    </div>
+    
+    <!-- Recent Scans -->
+    <div class="bg-navy-light rounded-xl p-6 border border-teal/10">
+        <h3 class="text-lg font-semibold text-white mb-4">Recent Scans</h3>
+        <div class="space-y-3">
+            <div class="flex items-center justify-between p-3 bg-navy rounded-lg">
+                <div class="flex items-center gap-3">
+                    <i data-lucide="check-circle" class="w-5 h-5 text-green"></i>
+                    <div>
+                        <p class="text-white font-medium">192.168.1.0/24 - Standard Scan</p>
+                        <p class="text-xs text-gray">2 hours ago • 254 hosts • 4 agents found</p>
+                    </div>
+                </div>
+                <button class="text-teal hover:text-cyan">
+                    <i data-lucide="eye" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div class="flex items-center justify-between p-3 bg-navy rounded-lg">
+                <div class="flex items-center gap-3">
+                    <i data-lucide="check-circle" class="w-5 h-5 text-green"></i>
+                    <div>
+                        <p class="text-white font-medium">10.0.0.0/24 - Quick Scan</p>
+                        <p class="text-xs text-gray">Yesterday • 254 hosts • 2 agents found</p>
+                    </div>
+                </div>
+                <button class="text-teal hover:text-cyan">
+                    <i data-lucide="eye" class="w-5 h-5"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

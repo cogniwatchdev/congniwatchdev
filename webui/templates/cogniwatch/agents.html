@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+
+{% block page_title %}AI Agents{% endblock %}
+
+{% block content %}
+<div class="mb-6">
+    <div class="flex items-center justify-between mb-6">
+        <div>
+            <h2 class="text-2xl font-bold text-white">Discovered Agents</h2>
+            <p class="text-gray">Browse and manage all detected AI agents on your network</p>
+        </div>
+        <div class="flex gap-2">
+            <div class="relative">
+                <i data-lucide="search" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray"></i>
+                <input type="text" placeholder="Search agents..." 
+                       class="pl-10 pr-4 py-2 bg-navy-light border border-teal/20 rounded-lg text-white text-sm focus:outline-none focus:border-teal">
+            </div>
+            <button class="bg-teal hover:bg-teal/90 text-navy font-semibold px-4 py-2 rounded-lg flex items-center gap-2">
+                <i data-lucide="download" class="w-4 h-4"></i>
+                Export
+            </button>
+        </div>
+    </div>
+    
+    <!-- Filter Tags -->
+    <div class="flex flex-wrap gap-2 mb-6">
+        <button class="px-4 py-2 bg-teal text-navy font-medium rounded-full text-sm">All Agents</button>
+        <button class="px-4 py-2 bg-navy-light hover:bg-navy-lighter text-white border border-teal/20 rounded-full text-sm">LangChain</button>
+        <button class="px-4 py-2 bg-navy-light hover:bg-navy-lighter text-white border border-teal/20 rounded-full text-sm">AutoGen</button>
+        <button class="px-4 py-2 bg-navy-light hover:bg-navy-lighter text-white border border-teal/20 rounded-full text-sm">CrewAI</button>
+        <button class="px-4 py-2 bg-navy-light hover:bg-navy-lighter text-white border border-teal/20 rounded-full text-sm">Agent Zero</button>
+        <button class="px-4 py-2 bg-navy-light hover:bg-navy-lighter text-white border border-teal/20 rounded-full text-sm">Secure</button>
+        <button class="px-4 py-2 bg-navy-light hover:bg-navy-lighter text-white border border-teal/20 rounded-full text-sm">Warning</button>
+    </div>
+    
+    <!-- Agent Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Agent Card 1 -->
+        <div class="bg-navy-light rounded-xl p-6 border border-teal/10 hover:border-teal/30 transition-all">
+            <div class="flex items-start justify-between mb-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 bg-teal/10 rounded-lg flex items-center justify-center">
+                        <i data-lucide="cpu" class="w-6 h-6 text-teal"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-white">AgentZero</h3>
+                        <p class="text-xs text-gray">Agent Zero Framework</p>
+                    </div>
+                </div>
+                <span class="px-2 py-1 bg-green/20 text-green text-xs font-semibold rounded">95%</span>
+            </div>
+            
+            <div class="space-y-2 mb-4">
+                <div class="flex justify-between text-sm">
+                    <span class="text-gray">IP Address:</span>
+                    <span class="text-white font-medium">192.168.1.100</span>
+                </div>
+                <div class="flex justify-between text-sm">
+                    <span class="text-gray">Port:</span>
+                    <span class="text-white font-medium">8080</span>
+                </div>
+                <div class="flex justify-between text-sm">
+                    <span class="text-gray">Security:</span>
+                    <span class="text-green font-medium">Secure</span>
+                </div>
+                <div class="flex justify-between text-sm">
+                    <span class="text-gray">Last Seen:</span>
+                    <span class="text-white font-medium">2 min ago</span>
+                </div>
+            </div>
+            
+            <div class="flex gap-2">
+                <button class="flex-1 bg-teal hover:bg-teal/90 text-navy font-medium py-2 rounded-lg text-sm">
+                    View Details
+                </button>
+                <button class="px-3 bg-navy hover:bg-navy-lighter text-white border border-teal/20 rounded-lg">
+                    <i data-lucide="more-vertical" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Agent Card 2 -->
+        <div class="bg-navy-light rounded-xl p-6 border border-teal/10 hover:border-teal/30 transition-all">
+            <div class="flex items-start justify-between mb-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 bg-cyan/10 rounded-lg flex items-center justify-center">
+                        <i data-lucide="bot" class="w-6 h-6 text-cyan"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-white">AutoGen</h3>
+                        <p class="text-xs text-gray">Microsoft AutoGen</p>
+                    </div>
+                </div>
+                <span class="px-2 py-1 bg-yellow/20 text-yellow text-xs font-semibold rounded">88%</span>
+            </div>
+            
+            <div class="space-y-2 mb-4">
+                <div class="flex justify-between text-sm">
+                    <span class="text-gray">IP Address:</span>
+                    <span class="text-white font-medium">192.168.1.105</span>
+                </div>
+                <div class="flex justify-between text-sm">
+                    <span class="text-gray">Port:</span>
+                    <span class="text-white font-medium">3000</span>
+                </div>
+                <div class="flex justify-between text-sm">
+                    <span class="text-gray">Security:</span>
+                    <span class="text-yellow font-medium">Warning</span>
+                </div>
+                <div class="flex justify-between text-sm">
+                    <span class="text-gray">Last Seen:</span>
+                    <span class="text-white font-medium">5 min ago</span>
+                </div>
+            </div>
+            
+            <div class="flex gap-2">
+                <button class="flex-1 bg-teal hover:bg-teal/90 text-navy font-medium py-2 rounded-lg text-sm">
+                    View Details
+                </button>
+                <button class="px-3 bg-navy hover:bg-navy-lighter text-white border border-teal/20 rounded-lg">
+                    <i data-lucide="more-vertical" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Agent Card 3 -->
+        <div class="bg-navy-light rounded-xl p-6 border border-teal/10 hover:border-teal/30 transition-all">
+            <div class="flex items-start justify-between mb-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 bg-teal/10 rounded-lg flex items-center justify-center">
+                        <i data-lucide="users" class="w-6 h-6 text-teal"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-white">CrewAI</h3>
+                        <p class="text-xs text-gray">CrewAI Framework</p>
+                    </div>
+                </div>
+                <span class="px-2 py-1 bg-green/20 text-green text-xs font-semibold rounded">76%</span>
+            </div>
+            
+            <div class="space-y-2 mb-4">
+                <div class="flex justify-between text-sm">
+                    <span class="text-gray">IP Address:</span>
+                    <span class="text-white font-medium">192.168.1.110</span>
+                </div>
+                <div class="flex justify-between text-sm">
+                    <span class="text-gray">Port:</span>
+                    <span class="text-white font-medium">8000</span>
+                </div>
+                <div class="flex justify-between text-sm">
+                    <span class="text-gray">Security:</span>
+                    <span class="text-green font-medium">Secure</span>
+                </div>
+                <div class="flex justify-between text-sm">
+                    <span class="text-gray">Last Seen:</span>
+                    <span class="text-white font-medium">12 min ago</span>
+                </div>
+            </div>
+            
+            <div class="flex gap-2">
+                <button class="flex-1 bg-teal hover:bg-teal/90 text-navy font-medium py-2 rounded-lg text-sm">
+                    View Details
+                </button>
+                <button class="px-3 bg-navy hover:bg-navy-lighter text-white border border-teal/20 rounded-lg">
+                    <i data-lucide="more-vertical" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

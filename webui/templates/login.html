@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - CogniWatch</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            DEFAULT: '#0a192f',
+                            light: '#112240',
+                            lighter: '#233554'
+                        },
+                        teal: '#64ffda',
+                        cyan: '#00bcd4',
+                        pink: '#ff4081',
+                        white: '#e6f1ff',
+                        gray: '#8892b0'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-navy min-h-screen flex flex-col justify-center items-center p-4">
+    <div class="max-w-md w-full">
+        <!-- Logo and Title -->
+        <div class="text-center mb-8">
+            <div class="mb-4">
+                <img src="/static/logos/cogniwatch-logo.png" alt="CogniWatch Logo" class="h-16 w-16 mx-auto rounded-lg">
+            </div>
+            <h1 class="text-4xl font-bold text-white mb-2">CogniWatch</h1>
+            <p class="text-cyan text-sm">🔒 Secure Access to AI Agent Detection Network</p>
+            <p class="text-gray text-xs mt-2">Monitor 20+ AI frameworks on your network</p>
+        </div>
+
+        <!-- Login Card -->
+        <div class="bg-white rounded-lg shadow-xl p-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Sign In</h2>
+            
+            <form id="loginForm" class="space-y-6">
+                <!-- Username Field -->
+                <div>
+                    <label for="username" class="block text-sm font-medium text-gray-700 mb-2">
+                        Username
+                    </label>
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        required
+                        autocomplete="username"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                        placeholder="Enter your username"
+                    >
+                </div>
+
+                <!-- Password Field -->
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700 mb-2">
+                        Password
+                    </label>
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        required
+                        autocomplete="current-password"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                        placeholder="Enter your password"
+                    >
+                </div>
+
+                <!-- Error Message -->
+                <div id="errorMessage" class="hidden bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+                    <span id="errorText"></span>
+                </div>
+
+                <!-- Submit Button -->
+                <button
+                    type="submit"
+                    id="submitBtn"
+                    class="w-full bg-cyan hover:bg-cyan/80 text-navy font-semibold py-3 rounded-lg transition-colors duration-200 flex items-center justify-center"
+                >
+                    <span>Sign In</span>
+                    <svg id="loadingSpinner" class="hidden ml-2 animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                </button>
+            </form>
+        </div>
+
+        <!-- Forgot Password Link -->
+        <div class="text-center mt-4">
+            <a href="mailto:legal@cogniwatch.dev?subject=Password%20Reset%20Request" 
+               class="text-gray hover:text-cyan text-sm transition-colors">
+                Forgot password? Contact support →
+            </a>
+        </div>
+
+        <!-- Legal Footer -->
+        <footer class="mt-8 pt-6 border-t border-navy-lighter">
+            <div class="flex flex-wrap justify-center gap-4 text-xs text-gray mb-4">
+                <a href="/legal/terms" class="hover:text-cyan transition-colors">Terms</a>
+                <span class="text-navy-lighter">•</span>
+                <a href="/legal/privacy" class="hover:text-cyan transition-colors">Privacy</a>
+                <span class="text-navy-lighter">•</span>
+                <a href="/legal/disclaimer" class="hover:text-cyan transition-colors">Disclaimer</a>
+                <span class="text-navy-lighter">•</span>
+                <a href="/legal/security" class="hover:text-cyan transition-colors">Security</a>
+                <span class="text-navy-lighter">•</span>
+                <a href="/legal/acceptable-use" class="hover:text-cyan transition-colors">Acceptable Use</a>
+            </div>
+            <div class="text-center text-xs text-gray">
+                <p>© 2026 CogniWatch. All rights reserved.</p>
+                <p class="mt-1">
+                    <a href="mailto:legal@cogniwatch.dev" class="hover:text-cyan transition-colors">legal@cogniwatch.dev</a>
+                </p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        const loginForm = document.getElementById('loginForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const errorMessage = document.getElementById('errorMessage');
+        const errorText = document.getElementById('errorText');
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Clear previous errors
+            errorMessage.classList.add('hidden');
+            
+            // Show loading state
+            submitBtn.disabled = true;
+            loadingSpinner.classList.remove('hidden');
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Login successful - redirect to dashboard
+                    window.location.href = '/';
+                } else {
+                    // Login failed
+                    throw new Error(data.error || 'Login failed');
+                }
+            } catch (error) {
+                errorMessage.classList.remove('hidden');
+                errorText.textContent = error.message || 'Invalid username or password';
+                submitBtn.disabled = false;
+                loadingSpinner.classList.add('hidden');
+            }
+        });
+
+        // Auto-focus username field
+        document.getElementById('username').focus();
+    </script>
+</body>
+</html>

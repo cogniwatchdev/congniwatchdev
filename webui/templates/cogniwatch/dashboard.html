@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+
+{% block page_title %}Dashboard{% endblock %}
+
+{% block content %}
+<!-- Stats Bar -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+    <div class="bg-navy-light rounded-xl p-6 border border-teal/10">
+        <div class="flex items-center justify-between mb-4">
+            <div class="p-3 bg-teal/10 rounded-lg">
+                <i data-lucide="cpu" class="w-6 h-6 text-teal"></i>
+            </div>
+            <span class="text-green text-sm font-semibold">+2</span>
+        </div>
+        <h3 class="text-gray text-sm mb-1">Total Agents</h3>
+        <p class="text-3xl font-bold text-white" id="stat-total-agents">0</p>
+    </div>
+    
+    <div class="bg-navy-light rounded-xl p-6 border border-teal/10">
+        <div class="flex items-center justify-between mb-4">
+            <div class="p-3 bg-cyan/10 rounded-lg">
+                <i data-lucide="activity" class="w-6 h-6 text-cyan"></i>
+            </div>
+        </div>
+        <h3 class="text-gray text-sm mb-1">Scan Progress</h3>
+        <p class="text-3xl font-bold text-white" id="stat-scan-progress">0%</p>
+        <p class="text-xs text-gray mt-1" id="stat-hosts-scanned">0 / 254</p>
+    </div>
+    
+    <div class="bg-navy-light rounded-xl p-6 border border-teal/10">
+        <div class="flex items-center justify-between mb-4">
+            <div class="p-3 bg-red/10 rounded-lg">
+                <i data-lucide="triangle-alert" class="w-6 h-6 text-red"></i>
+            </div>
+            <span class="text-red text-sm font-semibold">1 critical</span>
+        </div>
+        <h3 class="text-gray text-sm mb-1">Security Alerts</h3>
+        <p class="text-3xl font-bold text-white" id="stat-security-alerts">0</p>
+    </div>
+    
+    <div class="bg-navy-light rounded-xl p-6 border border-teal/10">
+        <div class="flex items-center justify-between mb-4">
+            <div class="p-3 bg-teal/10 rounded-lg">
+                <i data-lucide="clock" class="w-6 h-6 text-teal"></i>
+            </div>
+        </div>
+        <h3 class="text-gray text-sm mb-1">Last Scan</h3>
+        <p class="text-3xl font-bold text-white" id="stat-last-scan">--:--</p>
+        <p class="text-xs text-gray mt-1" id="stat-last-scan-relative">Never</p>
+    </div>
+</div>
+
+<!-- Live Scan Progress -->
+<div class="bg-navy-light rounded-xl p-6 border border-teal/10 mb-6">
+    <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center gap-3">
+            <div class="p-2 bg-teal/10 rounded-lg">
+                <i data-lucide="radar" class="w-5 h-5 text-teal"></i>
+            </div>
+            <div>
+                <h2 class="text-lg font-semibold text-white">Live Scan Progress</h2>
+                <p class="text-sm text-gray">Real-time network discovery</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-2 px-3 py-1 bg-navy rounded-full border border-teal/20">
+            <div class="w-2 h-2 bg-teal rounded-full animate-pulse"></div>
+            <span class="text-sm text-teal">Active</span>
+        </div>
+    </div>
+    
+    <!-- Progress Bar -->
+    <div class="mb-4">
+        <div class="flex justify-between text-sm mb-2">
+            <span class="text-gray">Network Scan Progress</span>
+            <span class="text-teal font-semibold" id="progress-percentage">0%</span>
+        </div>
+        <div class="h-3 bg-navy rounded-full overflow-hidden">
+            <div id="scan-progress-bar" class="h-full bg-gradient-to-r from-teal to-cyan transition-all duration-300" style="width: 0%"></div>
+        </div>
+    </div>
+    
+    <!-- Scan Stats Grid -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="text-center p-3 bg-navy rounded-lg">
+            <p class="text-xs text-gray mb-1">Hosts Scanned</p>
+            <p class="text-lg font-bold text-white" id="scan-hosts">0 / 254</p>
+        </div>
+        <div class="text-center p-3 bg-navy rounded-lg">
+            <p class="text-xs text-gray mb-1">Agents Found</p>
+            <p class="text-lg font-bold text-white" id="scan-agents">0</p>
+        </div>
+        <div class="text-center p-3 bg-navy rounded-lg">
+            <p class="text-xs text-gray mb-1">Scan Rate</p>
+            <p class="text-lg font-bold text-white" id="scan-rate">0.0 <span class="text-xs">hosts/s</span></p>
+        </div>
+        <div class="text-center p-3 bg-navy rounded-lg">
+            <p class="text-xs text-gray mb-1">Est. Time</p>
+            <p class="text-lg font-bold text-white" id="scan-eta">--:--</p>
+        </div>
+    </div>
+</div>
+
+<!-- Agent Discovery Table -->
+<div class="bg-navy-light rounded-xl border border-teal/10 overflow-hidden">
+    <div class="p-6 border-b border-teal/10">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="p-2 bg-teal/10 rounded-lg">
+                    <i data-lucide="table" class="w-5 h-5 text-teal"></i>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold text-white">Agent Discovery</h2>
+                    <p class="text-sm text-gray">Discovered agents with confidence scores</p>
+                </div>
+            </div>
+            <div class="flex gap-2">
+                <select id="confidence-filter" class="bg-navy border border-teal/20 rounded-lg px-3 py-2 text-sm">
+                    <option value="all">All Confidence</option>
+                    <option value="confirmed">✅ Confirmed (≥85%)</option>
+                    <option value="likely">⚠️ Likely (60-84%)</option>
+                    <option value="possible">❓ Possible (30-59%)</option>
+                    <option value="unknown">❌ Unknown (<30%)</option>
+                </select>
+                <select id="sort-order" class="bg-navy border border-teal/20 rounded-lg px-3 py-2 text-sm">
+                    <option value="confidence-desc">Confidence ↓</option>
+                    <option value="confidence-asc">Confidence ↑</option>
+                    <option value="name-asc">Name A-Z</option>
+                    <option value="name-desc">Name Z-A</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    
+    <div class="overflow-x-auto">
+        <table class="w-full">
+            <thead class="bg-navy">
+                <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray uppercase tracking-wider">Confidence</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray uppercase tracking-wider">Agent</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray uppercase tracking-wider">Location</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray uppercase tracking-wider">Framework</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray uppercase tracking-wider">Security</th>
+                    <th class="px-6 py-3 text-right text-xs font-medium text-gray uppercase tracking-wider">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="agents-table-body" class="divide-y divide-teal/10">
+                <!-- Agents will be rendered here -->
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    // Demo data - replace with actual API calls
+    const agents = [
+        { name: 'AgentZero', host: '192.168.1.100', framework: 'Agent Zero', confidence: 95, security: 'secure' },
+        { name: 'AutoGen', host: '192.168.1.105', framework: 'AutoGen', confidence: 88, security: 'warning' },
+        { name: 'CrewAI', host: '192.168.1.110', framework: 'CrewAI', confidence: 76, security: 'secure' },
+        { name: 'LangChain', host: '192.168.1.115', framework: 'LangChain', confidence: 62, security: 'danger' },
+    ];
+    
+    function renderAgents() {
+        const tbody = document.getElementById('agents-table-body');
+        tbody.innerHTML = agents.map(agent => `
+            <tr class="hover:bg-teal/5">
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="flex items-center gap-2">
+                        <div class="w-2 h-2 rounded-full" style="background: ${agent.confidence >= 85 ? '#22c55e' : agent.confidence >= 60 ? '#f59e0b' : '#ef4444'}"></div>
+                        <span class="text-white font-medium">${agent.confidence}%</span>
+                    </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="text-white font-medium">${agent.name}</span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-gray">${agent.host}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-gray">${agent.framework}</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-2 py-1 rounded text-xs ${agent.security === 'secure' ? 'bg-green/20 text-green' : agent.security === 'warning' ? 'bg-yellow/20 text-yellow' : 'bg-red/20 text-red'}">
+                        ${agent.security.toUpperCase()}
+                    </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-right">
+                    <button class="text-teal hover:text-cyan p-1">
+                        <i data-lucide="more-vertical" class="w-4 h-4"></i>
+                    </button>
+                </td>
+            </tr>
+        `).join('');
+        lucide.createIcons();
+    }
+    
+    renderAgents();
+</script>
+{% endblock %}

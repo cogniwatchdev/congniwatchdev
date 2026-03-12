@@ -1,0 +1,53 @@
+{
+  "version": "0.3.0",
+  "cogniwatch": {
+    "name": "CogniWatch",
+    "description": "Shodan for AI Agents - Multi-layer AI agent detection platform"
+  },
+  "openclaw_gateway": {
+    "url": "ws://127.0.0.1:18789",
+    "token": ""
+  },
+  "scanner": {
+    "network": "192.168.0.0/24",
+    "ports": [80, 443, 11434, 18789, 18790, 5000, 8000, 8080, 3000, 42617],
+    "timeout": 2.0,
+    "max_workers": 50
+  },
+  "webui": {
+    "port": 9000,
+    "host": "0.0.0.0",
+    "debug": false,
+    "cors_origins": ["http://127.0.0.1:9000", "http://192.168.0.245:9000"]
+  },
+  "auth": {
+    "enabled": true,
+    "mode": "token",
+    "tokens": {
+      "cogniwatch-admin-2026": {
+        "role": "admin",
+        "permissions": ["read", "write", "admin"],
+        "created": "2026-03-07T00:00:00Z"
+      },
+      "cogniwatch-readonly": {
+        "role": "viewer",
+        "permissions": ["read"],
+        "created": "2026-03-07T00:00:00Z"
+      }
+    }
+  },
+  "security": {
+    "rate_limiting": {
+      "enabled": true,
+      "requests_per_minute": 60
+    },
+    "cors": {
+      "enabled": true,
+      "allow_origins": ["http://127.0.0.1:9000", "http://192.168.0.245:9000"]
+    }
+  },
+  "logging": {
+    "level": "INFO",
+    "file": "logs/cogniwatch.log"
+  }
+}

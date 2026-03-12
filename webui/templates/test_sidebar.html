@@ -1,0 +1,43 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sidebar Test</title>
+    <style>
+        body { background: #0a192f; color: white; font-family: sans-serif; margin: 0; }
+        .sidebar { width: 60px; background: #112240; border-right: 1px solid #64ffda; transition: width 0.3s; overflow: hidden; }
+        .sidebar.expanded { width: 250px; }
+        .sidebar:hover { width: 250px; }
+        .content { flex: 1; padding: 20px; }
+        .app { display: flex; height: 100vh; }
+        .toggle-btn { background: none; border: 1px solid #64ffda; color: #64ffda; padding: 10px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <div class="sidebar" id="sidebar">
+            <button class="toggle-btn" onclick="toggle()">Toggle</button>
+            <div style="padding: 20px;">
+                <h3>CogniWatch</h3>
+                <p>Hover over me!</p>
+                <ul>
+                    <li>🏠 Overview</li>
+                    <li>🔍 Scanner</li>
+                    <li>📊 Agents</li>
+                    <li>⚙️ Settings</li>
+                </ul>
+            </div>
+        </div>
+        <div class="content">
+            <h1>2026 Dashboard Test</h1>
+            <p>If you see a left sidebar that expands on hover and toggle click, the CSS/JS are working!</p>
+            <p>Server: http://192.168.0.245:9000</p>
+        </div>
+    </div>
+    <script>
+        function toggle() {
+            document.getElementById('sidebar').classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>

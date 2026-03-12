@@ -1,0 +1,249 @@
+{% extends "base-condensed.html" %}
+
+{% block page_title_header %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="row row-cards mb-6">
+    <!-- Stat Card 1 -->
+    <div class="col-sm-6 col-lg-3">
+        <div class="card card-sm">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <span class="bg-teal text-white avatar rounded">
+                            <i data-lucide="cpu" class="icon"></i>
+                        </span>
+                    </div>
+                    <div class="col">
+                        <div class="font-weight-medium">Total Agents</div>
+                        <div class="text-muted" id="stat-total-agents">0</div>
+                    </div>
+                    <div class="col-auto">
+                        <span class="badge bg-green-lt">+2</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Stat Card 2 -->
+    <div class="col-sm-6 col-lg-3">
+        <div class="card card-sm">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <span class="bg-cyan text-white avatar rounded">
+                            <i data-lucide="activity" class="icon"></i>
+                        </span>
+                    </div>
+                    <div class="col">
+                        <div class="font-weight-medium">Scan Progress</div>
+                        <div class="text-muted" id="stat-scan-progress">0%</div>
+                    </div>
+                    <div class="col-auto">
+                        <span class="text-muted small" id="stat-hosts-scanned">0/254</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Stat Card 3 -->
+    <div class="col-sm-6 col-lg-3">
+        <div class="card card-sm">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <span class="bg-red text-white avatar rounded">
+                            <i data-lucide="triangle-alert" class="icon"></i>
+                        </span>
+                    </div>
+                    <div class="col">
+                        <div class="font-weight-medium">Security Alerts</div>
+                        <div class="text-muted" id="stat-security-alerts">0</div>
+                    </div>
+                    <div class="col-auto">
+                        <span class="badge bg-red-lt">1 critical</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Stat Card 4 -->
+    <div class="col-sm-6 col-lg-3">
+        <div class="card card-sm">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <span class="bg-teal text-white avatar rounded">
+                            <i data-lucide="clock" class="icon"></i>
+                        </span>
+                    </div>
+                    <div class="col">
+                        <div class="font-weight-medium">Last Scan</div>
+                        <div class="text-muted" id="stat-last-scan">--:--</div>
+                    </div>
+                    <div class="col-auto">
+                        <span class="text-muted small" id="stat-last-scan-relative">Never</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Live Scan Progress -->
+<div class="card mb-6">
+    <div class="card-header">
+        <h3 class="card-title d-flex align-items-center gap-2">
+            <i data-lucide="radar" class="icon"></i>
+            Live Scan Progress
+        </h3>
+        <div class="card-actions">
+            <span class="badge badge-primary d-flex align-items-center gap-1">
+                <span class="avatar avatar-xs bg-green"></span>
+                Active
+            </span>
+        </div>
+    </div>
+    <div class="card-body">
+        <!-- Progress Bar -->
+        <div class="mb-4">
+            <div class="row align-items-center">
+                <div class="col">
+                    <div class="text-muted small">Network Scan Progress</div>
+                </div>
+                <div class="col-auto">
+                    <div class="text-primary fw-bold" id="progress-percentage">0%</div>
+                </div>
+            </div>
+            <div class="progress mt-2">
+                <div id="scan-progress-bar" class="progress-bar bg-primary" style="width: 0%"></div>
+            </div>
+        </div>
+        
+        <!-- Stats Grid -->
+        <div class="row g-3">
+            <div class="col-6 col-lg-3">
+                <div class="card border-0 bg-opacity-10" style="background-color: rgba(57, 204, 204, 0.1);">
+                    <div class="card-body text-center p-3">
+                        <div class="text-muted small">Hosts Scanned</div>
+                        <div class="h3 mb-0 text-teal" id="scan-hosts">0 / 254</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-lg-3">
+                <div class="card border-0 bg-opacity-10" style="background-color: rgba(127, 219, 255, 0.1);">
+                    <div class="card-body text-center p-3">
+                        <div class="text-muted small">Agents Found</div>
+                        <div class="h3 mb-0 text-cyan" id="scan-agents">0</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-lg-3">
+                <div class="card border-0 bg-opacity-10" style="background-color: rgba(57, 204, 204, 0.1);">
+                    <div class="card-body text-center p-3">
+                        <div class="text-muted small">Scan Rate</div>
+                        <div class="h3 mb-0 text-teal" id="scan-rate">0.0 <small>hosts/s</small></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-lg-3">
+                <div class="card border-0 bg-opacity-10" style="background-color: rgba(127, 219, 255, 0.1);">
+                    <div class="card-body text-center p-3">
+                        <div class="text-muted small">Est. Time</div>
+                        <div class="h3 mb-0 text-cyan" id="scan-eta">--:--</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Agent Discovery Table -->
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title d-flex align-items-center gap-2">
+            <i data-lucide="table" class="icon"></i>
+            Agent Discovery
+        </h3>
+        <div class="card-actions">
+            <div class="d-flex gap-2">
+                <select class="form-select form-select-sm" id="confidence-filter">
+                    <option value="all">All Confidence</option>
+                    <option value="confirmed">✅ Confirmed (≥85%)</option>
+                    <option value="likely">⚠️ Likely (60-84%)</option>
+                    <option value="possible">❓ Possible (30-59%)</option>
+                    <option value="unknown">❌ Unknown (<30%)</option>
+                </select>
+                <select class="form-select form-select-sm" id="sort-order">
+                    <option value="confidence-desc">Confidence ↓</option>
+                    <option value="confidence-asc">Confidence ↑</option>
+                    <option value="name-asc">Name A-Z</option>
+                    <option value="name-desc">Name Z-A</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table card-table table-vcenter">
+                <thead>
+                    <tr>
+                        <th>Confidence</th>
+                        <th>Agent</th>
+                        <th>Location</th>
+                        <th>Framework</th>
+                        <th>Security</th>
+                        <th class="w-1"></th>
+                    </tr>
+                </thead>
+                <tbody id="agents-table-body">
+                    <!-- Agents rendered here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    const agents = [
+        { name: 'AgentZero', host: '192.168.1.100', framework: 'Agent Zero', confidence: 95, security: 'secure' },
+        { name: 'AutoGen', host: '192.168.1.105', framework: 'AutoGen', confidence: 88, security: 'warning' },
+        { name: 'CrewAI', host: '192.168.1.110', framework: 'CrewAI', confidence: 76, security: 'secure' },
+        { name: 'LangChain', host: '192.168.1.115', framework: 'LangChain', confidence: 62, security: 'danger' },
+    ];
+    
+    function renderAgents() {
+        const tbody = document.getElementById('agents-table-body');
+        tbody.innerHTML = agents.map(agent => `
+            <tr>
+                <td>
+                    <span class="badge bg-${agent.confidence >= 85 ? 'green' : agent.confidence >= 60 ? 'yellow' : 'red'}-lt">
+                        ${agent.confidence}%
+                    </span>
+                </td>
+                <td class="fw-bold">${agent.name}</td>
+                <td class="text-muted">${agent.host}</td>
+                <td>${agent.framework}</td>
+                <td>
+                    <span class="badge bg-${agent.security === 'secure' ? 'green' : agent.security === 'warning' ? 'yellow' : 'red'}-lt">
+                        ${agent.security.toUpperCase()}
+                    </span>
+                </td>
+                <td>
+                    <button class="btn-action">
+                        <i data-lucide="more-vertical" class="icon"></i>
+                    </button>
+                </td>
+            </tr>
+        `).join('');
+        lucide.createIcons();
+    }
+    
+    renderAgents();
+</script>
+{% endblock %}

@@ -1,0 +1,55 @@
+{
+  "framework": "smolagents",
+  "name": "Hugging Face Smolagents",
+  "version": "1.0+",
+  "category": "lightweight-agent-framework",
+  "ports": {
+    "primary": 7860,
+    "alternative": [],
+    "websocket": null,
+    "http": 7860
+  },
+  "http_fingerprints": {
+    "title_patterns": ["Smolagents", "Hugging Face Smolagents", "HuggingFace"],
+    "header_patterns": {
+      "server": "Smolagents.*"
+    },
+    "body_patterns": ["smolagents", "smol-agents", "Hugging Face", "huggingface"],
+    "response_check_paths": ["/", "/api/predict"]
+  },
+  "api_endpoints": {
+    "status": "/api/status",
+    "predict": "/api/predict",
+    "models": "/api/models",
+    "agents": "/api/agents"
+  },
+  "websocket": {
+    "enabled": false,
+    "path": null,
+    "protocol": null,
+    "handshake_patterns": []
+  },
+  "config_files": [
+    "~/.smolagents/config.yaml",
+    "~/.huggingface/token"
+  ],
+  "process_names": ["smolagents", "smol-agents", "gradio"],
+  "network_signatures": {
+    "mdns": null,
+    "txt_records": []
+  },
+  "confidence": {
+    "port_match": 0.30,
+    "http_pattern": 0.15,
+    "http_multiple": 0.10,
+    "api_validated": 0.25,
+    "websocket_match": 0.00,
+    "framework_specific": 0.10,
+    "threshold_confirmed": 0.85,
+    "threshold_likely": 0.60,
+    "threshold_possible": 0.30
+  },
+  "detection_priority": 2,
+  "notes": "Hugging Face's lightweight agent framework. Gradio-based UI on port 7860 (Gradio default).",
+  "variants": []
+}

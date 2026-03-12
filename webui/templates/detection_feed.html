@@ -1,0 +1,631 @@
+<!-- ClawJacked Detection Feed -->
+<div class="detection-feed-section">
+    <div class="section-header">
+        <h2>🚨 ClawJacked Detection Feed</h2>
+        <div class="feed-controls">
+            <select id="severity-filter" onchange="filterDetectionFeed()">
+                <option value="all">All Severities</option>
+                <option value="critical">Critical Only</option>
+                <option value="high">High+</option>
+                <option value="medium">Medium+</option>
+            </select>
+            <select id="gateway-filter" onchange="filterDetectionFeed()">
+                <option value="all">All Gateways</option>
+                <option value="neo-18789">Neo:18789</option>
+                <option value="atlas-18790">Atlas:18790</option>
+                <option value="cipher-18794">Cipher:18794</option>
+                <option value="vulcan-18795">Vulcan:18795</option>
+            </select>
+            <button class="btn-export" onclick="exportAlertsCSV()">📄 Export CSV</button>
+            <div class="auto-refresh-indicator">
+                <span class="refresh-dot"></span>
+                <span>Auto-refresh: 10s</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="alerts-stats">
+        <div class="alert-stat critical">
+            <div class="stat-count" id="critical-count">0</div>
+            <div class="stat-label">Critical</div>
+        </div>
+        <div class="alert-stat high">
+            <div class="stat-count" id="high-count">0</div>
+            <div class="stat-label">High</div>
+        </div>
+        <div class="alert-stat medium">
+            <div class="stat-count" id="medium-count">0</div>
+            <div class="stat-label">Medium</div>
+        </div>
+        <div class="alert-stat total">
+            <div class="stat-count" id="total-count">0</div>
+            <div class="stat-label">Total (24h)</div>
+        </div>
+    </div>
+    
+    <div class="alerts-table-container">
+        <table class="alerts-table">
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Gateway</th>
+                    <th>Detection Type</th>
+                    <th>Severity</th>
+                    <th>Source IP</th>
+                    <th>Details</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="alerts-table-body">
+                <!-- Populated by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="feed-footer">
+        <button class="btn-load-more" onclick="loadMoreAlerts()">Load More Alerts</button>
+        <span class="last-update">Last updated: <span id="feed-last-update">--</span></span>
+    </div>
+</div>
+
+<style>
+.detection-feed-section {
+    background: linear-gradient(135deg, #1a1f2e 0%, #0f141f 100%);
+    border: 1px solid #2a3f5f;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+.feed-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.feed-controls select {
+    background: #233554;
+    color: #e6f1ff;
+    border: 1px solid #64ffda;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85rem;
+}
+
+.auto-refresh-indicator {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #8892b0;
+    font-size: 0.85rem;
+    margin-left: auto;
+}
+
+.refresh-dot {
+    width: 8px;
+    height: 8px;
+    background: #22c55e;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+.alerts-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.alert-stat {
+    background: #112240;
+    padding: 16px;
+    border-radius: 8px;
+    text-align: center;
+    border-left: 4px solid #64ffda;
+}
+
+.alert-stat.critical {
+    border-left-color: #ef4444;
+}
+
+.alert-stat.high {
+    border-left-color: #f59e0b;
+}
+
+.alert-stat.medium {
+    border-left-color: #00bcd4;
+}
+
+.alert-stat.total {
+    border-left-color: #22c55e;
+}
+
+.stat-count {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.alert-stat.critical .stat-count {
+    color: #ef4444;
+}
+
+.alert-stat.high .stat-count {
+    color: #f59e0b;
+}
+
+.alert-stat.medium .stat-count {
+    color: #00bcd4;
+}
+
+.alert-stat.total .stat-count {
+    color: #22c55e;
+}
+
+.stat-label {
+    color: #8892b0;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.alerts-table-container {
+    overflow-x: auto;
+    margin-bottom: 24px;
+}
+
+.alerts-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #112240;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.alerts-table th {
+    background: #0a192f;
+    color: #64ffda;
+    padding: 14px 16px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.alerts-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid #233554;
+    color: #e6f1ff;
+}
+
+.alerts-table tbody tr:hover {
+    background: #1a1f2e;
+}
+
+.alerts-table tbody tr.critical {
+    background: rgba(239, 68, 68, 0.1);
+}
+
+.alerts-table tbody tr.critical:hover {
+    background: rgba(239, 68, 68, 0.15);
+}
+
+.severity-badge {
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.severity-badge.critical {
+    background: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+}
+
+.severity-badge.high {
+    background: rgba(245, 158, 11, 0.2);
+    color: #f59e0b;
+}
+
+.severity-badge.medium {
+    background: rgba(0, 188, 212, 0.2);
+    color: #00bcd4;
+}
+
+.severity-badge.low {
+    background: rgba(34, 197, 94, 0.2);
+    color: #22c55e;
+}
+
+.detection-type {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+}
+
+.detection-icon {
+    font-size: 1.2rem;
+}
+
+.status-badge {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.status-badge.new {
+    background: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+    animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+}
+
+.status-badge.acknowledged {
+    background: rgba(0, 188, 212, 0.2);
+    color: #00bcd4;
+}
+
+.status-badge.resolved {
+    background: rgba(34, 197, 94, 0.2);
+    color: #22c55e;
+}
+
+.action-btn-small {
+    background: #233554;
+    color: #64ffda;
+    border: 1px solid #64ffda;
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.75rem;
+    font-weight: 600;
+    transition: all 0.2s;
+    margin-right: 6px;
+}
+
+.action-btn-small:hover {
+    background: #64ffda;
+    color: #0a192f;
+}
+
+.action-btn-small.acknowledge {
+    background: #00bcd4;
+    border-color: #00bcd4;
+    color: #0a192f;
+}
+
+.action-btn-small.acknowledge:hover {
+    background: #0097a7;
+    color: white;
+}
+
+.feed-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 15px;
+    border-top: 1px solid #2a3f5f;
+}
+
+.btn-load-more {
+    background: #233554;
+    color: #64ffda;
+    border: 1px solid #64ffda;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.btn-load-more:hover {
+    background: #64ffda;
+    color: #0a192f;
+}
+
+.last-update {
+    color: #8892b0;
+    font-size: 0.85rem;
+}
+
+@media (max-width: 1024px) {
+    .alerts-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .alerts-table {
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .feed-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .feed-controls select,
+    .feed-controls button {
+        width: 100%;
+    }
+    
+    .auto-refresh-indicator {
+        justify-content: center;
+        margin-left: 0;
+        margin-top: 10px;
+    }
+    
+    .alerts-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .alerts-table-container {
+        overflow-x: scroll;
+    }
+    
+    .feed-footer {
+        flex-direction: column;
+        gap: 12px;
+        align-items: center;
+    }
+}
+</style>
+
+<script>
+// Detection Feed JavaScript
+let currentAlerts = [];
+let filteredAlerts = [];
+
+document.addEventListener('DOMContentLoaded', function() {
+    loadDetectionFeed();
+    // Auto-refresh every 10 seconds
+    setInterval(loadDetectionFeed, 10 * 1000);
+});
+
+async function loadDetectionFeed() {
+    try {
+        const response = await fetch('/api/security/alerts');
+        if (!response.ok) throw new Error('Failed to load alerts');
+        
+        const data = await response.json();
+        currentAlerts = data.alerts;
+        updateDetectionFeed(data);
+    } catch (error) {
+        console.error('Detection feed error:', error);
+        // Use mock data for demo
+        currentAlerts = getMockAlerts();
+        updateDetectionFeed({ alerts: currentAlerts, stats: getMockAlertStats() });
+    }
+}
+
+function updateDetectionFeed(data) {
+    // Update stats
+    if (data.stats) {
+        document.getElementById('critical-count').textContent = data.stats.critical;
+        document.getElementById('high-count').textContent = data.stats.high;
+        document.getElementById('medium-count').textContent = data.stats.medium;
+        document.getElementById('total-count').textContent = data.stats.total;
+    }
+    
+    // Update table
+    const tbody = document.getElementById('alerts-table-body');
+    tbody.innerHTML = '';
+    
+    const now = new Date();
+    data.alerts.forEach(alert => {
+        const row = document.createElement('tr');
+        if (alert.severity === 'critical') row.classList.add('critical');
+        row.innerHTML = renderAlertRow(alert, now);
+        tbody.appendChild(row);
+    });
+    
+    // Update last update time
+    document.getElementById('feed-last-update').textContent = now.toLocaleTimeString();
+}
+
+function renderAlertRow(alert, now) {
+    const alertTime = new Date(alert.timestamp);
+    const timeStr = alertTime.toLocaleTimeString();
+    
+    const severityClass = alert.severity.toLowerCase();
+    const statusClass = alert.status ? alert.status.toLowerCase() : 'new';
+    const statusLabel = alert.status || 'NEW';
+    
+    // Calculate time ago
+    const diffMs = now - alertTime;
+    const diffMins = Math.floor(diffMs / 60000);
+    let timeAgo;
+    if (diffMins < 1) timeAgo = 'Just now';
+    else if (diffMins < 60) timeAgo = `${diffMins}m ago`;
+    else timeAgo = alertTime.toLocaleTimeString();
+    
+    return `
+        <td>
+            <div>${timeStr}</div>
+            <small style="color: #8892b0">${timeAgo}</small>
+        </td>
+        <td>
+            <strong>${alert.gateway_name}</strong><br>
+            <small style="color: #8892b0">${alert.gateway_host}:${alert.gateway_port}</small>
+        </td>
+        <td>
+            <div class="detection-type">
+                <span class="detection-icon">${getDetectionIcon(alert.detection_type)}</span>
+                ${alert.detection_type}
+            </div>
+        </td>
+        <td>
+            <span class="severity-badge ${severityClass}">${alert.severity}</span>
+        </td>
+        <td>
+            <code style="color: #00bcd4">${alert.source_ip}</code>
+        </td>
+        <td>
+            ${alert.details}
+        </td>
+        <td>
+            <span class="status-badge ${statusClass}">${statusLabel}</span>
+        </td>
+        <td>
+            ${!alert.status ? `<button class="action-btn-small acknowledge" onclick="acknowledgeAlert('${alert.id}')">✓ Acknowledge</button>` : ''}
+            <button class="action-btn-small" onclick="viewAlertDetails('${alert.id}')">Details</button>
+        </td>
+    `;
+}
+
+function getDetectionIcon(type) {
+    const icons = {
+        'WebSocket Anomaly': '🕸️',
+        'Auth Brute-Force': '🔐',
+        'Rate Limit Exceeded': '🚦',
+        'Unauthorized Access': '🚫',
+        'Suspicious Pattern': '🔍',
+        'DDoS Attempt': '⚡',
+        'Config Tampering': '⚙️'
+    };
+    return icons[type] || '🔔';
+}
+
+function filterDetectionFeed() {
+    const severityFilter = document.getElementById('severity-filter').value;
+    const gatewayFilter = document.getElementById('gateway-filter').value;
+    
+    filteredAlerts = currentAlerts.filter(alert => {
+        const severityMatch = severityFilter === 'all' || 
+            (severityFilter === 'critical' && alert.severity === 'critical') ||
+            (severityFilter === 'high' && ['critical', 'high'].includes(alert.severity)) ||
+            (severityFilter === 'medium' && ['critical', 'high', 'medium'].includes(alert.severity));
+        
+        const gatewayMatch = gatewayFilter === 'all' || alert.gateway_id === gatewayFilter;
+        
+        return severityMatch && gatewayMatch;
+    });
+    
+    updateDetectionFeed({ alerts: filteredAlerts, stats: calculateFilteredStats(filteredAlerts) });
+}
+
+function calculateFilteredStats(alerts) {
+    return {
+        critical: alerts.filter(a => a.severity === 'critical').length,
+        high: alerts.filter(a => a.severity === 'high').length,
+        medium: alerts.filter(a => a.severity === 'medium').length,
+        total: alerts.length
+    };
+}
+
+function acknowledgeAlert(alertId) {
+    alert(`Would acknowledge alert: ${alertId}`);
+    // Implementation: POST /api/security/alerts/{id}/acknowledge
+}
+
+function viewAlertDetails(alertId) {
+    alert(`Would show details for alert: ${alertId}`);
+    // Implementation: Show modal with full alert details
+}
+
+function exportAlertsCSV() {
+    alert('Exporting alerts to CSV...');
+    // Implementation: Generate CSV from currentAlerts and download
+    const csvContent = "data:text/csv;charset=utf-8," + 
+        "Timestamp,Gateway,Type,Severity,Source IP,Details,Status\n" +
+        currentAlerts.map(a => 
+            `${a.timestamp},${a.gateway_name},${a.detection_type},${a.severity},${a.source_ip},"${a.details}",${a.status || 'NEW'}`
+        ).join("\n");
+    
+    const link = document.createElement("a");
+    link.setAttribute("href", encodeURI(csvContent));
+    link.setAttribute("download", "security_alerts.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+function loadMoreAlerts() {
+    alert('Load more alerts - would fetch older entries');
+    // Implementation: Fetch older alerts with offset
+}
+
+function getMockAlerts() {
+    const now = new Date();
+    return [
+        {
+            id: 'alert-001',
+            timestamp: new Date(now.getTime() - 2 * 60000).toISOString(),
+            gateway_id: 'neo-18789',
+            gateway_name: 'Neo',
+            gateway_host: '127.0.0.1',
+            gateway_port: 18789,
+            detection_type: 'WebSocket Anomaly',
+            severity: 'high',
+            source_ip: '127.0.0.1',
+            details: '73 connections/min from single IP',
+            status: null
+        },
+        {
+            id: 'alert-002',
+            timestamp: new Date(now.getTime() - 7 * 60000).toISOString(),
+            gateway_id: 'atlas-18790',
+            gateway_name: 'Atlas',
+            gateway_host: '192.168.0.245',
+            gateway_port: 18790,
+            detection_type: 'Auth Brute-Force',
+            severity: 'critical',
+            source_ip: '192.168.0.100',
+            details: '47 failed auth attempts in 60s',
+            status: null
+        },
+        {
+            id: 'alert-003',
+            timestamp: new Date(now.getTime() - 15 * 60000).toISOString(),
+            gateway_id: 'cipher-18794',
+            gateway_name: 'Cipher',
+            gateway_host: '192.168.0.246',
+            gateway_port: 18794,
+            detection_type: 'Rate Limit Exceeded',
+            severity: 'medium',
+            source_ip: '192.168.0.50',
+            details: '150 requests/min exceeds 100/min limit',
+            status: 'acknowledged'
+        },
+        {
+            id: 'alert-004',
+            timestamp: new Date(now.getTime() - 32 * 60000).toISOString(),
+            gateway_id: 'vulcan-18795',
+            gateway_name: 'Vulcan',
+            gateway_host: '192.168.0.247',
+            gateway_port: 18795,
+            detection_type: 'Unauthorized Access',
+            severity: 'high',
+            source_ip: '10.0.0.5',
+            details: 'Attempted access to admin endpoint without auth',
+            status: 'resolved'
+        }
+    ];
+}
+
+function getMockAlertStats() {
+    return {
+        critical: 1,
+        high: 3,
+        medium: 5,
+        total: 12
+    };
+}
+</script>

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}CogniWatch - AI Agent Detection Network{% endblock %}</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tabler CSS (via CDN for demo) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta21/dist/css/tabler.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta21/dist/css/tabler-dark.min.css">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    
+    <style>
+        :root {
+            --tblr-primary: #39cccc;
+            --tblr-primary-fg: #001f3f;
+            --tblr-page-bg: #001f3f;
+            --tblr-sidebar-bg: #003366;
+            --tblr-border-color: rgba(57, 204, 204, 0.2);
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #001f3f;
+            color: #ffffff;
+        }
+        
+        .navbar {
+            background: #003366 !important;
+            border-bottom: 1px solid rgba(57, 204, 204, 0.2);
+        }
+        
+        .navbar-brand {
+            color: #39cccc !important;
+            font-weight: 700;
+        }
+        
+        .nav-link {
+            color: rgba(255, 255, 255, 0.85);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            background: rgba(57, 204, 204, 0.15);
+            color: #39cccc;
+        }
+        
+        .nav-link i {
+            margin-right: 0.5rem;
+            color: #39cccc;
+        }
+        
+        .card {
+            background: #003366;
+            border: 1px solid rgba(57, 204, 204, 0.2);
+            color: #ffffff;
+        }
+        
+        .card-title {
+            color: #7fdbff;
+        }
+        
+        .btn-primary {
+            background-color: #39cccc;
+            border-color: #39cccc;
+            color: #001f3f;
+        }
+        
+        .btn-primary:hover {
+            background-color: #7fdbff;
+            border-color: #7fdbff;
+            color: #001f3f;
+        }
+        
+        .table th {
+            color: #7fdbff;
+            border-bottom: 2px solid rgba(57, 204, 204, 0.3);
+        }
+        
+        .table td {
+            border-bottom: 1px solid rgba(57, 204, 204, 0.1);
+        }
+        
+        .badge-primary {
+            background-color: #39cccc;
+            color: #001f3f;
+        }
+        
+        .avatar {
+            background: rgba(57, 204, 204, 0.2) !important;
+            color: #39cccc;
+        }
+        
+        /* Condensed Sidebar - Narrower width */
+        .navbar-vertical {
+            width: 16rem !important;
+        }
+        
+        @media (max-width: 768px) {
+            .navbar-vertical {
+                width: 100% !important;
+                position: fixed !important;
+                z-index: 1000;
+            }
+        }
+    </style>
+    
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <div class="page">
+        <!-- Condensed Sidebar Navigation -->
+        <aside class="navbar navbar-vertical navbar-expand-sm" data-bs-theme="dark">
+            <div class="container-fluid">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                
+                <h1 class="navbar-brand navbar-brand-autodark">
+                    <a href="/" class="d-flex align-items-center gap-2">
+                        <img src="/static/logos/cogniwatch-logo.svg" width="40" height="40" alt="CogniWatch" />
+                        <span>CogniWatch</span>
+                    </a>
+                </h1>
+                
+                <div class="collapse navbar-collapse" id="sidebar-menu">
+                    <ul class="navbar-nav pt-lg-3">
+                        <li class="nav-item">
+                            <a class="nav-link {% if active_page == 'dashboard' %}active{% endif %}" href="/dashboard">
+                                <i data-lucide="layout-dashboard" class="icon"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if active_page == 'scan' %}active{% endif %}" href="/scan">
+                                <i data-lucide="scan" class="icon"></i>
+                                <span>Scan</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if active_page == 'agents' %}active{% endif %}" href="/agents">
+                                <i data-lucide="cpu" class="icon"></i>
+                                <span>Agents</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if active_page == 'analytics' %}active{% endif %}" href="/analytics">
+                                <i data-lucide="chart-bar" class="icon"></i>
+                                <span>Analytics</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if active_page == 'security' %}active{% endif %}" href="/security">
+                                <i data-lucide="shield-alert" class="icon"></i>
+                                <span>Security</span>
+                            </a>
+                        </li>
+                        
+                        <li class="nav-section-header mt-3 mb-2">
+                            <span class="text-muted small text-uppercase">Resources</span>
+                        </li>
+                        
+                        <li class="nav-item">
+                            <a class="nav-link {% if active_page == 'faq' %}active{% endif %}" href="/faq">
+                                <i data-lucide="help-circle" class="icon"></i>
+                                <span>FAQ</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if active_page == 'about' %}active{% endif %}" href="/about">
+                                <i data-lucide="info" class="icon"></i>
+                                <span>About</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if active_page == 'help' %}active{% endif %}" href="/help">
+                                <i data-lucide="book-open" class="icon"></i>
+                                <span>Help</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if active_page == 'settings' %}active{% endif %}" href="/settings">
+                                <i data-lucide="settings" class="icon"></i>
+                                <span>Settings</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- Main Content Wrapper -->
+        <div class="page-wrapper">
+            <!-- Page Header -->
+            {% block page_header %}
+            <div class="page-header d-print-none">
+                <div class="container-xl">
+                    <div class="row g-2 align-items-center">
+                        <div class="col">
+                            <h2 class="page-title">{% block page_title_header %}Dashboard{% endblock %}</h2>
+                            {% block page_subtitle %}
+                            <div class="text-muted mt-1">AI Agent Detection Network</div>
+                            {% endblock %}
+                        </div>
+                        <div class="col-auto ms-auto d-print-none">
+                            <div class="d-flex align-items-center gap-2">
+                                <button class="btn btn-primary">
+                                    <i data-lucide="scan" class="icon"></i>
+                                    Start Scan
+                                </button>
+                                <div class="dropdown">
+                                    <button class="btn btn-light" data-bs-toggle="dropdown">
+                                        <i data-lucide="bell" class="icon"></i>
+                                        <span class="badge bg-red badge-notification position-absolute translate-middle"></span>
+                                    </button>
+                                </div>
+                                <div class="dropdown">
+                                    <button class="avatar avatar-sm" data-bs-toggle="dropdown">
+                                        <i data-lucide="user" class="icon"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endblock %}
+            
+            <!-- Page Body -->
+            <div class="page-body">
+                <div class="container-xl">
+                    {% block content %}{% endblock %}
+                </div>
+            </div>
+            
+            <!-- Page Footer -->
+            <footer class="footer footer-transparent d-print-none">
+                <div class="container-xl">
+                    <div class="row text-center align-items-center flex-row-reverse">
+                        <div class="col-lg-auto ms-lg-auto">
+                            <ul class="list-inline list-inline-dots mb-0">
+                                <li class="list-inline-item">
+                                    <a href="/docs" class="link-secondary">Documentation</a>
+                                </li>
+                                <li class="list-inline-item">
+                                    <a href="/license" class="link-secondary">License</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-12 col-lg-auto mt-3 mt-lg-0">
+                            <ul class="list-inline list-inline-dots mb-0">
+                                <li class="list-inline-item">
+                                    CogniWatch v0.3.0 - © 2026
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+    
+    <!-- Tabler JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta21/dist/js/tabler.min.js"></script>
+    
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+    </script>
+    
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>

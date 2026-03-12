@@ -1,0 +1,56 @@
+{
+  "framework": "agent-zero",
+  "name": "Agent-Zero",
+  "version": "1.0+",
+  "category": "general-purpose-assistant",
+  "ports": {
+    "primary": 5000,
+    "alternative": [50001, 50080],
+    "websocket": null,
+    "http": 5000
+  },
+  "http_fingerprints": {
+    "title_patterns": ["Agent-Zero", "Agent 0", "Agent Zero", "AgentZero"],
+    "header_patterns": {
+      "server": "Agent-Zero.*"
+    },
+    "body_patterns": ["agent-zero", "Dynamic & Organic", "Computer-as-Tool", "Prompt-Based", "Agent Zero"],
+    "response_check_paths": ["/", "/api/status", "/api/agents"]
+  },
+  "api_endpoints": {
+    "status": "/api/status",
+    "agents": "/api/agents",
+    "execute": "/api/execute",
+    "memory": "/api/memory"
+  },
+  "websocket": {
+    "enabled": false,
+    "path": null,
+    "protocol": null,
+    "handshake_patterns": []
+  },
+  "config_files": [
+    "~/.agent-zero/config.yaml",
+    "prompts/default/agent.system.md",
+    "tools/default.yaml"
+  ],
+  "process_names": ["agent-zero", "agent0"],
+  "network_signatures": {
+    "mdns": null,
+    "txt_records": []
+  },
+  "confidence": {
+    "port_match": 0.30,
+    "http_pattern": 0.15,
+    "http_multiple": 0.10,
+    "api_validated": 0.25,
+    "websocket_match": 0.00,
+    "framework_specific": 0.15,
+    "threshold_confirmed": 0.85,
+    "threshold_likely": 0.60,
+    "threshold_possible": 0.30
+  },
+  "detection_priority": 1,
+  "notes": "STRONGEST competitor in self-hosted space. Growing adoption. PORT FIX: Changed primary from 50001 to 5000 (default Agent-Zero port). Added 50001/50080 as alternatives.",
+  "variants": []
+}

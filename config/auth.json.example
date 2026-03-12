@@ -1,0 +1,5 @@
+{
+  "_comment": "Authentication configuration - API KEYS STORED ENCRYPTED",
+  "_note": "This file is auto-populated by the auth module. Do not edit manually.",
+  "api_keys": {}
+}
