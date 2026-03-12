@@ -175,13 +175,14 @@ function renderAgentsTable() {
     tbody.innerHTML = filtered.map(agent => {
         const confidenceBadge = renderConfidenceBadge(agent.confidence || 0.5);
         const securityIndicator = renderSecurityIndicator(agent.security_posture || 'unknown');
+        const formattedPort = agent.port || 'N/A';
         
         return `
             <tr class="table-row-hover group border-b border-white/5 last:border-0 cursor-pointer" onclick="toggleAgentDetails('${agent.id}')">
-                <td class="px-6 py-4 whitespace-nowrap">
+                <td class="px-6 py-4 whitespace-nowrap text-center">
                     ${confidenceBadge}
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap">
+                <td class="px-6 py-4 whitespace-nowrap flex-items-center">
                     <div class="flex items-center">
                         <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-accent-primary to-accent-secondary flex items-center justify-center mr-3">
                             <i data-lucide="cpu" class="w-4 h-4 text-white"></i>
@@ -192,25 +193,28 @@ function renderAgentsTable() {
                         </div>
                     </div>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="text-sm text-white font-mono">${agent.host || '0.0.0.0'}:${agent.port || 'N/A'}</div>
+                <td class="px-6 py-4 whitespace-nowrap text-center">
+                    <span class="font-mono">${agent.host || '0.0.0.0'}</span>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap">
+                <td class="px-6 py-4 whitespace-nowrap text-center">
+                    <span class="font-mono">${formattedPort}</span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-center">
                     <span class="px-2 py-1 rounded-md bg-bg-tertiary text-text-secondary text-xs font-mono border border-white/10">
                         ${agent.framework || 'Unknown'}
                     </span>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap">
+                <td class="px-6 py-4 whitespace-nowrap text-center">
                     ${securityIndicator}
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap text-right">
-                    <button onclick="event.stopPropagation(); viewAgent('${agent.id}')" class="text-text-muted hover:text-white transition-colors p-2 rounded-lg hover:bg-white/5">
+                <td class="px-6 py-4 whitespace-nowrap text-center">
+                    <button onclick="event.stopPropagation(); viewAgent('${agent.id}')" class="text-text-muted hover:text-white transition-colors p-2 rounded-lg hover:bg-white/5 flex items-center justify-center">
                         <i data-lucide="chevron-right" class="w-4 h-4"></i>
                     </button>
                 </td>
             </tr>
             <tr id="agent-details-${agent.id}" class="expandable-row hidden">
-                <td colspan="6" class="px-6 py-4 bg-bg-tertiary border-b border-white/5">
+                <td colspan="7" class="px-6 py-4 bg-bg-tertiary border-b border-white/5">
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div>
                             <h4 class="text-xs font-medium text-text-muted uppercase mb-2">Model Info</h4>

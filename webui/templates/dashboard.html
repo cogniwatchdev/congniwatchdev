@@ -129,6 +129,38 @@
         </div>
     </header>
     
+    <!-- Scan Status Banner -->
+    <div class="container">
+        <div id="scan-status-banner" class="scan-status-banner">
+            <div class="flex items-center justify-between py-3 px-4 bg-bg-tertiary rounded-md border border-white/10 mb-4">
+                <div class="flex items-center gap-3">
+                    <div id="scan-status-indicator" class="w-3 h-3 rounded-full bg-text-muted"></div>
+                    <span id="scan-status-text" class="text-sm font-medium text-white">Idle</span>
+                </div>
+                <div class="flex-1 mx-4">
+                    <div class="w-full bg-bg-tertiary h-2 rounded overflow-hidden">
+                        <div id="scan-progress-bar" class="bg-accent-secondary h-2 w-0 transition-width duration-500"></div>
+                    </div>
+                    <div class="flex items-center justify-between text-xs text-text-muted mt-1">
+                        <span id="progress-percentage">0%</span>
+                        <span id="scan-eta">--:--</span>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 text-sm">
+                    <div>
+                        <span class="font-medium">Hosts:</span> <span id="scan-hosts">0 / 0</span>
+                    </div>
+                    <div>
+                        <span class="font-medium">Agents:</span> <span id="scan-agents">0</span>
+                    </div>
+                    <div>
+                        <span class="font-medium">Rate:</span> <span id="scan-rate">0.0 hosts/s</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <div class="container">
         <!-- Navigation Tabs -->
         <div class="nav-tabs">
@@ -148,23 +180,23 @@
             <div class="stats-grid">
                 <div class="stat-card">
                     <h3>Total Agents</h3>
-                    <div class="value" id="total-agents">4</div>
-                    <div class="trend">Active ecosystem</div>
+                    <div class="value" id="stat-total-agents">0</div>
                 </div>
                 <div class="stat-card">
-                    <h3>Security Score</h3>
-                    <div class="value" id="security-score">72/100</div>
-                    <div class="trend" style="color: var(--yellow)">⚠️ Moderate Risk</div>
+                    <h3>Security Alerts</h3>
+                    <div class="value" id="stat-security-alerts">0</div>
                 </div>
                 <div class="stat-card">
-                    <h3>Active Alerts</h3>
-                    <div class="value" id="active-alerts">3</div>
-                    <div class="trend" style="color: var(--red)">1 Critical</div>
+                    <h3>Hosts Scanned</h3>
+                    <div class="value" id="stat-hosts-scanned">0 / 0</div>
                 </div>
                 <div class="stat-card">
-                    <h3>Cost Today</h3>
-                    <div class="value" id="cost-today">$0.00</div>
-                    <div class="trend">Within budget</div>
+                    <h3>Last Scan</h3>
+                    <div class="value" id="stat-last-scan">0m ago</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Scan Progress</h3>
+                    <div class="value" id="stat-scan-progress">0%</div>
                 </div>
             </div>
         </div>
@@ -185,8 +217,37 @@
                     </div>
                 </div>
                 
-                <div class="agents-grid" id="agents-grid">
-                    <!-- Populated by JavaScript -->
+                <div class="table-responsive">
+                    <table class="agents-table" id="agents-table">
+                        <thead>
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-text-muted uppercase tracking-wider">
+                                    #
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-text-muted uppercase tracking-wider">
+                                    Agent/Framework
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-text-muted uppercase tracking-wider">
+                                    Host
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-text-muted uppercase tracking-wider">
+                                    Port
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-text-muted uppercase tracking-wider">
+                                    Framework
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-text-muted uppercase tracking-wider">
+                                    Security
+                                </th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-text-muted uppercase tracking-wider">
+                                    Actions
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="agents-table-body">
+                            <!-- Populated by JavaScript -->
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
